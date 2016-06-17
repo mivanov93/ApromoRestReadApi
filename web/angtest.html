@@ -16,7 +16,7 @@
 <script>
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope, $http) {
-  $http({
+  for(var i=0; i < 100;i++) $http({
     method : "GET",
     url : "/cached.php/products/by-top"
   }).then(function mySucces(response) {

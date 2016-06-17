@@ -60,9 +60,18 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        dql:
+            numeric_functions:
+                rand: DoctrineExtensions\Query\Mysql\Rand
         result_cache_driver:
-            type: service
-            id: apromo_cache
+            type: "redis"
+            instance_class: "Redis"
+        query_cache_driver:
+            type: "redis"
+            instance_class: "Redis"
+        metadata_cache_driver:
+            type: "redis"
+            instance_class: "Redis"
 # Swiftmailer Configuration
 #swiftmailer:
 #    transport: "%mailer_transport%"

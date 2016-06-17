@@ -7,15 +7,17 @@ index:
     defaults: { _controller: AppBundle:Default:restIndex }
 
 products_top:
-    path:     /products/by-top/{limit}
-    defaults: { _controller: AppBundle:Products:top, limit: 20 }
+    path:     /products/by-top/{limit}/{prodcatId}
+    defaults: { _controller: AppBundle:Products:top, limit: 20, prodcatId: 0 }
     requirements:
         limit:  10|20|30
+        prodcatId:  \d+
         methods: GET
 
 products_by_id:
-    path:     /products/by-id/{id}
-    defaults: { _controller: AppBundle:Products:cached, id:1 }
+    path:     /products/details/{prodId}
+    defaults: { _controller: AppBundle:Products:details}
     requirements:
-        c:  \d+   
+        prodId:  \d+
+        methods: GET
 
