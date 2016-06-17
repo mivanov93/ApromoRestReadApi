@@ -1,0 +1,2 @@
+php bin/console doctrine:mapping:import AppBundle
+php bin/console doctrine:mapping:convert -vvv annotation -f ./src

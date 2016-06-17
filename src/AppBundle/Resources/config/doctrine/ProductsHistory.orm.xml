@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\ProductsHistory" table="products_history">
+    <indexes>
+      <index name="prodhist_brand_id" columns="ph_prod_brand_id"/>
+      <index name="prodhist_prod_id" columns="ph_prod_id"/>
+      <index name="prodhist_prod_prodcat_id" columns="ph_prod_prodcat_id"/>
+    </indexes>
+    <id name="phId" type="integer" column="ph_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="phProdId" type="integer" column="ph_prod_id" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="phProdName" type="string" column="ph_prod_name" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="phProdUrl" type="text" column="ph_prod_url" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="phProdDescr" type="text" column="ph_prod_descr" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="phProdTop" type="boolean" column="ph_prod_top" nullable="false"/>
+    <field name="phProdLimitedAvail" type="boolean" column="ph_prod_limited_avail" nullable="false"/>
+    <field name="phProdNewprice" type="float" column="ph_prod_newprice" precision="10" scale="2" nullable="false"/>
+    <field name="phProdOldprice" type="float" column="ph_prod_oldprice" precision="10" scale="2" nullable="false"/>
+    <field name="phProdPercentage" type="integer" column="ph_prod_percentage" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="phProdValidfrom" type="integer" column="ph_prod_validfrom" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+      </options>
+    </field>
+    <field name="phProdExptime" type="integer" column="ph_prod_exptime" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+      </options>
+    </field>
+    <field name="phAddtime" type="integer" column="ph_addtime" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+      </options>
+    </field>
+    <many-to-one field="phProdProdcat" target-entity="Prodcat" fetch="LAZY">
+      <join-columns>
+        <join-column name="ph_prod_prodcat_id" referenced-column-name="prodcat_id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="phProdBrand" target-entity="Brands" fetch="LAZY">
+      <join-columns>
+        <join-column name="ph_prod_brand_id" referenced-column-name="brand_id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

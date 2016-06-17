@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\BrandsUsersAudit" table="brands_users_audit">
+    <indexes>
+      <index name="bu_audit_user_id" columns="bu_audit_user_id"/>
+    </indexes>
+    <id name="buAuditId" type="integer" column="bu_audit_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="buAuditLoggedin" type="integer" column="bu_audit_loggedin" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="buAuditLoggedout" type="integer" column="bu_audit_loggedout" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="buAuditIpaddr" type="string" column="bu_audit_ipaddr" length="64" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="buAuditBrowser" type="string" column="bu_audit_browser" length="64" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="buAuditUser" target-entity="BrandsUsers" fetch="LAZY">
+      <join-columns>
+        <join-column name="bu_audit_user_id" referenced-column-name="bu_id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

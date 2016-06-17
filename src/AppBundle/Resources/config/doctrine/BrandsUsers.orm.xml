@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\BrandsUsers" table="brands_users">
+    <indexes>
+      <index name="bu_level" columns="bu_level"/>
+      <index name="bu_brand_id" columns="bu_brand_id"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="user_email" columns="bu_email"/>
+    </unique-constraints>
+    <id name="buId" type="integer" column="bu_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="buEmail" type="string" column="bu_email" length="64" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="buName" type="string" column="bu_name" length="64" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="buPasshash" type="string" column="bu_passhash" length="128" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="buActive" type="boolean" column="bu_active" nullable="false">
+      <options>
+        <option name="default">1</option>
+      </options>
+    </field>
+    <field name="buAddtime" type="integer" column="bu_addtime" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+      </options>
+    </field>
+    <field name="buLastmodified" type="integer" column="bu_lastmodified" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+      </options>
+    </field>
+    <many-to-one field="buBrand" target-entity="Brands" fetch="LAZY">
+      <join-columns>
+        <join-column name="bu_brand_id" referenced-column-name="brand_id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="buLevel" target-entity="BrandsUsersRoles" fetch="LAZY">
+      <join-columns>
+        <join-column name="bu_level" referenced-column-name="bu_role_level"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

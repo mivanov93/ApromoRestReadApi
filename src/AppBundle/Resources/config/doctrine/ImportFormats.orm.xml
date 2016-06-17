@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\ImportFormats" table="import_formats">
+    <unique-constraints>
+      <unique-constraint name="UNIQ_1EAC13D098CBC30F" columns="if_name"/>
+    </unique-constraints>
+    <id name="ifId" type="integer" column="if_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="ifName" type="string" column="if_name" length="32" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="ifAddtime" type="integer" column="if_addtime" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+      </options>
+    </field>
+    <field name="ifLastmodified" type="integer" column="if_lastmodified" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+      </options>
+    </field>
+  </entity>
+</doctrine-mapping>

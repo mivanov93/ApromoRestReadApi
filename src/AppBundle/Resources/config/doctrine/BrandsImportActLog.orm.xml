@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\BrandsImportActLog" table="brands_import_act_log">
+    <indexes>
+      <index name="IDX_BE1BCC8F29D53CE" columns="bial_brand_id"/>
+      <index name="IDX_BE1BCC8FB54E1D61" columns="bial_brand_import_dl_log_id"/>
+    </indexes>
+    <id name="bialId" type="integer" column="bial_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="bialStart" type="integer" column="bial_start" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="bialEnd" type="integer" column="bial_end" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="bialStatusCode" type="integer" column="bial_status_code" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="bialStatusMsg" type="string" column="bial_status_msg" length="512" nullable="false">
+      <options>
+        <option name="fixed"/>
+        <option name="default"/>
+      </options>
+    </field>
+    <field name="bialCountProductsNew" type="integer" column="bial_count_products_new" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="bialCountProductsUpdated" type="integer" column="bial_count_products_updated" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="bialCountProductsDeleted" type="integer" column="bial_count_products_deleted" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="bialAddtime" type="integer" column="bial_addtime" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="bialLastmodified" type="integer" column="bial_lastmodified" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <many-to-one field="bialBrandImportDlLog" target-entity="BrandsImportDlLog" fetch="LAZY">
+      <join-columns>
+        <join-column name="bial_brand_import_dl_log_id" referenced-column-name="bidl_id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="bialBrand" target-entity="Brands" fetch="LAZY">
+      <join-columns>
+        <join-column name="bial_brand_id" referenced-column-name="brand_id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

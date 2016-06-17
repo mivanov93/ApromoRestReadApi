@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\BrandsImportDlLog" table="brands_import_dl_log">
+    <indexes>
+      <index name="bidl_brand_id" columns="bidl_brand_id"/>
+      <index name="bidl_import_format_id" columns="bidl_import_format_id"/>
+      <index name="bidl_status_code" columns="bidl_status_code"/>
+      <index name="bidl_start" columns="bidl_start"/>
+    </indexes>
+    <id name="bidlId" type="integer" column="bidl_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="bidlStart" type="integer" column="bidl_start" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="bidlEnd" type="integer" column="bidl_end" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="bidlStatusCode" type="integer" column="bidl_status_code" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="bidlStatusMsg" type="string" column="bidl_status_msg" length="512" nullable="false">
+      <options>
+        <option name="fixed"/>
+        <option name="default"/>
+      </options>
+    </field>
+    <field name="bidlFileSize" type="integer" column="bidl_file_size" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="bidlFileHash" type="integer" column="bidl_file_hash" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="bidlFileUrlHash" type="integer" column="bidl_file_url_hash" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="bidlAddtime" type="integer" column="bidl_addtime" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="bidlLastmodified" type="integer" column="bidl_lastmodified" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <many-to-one field="bidlImportFormat" target-entity="ImportFormats" fetch="LAZY">
+      <join-columns>
+        <join-column name="bidl_import_format_id" referenced-column-name="if_id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="bidlBrand" target-entity="Brands" fetch="LAZY">
+      <join-columns>
+        <join-column name="bidl_brand_id" referenced-column-name="brand_id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

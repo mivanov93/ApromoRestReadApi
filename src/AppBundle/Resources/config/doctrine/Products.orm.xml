@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="AppBundle\Entity\Products" table="products">
+        <indexes>
+            <index name="prod_brand_id" columns="prod_brand_id"/>
+            <index name="prod_prodcat_id" columns="prod_prodcat_id"/>
+            <index name="prod_exptime" columns="prod_exptime"/>
+            <index name="prod_top" columns="prod_top"/>
+            <index name="prod_newprice" columns="prod_newprice"/>
+            <index name="prod_percentage" columns="prod_percentage"/>
+            <index name="prod_unique_id" columns="prod_unique_id"/>
+            <index name="prod_active" columns="prod_active"/>
+            <index name="prod_limited_avail" columns="prod_limited_avail"/>
+            <index name="prod_addtime_lastmod" columns="prod_addtime,prod_lastmodified"/>
+            <index name="prod_name" columns="prod_name"/>
+            <index name="prod_descr_comp" columns="prod_name,prod_descr"/>
+        </indexes>
+        <unique-constraints>
+            <unique-constraint name="prod_unique_id_extra_index" columns="prod_unique_id,prod_brand_id"/>
+            <unique-constraint name="prod_comp_index" columns="prod_id,prod_brand_id"/>
+        </unique-constraints>
+        <id name="prodId" type="integer" column="prod_id">
+            <generator strategy="IDENTITY"/>
+        </id>
+        <field name="prodName" type="string" column="prod_name" length="255" nullable="false">
+            <options>
+                <option name="fixed"/>
+            </options>
+        </field>
+        <field name="prodDescr" type="text" column="prod_descr" length="65535" nullable="false">
+            <options>
+                <option name="fixed"/>
+            </options>
+        </field>
+        <field name="prodUrl" type="text" column="prod_url" length="65535" nullable="false">
+            <options>
+                <option name="fixed"/>
+            </options>
+        </field>
+        <field name="prodLimitedAvail" type="boolean" column="prod_limited_avail" nullable="false">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
+        <field name="prodOldprice" type="float" column="prod_oldprice" precision="10" scale="2" nullable="false"/>
+        <field name="prodNewprice" type="float" column="prod_newprice" precision="10" scale="2" nullable="false"/>
+        <field name="prodPercentage" type="integer" column="prod_percentage" nullable="false">
+            <options>
+                <option name="unsigned"/>
+            </options>
+        </field>
+        <field name="prodDeliveryTime" type="integer" column="prod_delivery_time" nullable="false">
+            <options>
+                <option name="unsigned">1</option>
+                <option name="default">0</option>
+            </options>
+        </field>
+        <field name="prodDeliveryCost" type="float" column="prod_delivery_cost" precision="10" scale="2" nullable="false">
+            <options>
+                <option name="default">0.00</option>
+            </options>
+        </field>
+        <field name="prodManufacturer" type="string" column="prod_manufacturer" length="128" nullable="false">
+            <options>
+                <option name="fixed"/>
+                <option name="default"/>
+            </options>
+        </field>
+        <field name="prodMpn" type="string" column="prod_mpn" length="128" nullable="false">
+            <options>
+                <option name="fixed"/>
+                <option name="default"/>
+            </options>
+        </field>
+        <field name="prodBarcode" type="bigint" column="prod_barcode" nullable="false">
+            <options>
+                <option name="unsigned"/>
+                <option name="default">0</option>
+            </options>
+        </field>
+        <field name="prodAddtime" type="integer" column="prod_addtime" nullable="false">
+            <options>
+                <option name="unsigned">1</option>
+                <option name="default">0</option>
+            </options>
+        </field>
+        <field name="prodLastmodified" type="integer" column="prod_lastmodified" nullable="false">
+            <options>
+                <option name="unsigned">1</option>
+                <option name="default">0</option>
+            </options>
+        </field>
+        <field name="prodValidfrom" type="integer" column="prod_validfrom" nullable="false">
+            <options>
+                <option name="unsigned">1</option>
+                <option name="default">0</option>
+            </options>
+        </field>
+        <field name="prodExptime" type="integer" column="prod_exptime" nullable="false">
+            <options>
+                <option name="unsigned">1</option>
+                <option name="default">0</option>
+            </options>
+        </field>
+        <field name="prodActive" type="boolean" column="prod_active" nullable="false">
+            <options>
+                <option name="default">1</option>
+            </options>
+        </field>
+        <field name="prodTop" type="boolean" column="prod_top" nullable="false">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
+        <field name="prodUniqueId" type="string" column="prod_unique_id" length="64" nullable="false">
+            <options>
+                <option name="fixed"/>
+            </options>
+        </field>
+        <many-to-one field="prodProdcat" target-entity="Prodcat" fetch="LAZY">
+            <join-columns>
+                <join-column name="prod_prodcat_id" referenced-column-name="prodcat_id"/>
+            </join-columns>
+        </many-to-one>
+        <many-to-one field="prodBrand" target-entity="Brands" fetch="LAZY">
+            <join-columns>
+                <join-column name="prod_brand_id" referenced-column-name="brand_id"/>
+            </join-columns>
+        </many-to-one>
+        <one-to-many field="prodPiCollection" mapped-by="piProd"
+                  target-entity="ProductsImages">
+        </one-to-many>
+    </entity>
+</doctrine-mapping>

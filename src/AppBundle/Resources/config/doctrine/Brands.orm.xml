@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Brands" table="brands">
+    <indexes>
+      <index name="brand_prcount" columns="brand_prcount"/>
+      <index name="brand_active" columns="brand_active"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="brand_id" columns="brand_id,brand_name"/>
+    </unique-constraints>
+    <id name="brandId" type="integer" column="brand_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="brandName" type="string" column="brand_name" length="64" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="brandPartner" type="boolean" column="brand_partner" nullable="false">
+      <options>
+        <option name="default">1</option>
+      </options>
+    </field>
+    <field name="brandAddtime" type="integer" column="brand_addtime" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="brandLastmodified" type="integer" column="brand_lastmodified" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="brandExpiration" type="integer" column="brand_expiration" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="brandDescr" type="text" column="brand_descr" length="65535" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="brandUrl" type="string" column="brand_url" length="64" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="brandOrder" type="integer" column="brand_order" nullable="false">
+      <options>
+        <option name="unsigned"/>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="brandActive" type="boolean" column="brand_active" nullable="false">
+      <options>
+        <option name="default">1</option>
+      </options>
+    </field>
+    <field name="brandPrcount" type="integer" column="brand_prcount" nullable="false">
+      <options>
+        <option name="unsigned"/>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="brandShopcount" type="integer" column="brand_shopcount" nullable="false">
+      <options>
+        <option name="unsigned"/>
+        <option name="default">0</option>
+      </options>
+    </field>
+  </entity>
+</doctrine-mapping>

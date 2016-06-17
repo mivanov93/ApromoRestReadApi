@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\BrandsProdcatMapping" table="brands_prodcat_mapping">
+    <indexes>
+      <index name="fk_brands_prodcat_mapping_1_idx" columns="bpm_brand_id"/>
+      <index name="fk_brands_prodcat_mapping_2_idx" columns="bpm_mapped_prodcat_id"/>
+    </indexes>
+    <id name="bpmId" type="integer" column="bpm_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="bpmBrandProdcatId" type="integer" column="bpm_brand_prodcat_id" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="bpmBrandProdcatName" type="string" column="bpm_brand_prodcat_name" length="45" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="bpmAddtime" type="integer" column="bpm_addtime" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+      </options>
+    </field>
+    <field name="bpmLastmodified" type="integer" column="bpm_lastmodified" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+      </options>
+    </field>
+    <many-to-one field="bpmMappedProdcat" target-entity="Prodcat" fetch="LAZY">
+      <join-columns>
+        <join-column name="bpm_mapped_prodcat_id" referenced-column-name="prodcat_id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="bpmBrand" target-entity="Brands" fetch="LAZY">
+      <join-columns>
+        <join-column name="bpm_brand_id" referenced-column-name="brand_id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

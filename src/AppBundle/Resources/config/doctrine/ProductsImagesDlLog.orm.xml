@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\ProductsImagesDlLog" table="products_images_dl_log">
+    <indexes>
+      <index name="pidl_products_image_id" columns="pidl_products_image_id"/>
+      <index name="pidl_status_code" columns="pidl_status_code"/>
+      <index name="pidl_file_hash" columns="pidl_file_hash"/>
+      <index name="pidl_addtime" columns="pidl_addtime"/>
+      <index name="pidl_start" columns="pidl_start"/>
+      <index name="pidl_lastmodified" columns="pidl_lastmodified"/>
+      <index name="pidl_comp_index" columns="pidl_products_image_id,pidl_status_code"/>
+      <index name="pidl_file_url_hash" columns="pidl_file_url_hash"/>
+    </indexes>
+    <id name="pidlId" type="integer" column="pidl_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="pidlStart" type="integer" column="pidl_start" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="pidlEnd" type="integer" column="pidl_end" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="pidlStatusCode" type="integer" column="pidl_status_code" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="pidlStatusMsg" type="string" column="pidl_status_msg" length="512" nullable="false">
+      <options>
+        <option name="fixed"/>
+        <option name="default"/>
+      </options>
+    </field>
+    <field name="pidlFileSize" type="integer" column="pidl_file_size" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="pidlFileHash" type="integer" column="pidl_file_hash" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="pidlFileUrlHash" type="integer" column="pidl_file_url_hash" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="pidlAddtime" type="integer" column="pidl_addtime" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="pidlLastmodified" type="integer" column="pidl_lastmodified" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <many-to-one field="pidlProductsImage" target-entity="ProductsImages" fetch="LAZY">
+      <join-columns>
+        <join-column name="pidl_products_image_id" referenced-column-name="pi_id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

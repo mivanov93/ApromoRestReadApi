@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Subscribers" table="subscribers">
+    <indexes>
+      <index name="subscr_addtime" columns="subscr_addtime"/>
+      <index name="subscr_ip" columns="subscr_ip"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="subscr_email" columns="subscr_email"/>
+    </unique-constraints>
+    <id name="subscrId" type="integer" column="subscr_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="subscrEmail" type="string" column="subscr_email" length="128" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="subscrIp" type="string" column="subscr_ip" length="32" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="subscrRemoveKey" type="string" column="subscr_remove_key" length="128" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="subscrSentCount" type="integer" column="subscr_sent_count" nullable="false">
+      <options>
+        <option name="unsigned"/>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="subscrAddtime" type="integer" column="subscr_addtime" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+  </entity>
+</doctrine-mapping>

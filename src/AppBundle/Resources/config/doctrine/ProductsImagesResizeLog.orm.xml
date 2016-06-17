@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\ProductsImagesResizeLog" table="products_images_resize_log">
+    <indexes>
+      <index name="pirl_products_image_dl_log_id" columns="pirl_products_image_dl_log_id"/>
+      <index name="pirl_status_code" columns="pirl_status_code"/>
+      <index name="pirl_start" columns="pirl_start"/>
+      <index name="pirl_end" columns="pirl_end"/>
+    </indexes>
+    <id name="pirlId" type="integer" column="pirl_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="pirlStart" type="integer" column="pirl_start" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="pirlEnd" type="integer" column="pirl_end" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="pirlStatusCode" type="integer" column="pirl_status_code" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="pirlStatusMsg" type="string" column="pirl_status_msg" length="512" nullable="false">
+      <options>
+        <option name="fixed"/>
+        <option name="default"/>
+      </options>
+    </field>
+    <field name="pirlAddtime" type="integer" column="pirl_addtime" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="pirlLastmodified" type="integer" column="pirl_lastmodified" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <many-to-one field="pirlProductsImageDlLog" target-entity="ProductsImagesDlLog" fetch="LAZY">
+      <join-columns>
+        <join-column name="pirl_products_image_dl_log_id" referenced-column-name="pidl_id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
