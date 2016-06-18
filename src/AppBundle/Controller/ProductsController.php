@@ -101,8 +101,17 @@ class ProductsController extends Controller {
         $qry->setResultCacheLifetime(self::GRID_CACHE_TIME);
         $qry->setHydrationMode(Query::HYDRATE_ARRAY);
         $paginator = new Paginator($qry);
-        $res = $paginator->getIterator()->getArrayCopy();
+        $products = $paginator->getIterator()->getArrayCopy();
+        $qb->select('count(distinct p.prodId) as x');
+        $qb->orderBy('x');
+        $qb->setFirstResult(0);
+        $qb->setMaxResults(1);
+        $totalQry = $qb->getQuery();
+        $totalQry->setResultCacheId('products_by_category');
+        $totalQry->setResultCacheLifetime(self::GRID_CACHE_TIME);
 
+        $total = $totalQry->getSingleScalarResult();
+        $res = ["rows" => $products, "total" => $total];
         $r = $this->get('response_factory')->getHtmlMockResponse($res, self::GRID_CACHE_TIME);
         return $r;
     }
@@ -125,8 +134,17 @@ class ProductsController extends Controller {
         $qry->setResultCacheLifetime(self::GRID_CACHE_TIME);
         $qry->setHydrationMode(Query::HYDRATE_ARRAY);
         $paginator = new Paginator($qry);
-        $res = $paginator->getIterator()->getArrayCopy();
+        $products = $paginator->getIterator()->getArrayCopy();
+        $qb->select('count(distinct p.prodId) as x');
+        $qb->orderBy('x');
+        $qb->setFirstResult(0);
+        $qb->setMaxResults(1);
+        $totalQry = $qb->getQuery();
+        $totalQry->setResultCacheId('products_by_category');
+        $totalQry->setResultCacheLifetime(self::GRID_CACHE_TIME);
 
+        $total = $totalQry->getSingleScalarResult();
+        $res = ["rows" => $products, "total" => $total];
         $r = $this->get('response_factory')->getHtmlMockResponse($res, self::GRID_CACHE_TIME);
         return $r;
     }
@@ -174,10 +192,24 @@ class ProductsController extends Controller {
             }
         }
 
-        if ($searchQuery !== null || floor($maxPrice) !== ceil($maxPrice)) {
+        if (floor($maxPrice) !== ceil($maxPrice)) {
             $cached&=false;
         }
         if (\mb_strlen($searchQuery) > 2) {
+            $expl = explode(' ', $searchQuery, 5);
+            $newSearchQuery = [];
+            foreach ($expl as $word) {
+                $newSearchQuery[] = $word;
+//                $toLatin = toLatin($word);
+//                if ($toLatin !== $word) {
+//                    $newSearchQuery[] = $toLatin;
+//                }
+//                $toCyr = toCyr($word);
+//                if ($toCyr !== $word) {
+//                    $newSearchQuery[] = $toCyr;
+//                }
+            }
+            $searchQuery = implode(' ', $newSearchQuery);
             $qb->addSelect("MATCH_AGAINST "
                     . "(p.prodName, p.prodDescr, :searchQuery 'IN BOOLEAN MODE') as hidden score");
             $qb->andWhere("MATCH_AGAINST(p.prodName, p.prodDescr, :searchQuery 'IN BOOLEAN MODE') > 0");
@@ -186,7 +218,7 @@ class ProductsController extends Controller {
         }
         $qb->addOrderBy($order, $orderDir);
         $qry = $qb->getQuery();
-    //    echo $qry->getDQL();
+        //    echo $qry->getDQL();
         if ($cached) {
             $qry->setResultCacheId('products_by_category');
             $qry->setResultCacheLifetime(self::GRID_CACHE_TIME);
@@ -205,7 +237,8 @@ class ProductsController extends Controller {
         }
         $total = $totalQry->getSingleScalarResult();
         $res = ["rows" => $products, "total" => $total];
-        $r = $this->get('response_factory')->getHtmlMockResponse($res, self::GRID_CACHE_TIME, ResponseFactory::privateCache);
+        $r = $this->get('response_factory')->getJsonResponse($res, self::GRID_CACHE_TIME,
+                                                             $cached ? ResponseFactory::publicCache : ResponseFactory::privateCache);
         return $r;
     }
 
