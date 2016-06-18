@@ -13,3 +13,6 @@ services:
     response_factory:
         class: AppBundle\Utils\ResponseFactory
         arguments: [%response_cfg.cache_time%,%response_cfg.json_params%]
+    common_data:
+        class: AppBundle\Utils\CommonData
+        arguments: ["@doctrine"]

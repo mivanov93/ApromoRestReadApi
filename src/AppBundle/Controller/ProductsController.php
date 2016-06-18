@@ -25,6 +25,7 @@ class ProductsController extends Controller {
     const TOP_QUERY_CACHE_TIME = 60;
     const GRID_CACHE_TIME = 1000;
     const DETAILS_QUERY_CACHE_TIME = 1000;
+    const MAX_BRANDS = 100;
 
 //    private $lastModified;
 //
@@ -131,10 +132,11 @@ class ProductsController extends Controller {
     }
 
     public function searchAction(Request $request, $prodcatId, $order, $orderDir, $page, $perPage) {
+        $cached = true;
         $brandsIds = $request->get('brandsIds');
-        $searchQuery = $request->get('searchQry');
+        $searchQuery = $request->get('searchQuery');
         $maxPrice = (double) $request->get('maxPrice');
-        $orderDir = $orderDir === 'ASC' ? 'ASC' : 'DESC';
+        $orderDir = ($orderDir === 'ASC' ? 'ASC' : 'DESC');
         switch ($order) {
             case "newprice":
                 $order = "p.prodNewprice";
@@ -154,7 +156,6 @@ class ProductsController extends Controller {
         $qb->select(self::PROD_GRID_VIEW);
         $qb->join('p.prodPiCollection', 'pi');
         $qb->join('p.prodBrand', 'b');
-        $qb->orderBy($order, $orderDir);
         $qb->setFirstResult(((int) $page - 1) * (int) $perPage);
         $qb->setMaxResults((int) $perPage);
         if ($prodcatId > 0) {
@@ -164,25 +165,46 @@ class ProductsController extends Controller {
 
         if ($brandsIds !== null) {
             $qb->andWhere('p.prodBrand IN (:brandsIds)');
+            $brandsIds = explode(',', $brandsIds, self::MAX_BRANDS);
             $qb->setParameter('brandsIds', $brandsIds);
-            $brCount = explode(',', $brandsIds, 30);
-            $maxBrCount = $this->getDoctrine()->getRepository(Brands::class)->createQueryBuilder('b')->select('count(b.brandId)')
-                    ->getQuery()->setResultCacheId('brands_count')->setResultCacheLifetime(self::GRID_CACHE_TIME)
-                    ->getSingleScalarResult();
-        } else {
-            $brCount = 0;
+            $brCount = count($brandsIds);
+            $maxBrCount = $this->get('common_data')->getBrandsCount();
+            if ($brCount > 3 && $brCount < $maxBrCount - 3) {
+                $cached&=false;
+            }
         }
 
-
+        if ($searchQuery !== null || floor($maxPrice) !== ceil($maxPrice)) {
+            $cached&=false;
+        }
+        if (\mb_strlen($searchQuery) > 2) {
+            $qb->addSelect("MATCH_AGAINST "
+                    . "(p.prodName, p.prodDescr, :searchQuery 'IN BOOLEAN MODE') as hidden score");
+            $qb->andWhere("MATCH_AGAINST(p.prodName, p.prodDescr, :searchQuery 'IN BOOLEAN MODE') > 0");
+            $qb->setParameter('searchQuery', $searchQuery);
+            $qb->orderBy('score', 'desc');
+        }
+        $qb->addOrderBy($order, $orderDir);
         $qry = $qb->getQuery();
-        if ($searchQuery === null && floor($maxPrice) === ceil($maxPrice)) {
+    //    echo $qry->getDQL();
+        if ($cached) {
             $qry->setResultCacheId('products_by_category');
             $qry->setResultCacheLifetime(self::GRID_CACHE_TIME);
         }
         $qry->setHydrationMode(Query::HYDRATE_ARRAY);
         $paginator = new Paginator($qry);
-        $res = $paginator->getIterator()->getArrayCopy();
-
+        $products = $paginator->getIterator()->getArrayCopy();
+        $qb->select('count(distinct p.prodId) as x');
+        $qb->orderBy('x');
+        $qb->setFirstResult(0);
+        $qb->setMaxResults(1);
+        $totalQry = $qb->getQuery();
+        if ($cached) {
+            $totalQry->setResultCacheId('products_by_category');
+            $totalQry->setResultCacheLifetime(self::GRID_CACHE_TIME);
+        }
+        $total = $totalQry->getSingleScalarResult();
+        $res = ["rows" => $products, "total" => $total];
         $r = $this->get('response_factory')->getHtmlMockResponse($res, self::GRID_CACHE_TIME, ResponseFactory::privateCache);
         return $r;
     }
