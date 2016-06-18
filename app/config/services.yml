@@ -10,3 +10,6 @@ services:
     apromo_cache:
             class: Doctrine\Common\Cache\PhpFileCache
             arguments: [%kernel.cache_dir%]
+    response_factory:
+        class: AppBundle\Utils\ResponseFactory
+        arguments: [%response_cfg.cache_time%,%response_cfg.json_params%]

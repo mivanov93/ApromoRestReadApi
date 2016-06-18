@@ -8,16 +8,83 @@ index:
 
 products_top:
     path:     /products/by-top/{limit}/{prodcatId}
-    defaults: { _controller: AppBundle:Products:top, limit: 20, prodcatId: 0 }
+    defaults: { _controller: AppBundle:Products:byTop, limit: 20, prodcatId: 0 }
     requirements:
-        limit:  10|20|30
+        limit:  12|16|24|32
         prodcatId:  \d+
         methods: GET
 
 products_by_id:
-    path:     /products/details/{prodId}
+    path:     /products/{prodId}
     defaults: { _controller: AppBundle:Products:details}
     requirements:
         prodId:  \d+
         methods: GET
+        
+products_search:
+    path:     /products/search/{prodcatId}/{order}/{orderDir}/{page}/{perPage}
+    defaults: { _controller: AppBundle:Products:search,prodcatId: 0, order: "modified", orderDir: "DESC", page: 1, perPage:12}
+    requirements:
+        order: modified|added|newprice|discount
+        orderDir: ASC|DESC
+        perPage: 12|16|24|32
+        page:  \d+
+        prodcatId:  \d+
+        methods: GET
+        
+products_by_brand_id:
+    path:     /products/by-brand/{brandId}/{page}/{perPage}
+    defaults: { _controller: AppBundle:Products:byBrand, page: 1, perPage: 12}
+    requirements:
+        brandId:  \d+
+        page:  \d+
+        perPage:  12|16|24|32
+        methods: GET
+        
+products_by_prodcat_id:
+    path:     /products/by-prodcat/{prodcatId}/{page}/{perPage}
+    defaults: { _controller: AppBundle:Products:byProdcat, page: 1, perPage: 12}
+    requirements:
+        prodcatId:  \d+
+        page:  \d+
+        perPage:  12|16|24|32
+        methods: GET
 
+brands:
+    path:     /brands
+    defaults: { _controller: AppBundle:Brands:index}
+    requirements:
+        methods: GET
+        
+brands_by_id:
+    path:     /brands/{brandId}
+    defaults: { _controller: AppBundle:Brands:details}
+    requirements:
+        brandId:  \d+
+        methods: GET
+        
+cities:
+    path:     /cities
+    defaults: { _controller: AppBundle:Cities:index}
+    requirements:
+        methods: GET
+        
+prodcat:
+    path:     /prodcat
+    defaults: { _controller: AppBundle:Prodcat:index}
+    requirements:
+        methods: GET
+        
+shops:
+    path:     /shops
+    defaults: { _controller: AppBundle:Shops:index}
+    requirements:
+        methods: GET
+        
+shops_by_city_brand:
+    path:     /shops/by-city/{cityId}/{brandId}
+    defaults: { _controller: AppBundle:Shops:byCityBrand, brandId: 0}
+    requirements:
+        cityId:  \d+
+        brandId: \d+
+        methods: GET

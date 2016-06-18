@@ -63,6 +63,8 @@ doctrine:
         dql:
             numeric_functions:
                 rand: DoctrineExtensions\Query\Mysql\Rand
+            string_functions:
+                MATCH_AGAINST: AppBundle\Extension\Doctrine\MatchAgainst
         result_cache_driver:
             type: "redis"
             instance_class: "Redis"
