@@ -7,6 +7,8 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    response_cfg.json_params: 448
+    response_cfg.cache_time: 30
 
 framework:
     #esi:             ~

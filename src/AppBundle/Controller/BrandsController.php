@@ -19,7 +19,7 @@ class BrandsController extends Controller {
         $qry->setResultCacheLifetime(self::CACHE_TIME);
         $brandList = $qry->getArrayResult();
         $jsonResponseFactory = $this->get('response_factory');
-        $r = $jsonResponseFactory->getHtmlMockResponse($brandList,self::CACHE_TIME);
+        $r = $jsonResponseFactory->getJsonResponse($brandList,self::CACHE_TIME);
         return $r;
     }
 
@@ -34,7 +34,7 @@ class BrandsController extends Controller {
         $qry->setResultCacheLifetime(self::CACHE_TIME);
         $brandDetails = $qry->getOneOrNullResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         $jsonResponseFactory = $this->get('response_factory');
-        $r = $jsonResponseFactory->getHtmlMockResponse($brandDetails,self::CACHE_TIME);
+        $r = $jsonResponseFactory->getJsonResponse($brandDetails,self::CACHE_TIME);
 
         return $r;
     }

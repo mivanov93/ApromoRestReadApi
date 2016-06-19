@@ -1,0 +1,14 @@
+parameters:
+    database_host: 10.129.15.134
+    database_port: 3306
+    database_name: apromo
+    database_user: apromo
+    database_password: Kjfaol92yutEWd
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: b7fd411444b8b1e1fbed9ce199fc06e73745a47d
+    response_cfg.json_params: 448
+    response_cfg.cache_time: 30
+    
