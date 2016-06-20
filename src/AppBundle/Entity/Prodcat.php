@@ -50,6 +50,13 @@ class Prodcat
     private $prodcatId;
 
     /**
+     * @var \AppBundle\Entity\ProdcatLinkage
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProdcatLinkage", mappedBy="plProdcat")
+     */
+    private $prodcatLinkage;
+
+    /**
      * @var \AppBundle\Entity\Prodcat
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Prodcat")

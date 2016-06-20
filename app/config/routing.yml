@@ -6,6 +6,13 @@ index:
     path: /
     defaults: { _controller: AppBundle:Default:restIndex }
 
+products_by_id:
+    path:     /products/{prodId}
+    defaults: { _controller: AppBundle:Products:details}
+    requirements:
+        prodId:  \d+
+        methods: GET
+
 products_top:
     path:     /products/by-top/{prodcatId}/{page}/{perPage}
     defaults: { _controller: AppBundle:Products:byTop, prodcatId: 0, page: 1, perPage: 24 }
@@ -22,12 +29,12 @@ products_random_top:
         limit:  12|16|24|32
         prodcatId:  \d+
         methods: GET
-
-products_by_id:
-    path:     /products/{prodId}
-    defaults: { _controller: AppBundle:Products:details}
+        
+products_by_ids:
+    path:     /products/by-ids/{prodIds}
+    defaults: { _controller: AppBundle:Products:byIds}
     requirements:
-        prodId:  \d+
+        #prodIds:  [\d,]+
         methods: GET
         
 products_search:

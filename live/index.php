@@ -40,6 +40,14 @@ $kernel = new MyAppCache($kernel);
 // When using the HttpCache, you need to call the method in your front controller instead of relying on the configuration parameter
 //Request::enableHttpMethodParameterOverride();
 $request = Request::createFromGlobals();
+
+function fixETag(Request $r) {
+    $oldETag = $r->headers->get('if_none_match');
+    $etagWithoutGzip = str_replace('-gzip"', '"', $oldETag);
+    $r->headers->set('if_none_match', $etagWithoutGzip);
+}
+
+fixETag($request);
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);

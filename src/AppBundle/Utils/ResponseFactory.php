@@ -42,6 +42,12 @@ class ResponseFactory {
         }
         return $r;
     }
+    
+    public function getJsonMysqlRowsResponse($rawData,$totalRowCount, $cacheTime = null, $cacheMode = self::publicCache, $jsonEncodeOpts = null) {
+        $data=["rows"=>$rawData,"totalRowCount"=>$totalRowCount];
+        $r=$this->getJsonResponse($data, $cacheTime, $cacheMode, $jsonEncodeOpts);
+        return $r;
+    }
 
     public function getHtmlMockResponse($data, $cacheTime = null, $cacheMode = self::publicCache, $jsonEncodeOpts = null) {
         if ($cacheTime === null) {

@@ -32,6 +32,7 @@
         <option name="default">0</option>
       </options>
     </field>
+<one-to-one field="prodcatLinkage" target-entity="ProdcatLinkage" mapped-by="plProdcat" />
     <many-to-one field="prodcatPar" target-entity="Prodcat" fetch="LAZY">
       <join-columns>
         <join-column name="prodcat_par_id" referenced-column-name="prodcat_id"/>

@@ -16,3 +16,8 @@ services:
     common_data:
         class: AppBundle\Utils\CommonData
         arguments: ["@doctrine"]
+    app.exception_listener:
+        class: AppBundle\EventListener\ExceptionListener
+        arguments: ["@logger"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

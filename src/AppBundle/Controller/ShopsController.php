@@ -7,7 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class ShopsController extends Controller {
 
-    const SHOPS_FIELDS = 'partial s.{shopId,shopName}';
+    const SHOPS_FIELDS = 'partial s.{shopId,shopName,shopLatitude,shopLongitude,shopParkSlots,'
+            . 'shopLocation,shopPhone,shopLastmodified,shopOpens,shopCloses,shopOpensSat,shopClosesSat,'
+            . 'shopOpensSun,shopClosesSun}';
     const CACHE_TIME = 1000;
 
     public function indexAction() {
@@ -17,9 +19,9 @@ class ShopsController extends Controller {
         $qry = $qb->getQuery();
         $qry->setResultCacheId('shops_index');
         $qry->setResultCacheLifetime(self::CACHE_TIME);
-        $shopList = $qry->getArrayResult();
+        $shopsList = $qry->getArrayResult();
         $jsonResponseFactory = $this->get('response_factory');
-        $r = $jsonResponseFactory->getJsonResponse($shopList, self::CACHE_TIME);
+        $r = $jsonResponseFactory->getJsonMysqlRowsResponse($shopsList,count($shopsList), self::CACHE_TIME);
         return $r;
     }
 
@@ -36,9 +38,9 @@ class ShopsController extends Controller {
         $qry = $qb->getQuery();
         $qry->setResultCacheId('shops_by_city');
         $qry->setResultCacheLifetime(self::CACHE_TIME);
-        $brandList = $qry->getArrayResult();
+        $shopsList = $qry->getArrayResult();
         $jsonResponseFactory = $this->get('response_factory');
-        $r = $jsonResponseFactory->getJsonResponse($brandList, self::CACHE_TIME);
+        $r = $jsonResponseFactory->getJsonMysqlRowsResponse($shopsList,count($shopsList), self::CACHE_TIME);
         return $r;
     }
 

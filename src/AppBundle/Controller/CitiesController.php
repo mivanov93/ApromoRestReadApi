@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class CitiesController extends Controller {
 
-    const CITIES_FIELDS = 'partial c.{cityId,cityName,cityLatitude}';
+    const CITIES_FIELDS = 'partial c.{cityId,cityName,cityLatitude,cityLongitude,cityLastmodified}';
     const CACHE_TIME = 1000;
 
     public function indexAction() {
@@ -17,9 +17,9 @@ class CitiesController extends Controller {
         $qry = $qb->getQuery();
         $qry->setResultCacheId('cities_index');
         $qry->setResultCacheLifetime(self::CACHE_TIME);
-        $brandList = $qry->getArrayResult();
+        $citiesList = $qry->getArrayResult();
         $jsonResponseFactory = $this->get('response_factory');
-        $r = $jsonResponseFactory->getJsonResponse($brandList, self::CACHE_TIME);
+        $r = $jsonResponseFactory->getJsonMysqlRowsResponse($citiesList, count($citiesList),self::CACHE_TIME);
         return $r;
     }
 
