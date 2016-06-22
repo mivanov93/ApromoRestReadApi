@@ -7,8 +7,11 @@ use AppBundle\Utils\ResponseFactory;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Transliterator\Settings;
+use Transliterator\Transliterator;
 
 class ProductsController extends Controller {
 
@@ -351,20 +354,22 @@ class ProductsController extends Controller {
         if (floor($maxNewPrice) !== ceil($maxNewPrice)) {
             $cached&=false;
         }
-        if (\mb_strlen($searchQuery) > 2) {
+        if (\mb_strlen($searchQuery) > 3) {
             $expl = explode(' ', $searchQuery, 5);
+            $transliterator = new Transliterator(Settings::LANG_BG);
             $newSearchQuery = [];
             foreach ($expl as $word) {
                 $newSearchQuery[] = $word;
-//                $toLatin = toLatin($word);
-//                if ($toLatin !== $word) {
-//                    $newSearchQuery[] = $toLatin;
-//                }
-//                $toCyr = toCyr($word);
-//                if ($toCyr !== $word) {
-//                    $newSearchQuery[] = $toCyr;
-//                }
+                $toLatin = $transliterator->cyr2Lat($word);
+                if ($toLatin !== $word) {
+                    $newSearchQuery[] = $toLatin;
+                }
+                $toCyr = $transliterator->lat2Cyr($word);
+                if ($toCyr !== $word) {
+                    $newSearchQuery[] = $toCyr;
+                }
             }
+            
             $searchQuery = implode(' ', $newSearchQuery);
             $qb->addSelect("MATCH_AGAINST "
                     . "(p.prodName, p.prodDescr, :searchQuery 'IN BOOLEAN MODE') as hidden score");

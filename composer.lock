@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f2485d4fd771242fa3e8c399e9596126",
-    "content-hash": "c5b0026b05f8eec1295689316a6ce1b6",
+    "hash": "8471eacc03436d88c26b2705b86d838d",
+    "content-hash": "a4994cd509c131c140272f9b348c0678",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -2250,6 +2250,42 @@
                 "templating"
             ],
             "time": "2016-01-25 21:22:18"
+        },
+        {
+            "name": "umpirsky/transliterator",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/umpirsky/Transliterator.git",
+                "reference": "8460a54c25df925e6862c4a3fd8cbe62ded3aaac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/umpirsky/Transliterator/zipball/8460a54c25df925e6862c4a3fd8cbe62ded3aaac",
+                "reference": "8460a54c25df925e6862c4a3fd8cbe62ded3aaac",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Transliterator": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Саша Стаменковић",
+                    "email": "umpirsky@gmail.com"
+                }
+            ],
+            "description": "Transliterator is a PHP library for text transliteration.",
+            "time": "2016-03-12 16:45:40"
         }
     ],
     "packages-dev": [

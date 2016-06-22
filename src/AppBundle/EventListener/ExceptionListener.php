@@ -14,27 +14,30 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ExceptionListener extends ExceptionHandler {
 
+    private $debug;
     private $logger;
     private $prevExceptionHandler;
 
-    public function __construct(LoggerInterface $logger) {
+    public function __construct(LoggerInterface $logger, $debug = false) {
         $this->logger = $logger;
 
         // Set our handle method as fatal exception handler.
         // It is required to extend Symfony\Component\Debug\ExceptionHandler
         $this->prevExceptionHandler = set_exception_handler(array($this, 'handle'));
+        $this->debug = $debug;
     }
 
     public function onKernelException(GetResponseForExceptionEvent $event) {
         // You get the exception object from the received event
         $exception = $event->getException();
-//        $message = sprintf(
-//            'My Error says: %s with code: %s',
-//            $exception->getMessage(),
-//            $exception->getCode()
-//        );
+        if ($this->debug) {
+            $message = sprintf(
+                    'My Error says: %s with code: %s', $exception->getMessage(), $exception->getCode()
+            );
+        } else {
+            $message = "An exception has occured.";
+        }
         $this->logger->error($exception->getMessage());
-        $message = "An exception has occured.";
 
         // Customize your response object to display the exception details
         $response = new JsonResponse($message);
