@@ -60,7 +60,6 @@ class ProductsController extends Controller {
             $qb->setParameter('prodId', (int) $foundProduct['prodId']);
             $qb->addSelect("MATCH_AGAINST "
                     . "(p.prodName, p.prodDescr, :searchQuery 'IN BOOLEAN MODE') as hidden score");
-            $qb->andWhere("MATCH_AGAINST(p.prodName, p.prodDescr, :searchQuery 'IN BOOLEAN MODE') > 0");
             $qb->setParameter('searchQuery', $foundProduct['prodName']);
             $qb->orderBy('score', 'desc');
             $qry = $qb->getQuery();
