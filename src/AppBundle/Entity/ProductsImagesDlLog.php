@@ -2,98 +2,315 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * ProductsImagesDlLog
- *
- * @ORM\Table(name="products_images_dl_log", indexes={@ORM\Index(name="pidl_products_image_id", columns={"pidl_products_image_id"}), @ORM\Index(name="pidl_status_code", columns={"pidl_status_code"}), @ORM\Index(name="pidl_file_hash", columns={"pidl_file_hash"}), @ORM\Index(name="pidl_addtime", columns={"pidl_addtime"}), @ORM\Index(name="pidl_start", columns={"pidl_start"}), @ORM\Index(name="pidl_lastmodified", columns={"pidl_lastmodified"}), @ORM\Index(name="pidl_comp_index", columns={"pidl_products_image_id", "pidl_status_code"}), @ORM\Index(name="pidl_file_url_hash", columns={"pidl_file_url_hash"})})
- * @ORM\Entity
  */
 class ProductsImagesDlLog
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pidl_start", type="integer", nullable=false)
      */
     private $pidlStart = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pidl_end", type="integer", nullable=false)
      */
     private $pidlEnd = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pidl_status_code", type="integer", nullable=false)
      */
     private $pidlStatusCode = '0';
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="pidl_status_msg", type="string", length=512, nullable=false)
      */
     private $pidlStatusMsg = '';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pidl_file_size", type="integer", nullable=false)
      */
     private $pidlFileSize = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pidl_file_hash", type="integer", nullable=false)
      */
     private $pidlFileHash = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pidl_file_url_hash", type="integer", nullable=false)
      */
     private $pidlFileUrlHash = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pidl_addtime", type="integer", nullable=false)
      */
     private $pidlAddtime = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pidl_lastmodified", type="integer", nullable=false)
      */
     private $pidlLastmodified = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pidl_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $pidlId;
 
     /**
      * @var \AppBundle\Entity\ProductsImages
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProductsImages")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pidl_products_image_id", referencedColumnName="pi_id")
-     * })
      */
     private $pidlProductsImage;
 
 
+    /**
+     * Set pidlStart
+     *
+     * @param integer $pidlStart
+     *
+     * @return ProductsImagesDlLog
+     */
+    public function setPidlStart($pidlStart)
+    {
+        $this->pidlStart = $pidlStart;
+
+        return $this;
+    }
+
+    /**
+     * Get pidlStart
+     *
+     * @return integer
+     */
+    public function getPidlStart()
+    {
+        return $this->pidlStart;
+    }
+
+    /**
+     * Set pidlEnd
+     *
+     * @param integer $pidlEnd
+     *
+     * @return ProductsImagesDlLog
+     */
+    public function setPidlEnd($pidlEnd)
+    {
+        $this->pidlEnd = $pidlEnd;
+
+        return $this;
+    }
+
+    /**
+     * Get pidlEnd
+     *
+     * @return integer
+     */
+    public function getPidlEnd()
+    {
+        return $this->pidlEnd;
+    }
+
+    /**
+     * Set pidlStatusCode
+     *
+     * @param integer $pidlStatusCode
+     *
+     * @return ProductsImagesDlLog
+     */
+    public function setPidlStatusCode($pidlStatusCode)
+    {
+        $this->pidlStatusCode = $pidlStatusCode;
+
+        return $this;
+    }
+
+    /**
+     * Get pidlStatusCode
+     *
+     * @return integer
+     */
+    public function getPidlStatusCode()
+    {
+        return $this->pidlStatusCode;
+    }
+
+    /**
+     * Set pidlStatusMsg
+     *
+     * @param string $pidlStatusMsg
+     *
+     * @return ProductsImagesDlLog
+     */
+    public function setPidlStatusMsg($pidlStatusMsg)
+    {
+        $this->pidlStatusMsg = $pidlStatusMsg;
+
+        return $this;
+    }
+
+    /**
+     * Get pidlStatusMsg
+     *
+     * @return string
+     */
+    public function getPidlStatusMsg()
+    {
+        return $this->pidlStatusMsg;
+    }
+
+    /**
+     * Set pidlFileSize
+     *
+     * @param integer $pidlFileSize
+     *
+     * @return ProductsImagesDlLog
+     */
+    public function setPidlFileSize($pidlFileSize)
+    {
+        $this->pidlFileSize = $pidlFileSize;
+
+        return $this;
+    }
+
+    /**
+     * Get pidlFileSize
+     *
+     * @return integer
+     */
+    public function getPidlFileSize()
+    {
+        return $this->pidlFileSize;
+    }
+
+    /**
+     * Set pidlFileHash
+     *
+     * @param integer $pidlFileHash
+     *
+     * @return ProductsImagesDlLog
+     */
+    public function setPidlFileHash($pidlFileHash)
+    {
+        $this->pidlFileHash = $pidlFileHash;
+
+        return $this;
+    }
+
+    /**
+     * Get pidlFileHash
+     *
+     * @return integer
+     */
+    public function getPidlFileHash()
+    {
+        return $this->pidlFileHash;
+    }
+
+    /**
+     * Set pidlFileUrlHash
+     *
+     * @param integer $pidlFileUrlHash
+     *
+     * @return ProductsImagesDlLog
+     */
+    public function setPidlFileUrlHash($pidlFileUrlHash)
+    {
+        $this->pidlFileUrlHash = $pidlFileUrlHash;
+
+        return $this;
+    }
+
+    /**
+     * Get pidlFileUrlHash
+     *
+     * @return integer
+     */
+    public function getPidlFileUrlHash()
+    {
+        return $this->pidlFileUrlHash;
+    }
+
+    /**
+     * Set pidlAddtime
+     *
+     * @param integer $pidlAddtime
+     *
+     * @return ProductsImagesDlLog
+     */
+    public function setPidlAddtime($pidlAddtime)
+    {
+        $this->pidlAddtime = $pidlAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get pidlAddtime
+     *
+     * @return integer
+     */
+    public function getPidlAddtime()
+    {
+        return $this->pidlAddtime;
+    }
+
+    /**
+     * Set pidlLastmodified
+     *
+     * @param integer $pidlLastmodified
+     *
+     * @return ProductsImagesDlLog
+     */
+    public function setPidlLastmodified($pidlLastmodified)
+    {
+        $this->pidlLastmodified = $pidlLastmodified;
+
+        return $this;
+    }
+
+    /**
+     * Get pidlLastmodified
+     *
+     * @return integer
+     */
+    public function getPidlLastmodified()
+    {
+        return $this->pidlLastmodified;
+    }
+
+    /**
+     * Get pidlId
+     *
+     * @return integer
+     */
+    public function getPidlId()
+    {
+        return $this->pidlId;
+    }
+
+    /**
+     * Set pidlProductsImage
+     *
+     * @param \AppBundle\Entity\ProductsImages $pidlProductsImage
+     *
+     * @return ProductsImagesDlLog
+     */
+    public function setPidlProductsImage(\AppBundle\Entity\ProductsImages $pidlProductsImage = null)
+    {
+        $this->pidlProductsImage = $pidlProductsImage;
+
+        return $this;
+    }
+
+    /**
+     * Get pidlProductsImage
+     *
+     * @return \AppBundle\Entity\ProductsImages
+     */
+    public function getPidlProductsImage()
+    {
+        return $this->pidlProductsImage;
+    }
 }
 

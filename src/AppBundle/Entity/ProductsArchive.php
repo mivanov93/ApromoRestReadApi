@@ -2,157 +2,547 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * ProductsArchive
- *
- * @ORM\Table(name="products_archive", indexes={@ORM\Index(name="pa_prod_brand_id", columns={"pa_prod_brand_id"}), @ORM\Index(name="pa_prod_prodcat_id", columns={"pa_prod_prodcat_id"})})
- * @ORM\Entity
  */
 class ProductsArchive
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pa_addtime", type="integer", nullable=false)
      */
     private $paAddtime;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pa_prod_id", type="integer", nullable=false)
      */
     private $paProdId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="pa_prod_name", type="string", length=64, nullable=false)
      */
     private $paProdName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="pa_prod_descr", type="text", length=65535, nullable=false)
      */
     private $paProdDescr;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="pa_prod_url", type="text", length=65535, nullable=false)
      */
     private $paProdUrl;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="pa_prod_limited_avail", type="boolean", nullable=false)
      */
     private $paProdLimitedAvail = '0';
 
     /**
      * @var float
-     *
-     * @ORM\Column(name="pa_prod_oldprice", type="float", precision=10, scale=2, nullable=false)
      */
     private $paProdOldprice;
 
     /**
      * @var float
-     *
-     * @ORM\Column(name="pa_prod_newprice", type="float", precision=10, scale=2, nullable=false)
      */
     private $paProdNewprice;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pa_prod_percentage", type="integer", nullable=false)
      */
     private $paProdPercentage;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pa_prod_addtime", type="integer", nullable=false)
      */
     private $paProdAddtime = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pa_prod_lastmodified", type="integer", nullable=false)
      */
     private $paProdLastmodified = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pa_prod_validfrom", type="integer", nullable=false)
      */
     private $paProdValidfrom = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pa_prod_exptime", type="integer", nullable=false)
      */
     private $paProdExptime = '0';
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="pa_prod_active", type="boolean", nullable=false)
      */
     private $paProdActive = '1';
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="pa_prod_top", type="boolean", nullable=false)
      */
     private $paProdTop = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pa_prod_unique_id", type="integer", nullable=true)
      */
     private $paProdUniqueId;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pa_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $paId;
 
     /**
      * @var \AppBundle\Entity\Prodcat
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Prodcat")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pa_prod_prodcat_id", referencedColumnName="prodcat_id")
-     * })
      */
     private $paProdProdcat;
 
     /**
      * @var \AppBundle\Entity\Brands
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Brands")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pa_prod_brand_id", referencedColumnName="brand_id")
-     * })
      */
     private $paProdBrand;
 
 
+    /**
+     * Set paAddtime
+     *
+     * @param integer $paAddtime
+     *
+     * @return ProductsArchive
+     */
+    public function setPaAddtime($paAddtime)
+    {
+        $this->paAddtime = $paAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get paAddtime
+     *
+     * @return integer
+     */
+    public function getPaAddtime()
+    {
+        return $this->paAddtime;
+    }
+
+    /**
+     * Set paProdId
+     *
+     * @param integer $paProdId
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdId($paProdId)
+    {
+        $this->paProdId = $paProdId;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdId
+     *
+     * @return integer
+     */
+    public function getPaProdId()
+    {
+        return $this->paProdId;
+    }
+
+    /**
+     * Set paProdName
+     *
+     * @param string $paProdName
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdName($paProdName)
+    {
+        $this->paProdName = $paProdName;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdName
+     *
+     * @return string
+     */
+    public function getPaProdName()
+    {
+        return $this->paProdName;
+    }
+
+    /**
+     * Set paProdDescr
+     *
+     * @param string $paProdDescr
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdDescr($paProdDescr)
+    {
+        $this->paProdDescr = $paProdDescr;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdDescr
+     *
+     * @return string
+     */
+    public function getPaProdDescr()
+    {
+        return $this->paProdDescr;
+    }
+
+    /**
+     * Set paProdUrl
+     *
+     * @param string $paProdUrl
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdUrl($paProdUrl)
+    {
+        $this->paProdUrl = $paProdUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdUrl
+     *
+     * @return string
+     */
+    public function getPaProdUrl()
+    {
+        return $this->paProdUrl;
+    }
+
+    /**
+     * Set paProdLimitedAvail
+     *
+     * @param boolean $paProdLimitedAvail
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdLimitedAvail($paProdLimitedAvail)
+    {
+        $this->paProdLimitedAvail = $paProdLimitedAvail;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdLimitedAvail
+     *
+     * @return boolean
+     */
+    public function getPaProdLimitedAvail()
+    {
+        return $this->paProdLimitedAvail;
+    }
+
+    /**
+     * Set paProdOldprice
+     *
+     * @param float $paProdOldprice
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdOldprice($paProdOldprice)
+    {
+        $this->paProdOldprice = $paProdOldprice;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdOldprice
+     *
+     * @return float
+     */
+    public function getPaProdOldprice()
+    {
+        return $this->paProdOldprice;
+    }
+
+    /**
+     * Set paProdNewprice
+     *
+     * @param float $paProdNewprice
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdNewprice($paProdNewprice)
+    {
+        $this->paProdNewprice = $paProdNewprice;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdNewprice
+     *
+     * @return float
+     */
+    public function getPaProdNewprice()
+    {
+        return $this->paProdNewprice;
+    }
+
+    /**
+     * Set paProdPercentage
+     *
+     * @param integer $paProdPercentage
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdPercentage($paProdPercentage)
+    {
+        $this->paProdPercentage = $paProdPercentage;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdPercentage
+     *
+     * @return integer
+     */
+    public function getPaProdPercentage()
+    {
+        return $this->paProdPercentage;
+    }
+
+    /**
+     * Set paProdAddtime
+     *
+     * @param integer $paProdAddtime
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdAddtime($paProdAddtime)
+    {
+        $this->paProdAddtime = $paProdAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdAddtime
+     *
+     * @return integer
+     */
+    public function getPaProdAddtime()
+    {
+        return $this->paProdAddtime;
+    }
+
+    /**
+     * Set paProdLastmodified
+     *
+     * @param integer $paProdLastmodified
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdLastmodified($paProdLastmodified)
+    {
+        $this->paProdLastmodified = $paProdLastmodified;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdLastmodified
+     *
+     * @return integer
+     */
+    public function getPaProdLastmodified()
+    {
+        return $this->paProdLastmodified;
+    }
+
+    /**
+     * Set paProdValidfrom
+     *
+     * @param integer $paProdValidfrom
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdValidfrom($paProdValidfrom)
+    {
+        $this->paProdValidfrom = $paProdValidfrom;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdValidfrom
+     *
+     * @return integer
+     */
+    public function getPaProdValidfrom()
+    {
+        return $this->paProdValidfrom;
+    }
+
+    /**
+     * Set paProdExptime
+     *
+     * @param integer $paProdExptime
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdExptime($paProdExptime)
+    {
+        $this->paProdExptime = $paProdExptime;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdExptime
+     *
+     * @return integer
+     */
+    public function getPaProdExptime()
+    {
+        return $this->paProdExptime;
+    }
+
+    /**
+     * Set paProdActive
+     *
+     * @param boolean $paProdActive
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdActive($paProdActive)
+    {
+        $this->paProdActive = $paProdActive;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdActive
+     *
+     * @return boolean
+     */
+    public function getPaProdActive()
+    {
+        return $this->paProdActive;
+    }
+
+    /**
+     * Set paProdTop
+     *
+     * @param boolean $paProdTop
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdTop($paProdTop)
+    {
+        $this->paProdTop = $paProdTop;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdTop
+     *
+     * @return boolean
+     */
+    public function getPaProdTop()
+    {
+        return $this->paProdTop;
+    }
+
+    /**
+     * Set paProdUniqueId
+     *
+     * @param integer $paProdUniqueId
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdUniqueId($paProdUniqueId)
+    {
+        $this->paProdUniqueId = $paProdUniqueId;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdUniqueId
+     *
+     * @return integer
+     */
+    public function getPaProdUniqueId()
+    {
+        return $this->paProdUniqueId;
+    }
+
+    /**
+     * Get paId
+     *
+     * @return integer
+     */
+    public function getPaId()
+    {
+        return $this->paId;
+    }
+
+    /**
+     * Set paProdProdcat
+     *
+     * @param \AppBundle\Entity\Prodcat $paProdProdcat
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdProdcat(\AppBundle\Entity\Prodcat $paProdProdcat = null)
+    {
+        $this->paProdProdcat = $paProdProdcat;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdProdcat
+     *
+     * @return \AppBundle\Entity\Prodcat
+     */
+    public function getPaProdProdcat()
+    {
+        return $this->paProdProdcat;
+    }
+
+    /**
+     * Set paProdBrand
+     *
+     * @param \AppBundle\Entity\Brands $paProdBrand
+     *
+     * @return ProductsArchive
+     */
+    public function setPaProdBrand(\AppBundle\Entity\Brands $paProdBrand = null)
+    {
+        $this->paProdBrand = $paProdBrand;
+
+        return $this;
+    }
+
+    /**
+     * Get paProdBrand
+     *
+     * @return \AppBundle\Entity\Brands
+     */
+    public function getPaProdBrand()
+    {
+        return $this->paProdBrand;
+    }
 }
 

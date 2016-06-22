@@ -2,87 +2,257 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * BrandsUsers
- *
- * @ORM\Table(name="brands_users", uniqueConstraints={@ORM\UniqueConstraint(name="user_email", columns={"bu_email"})}, indexes={@ORM\Index(name="bu_level", columns={"bu_level"}), @ORM\Index(name="bu_brand_id", columns={"bu_brand_id"})})
- * @ORM\Entity
  */
 class BrandsUsers
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="bu_email", type="string", length=64, nullable=false)
      */
     private $buEmail;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="bu_name", type="string", length=64, nullable=false)
      */
     private $buName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="bu_passhash", type="string", length=128, nullable=false)
      */
     private $buPasshash;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="bu_active", type="boolean", nullable=false)
      */
     private $buActive = '1';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bu_addtime", type="integer", nullable=false)
      */
     private $buAddtime;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bu_lastmodified", type="integer", nullable=false)
      */
     private $buLastmodified;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bu_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $buId;
 
     /**
      * @var \AppBundle\Entity\Brands
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Brands")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="bu_brand_id", referencedColumnName="brand_id")
-     * })
      */
     private $buBrand;
 
     /**
      * @var \AppBundle\Entity\BrandsUsersRoles
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BrandsUsersRoles")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="bu_level", referencedColumnName="bu_role_level")
-     * })
      */
     private $buLevel;
 
 
+    /**
+     * Set buEmail
+     *
+     * @param string $buEmail
+     *
+     * @return BrandsUsers
+     */
+    public function setBuEmail($buEmail)
+    {
+        $this->buEmail = $buEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get buEmail
+     *
+     * @return string
+     */
+    public function getBuEmail()
+    {
+        return $this->buEmail;
+    }
+
+    /**
+     * Set buName
+     *
+     * @param string $buName
+     *
+     * @return BrandsUsers
+     */
+    public function setBuName($buName)
+    {
+        $this->buName = $buName;
+
+        return $this;
+    }
+
+    /**
+     * Get buName
+     *
+     * @return string
+     */
+    public function getBuName()
+    {
+        return $this->buName;
+    }
+
+    /**
+     * Set buPasshash
+     *
+     * @param string $buPasshash
+     *
+     * @return BrandsUsers
+     */
+    public function setBuPasshash($buPasshash)
+    {
+        $this->buPasshash = $buPasshash;
+
+        return $this;
+    }
+
+    /**
+     * Get buPasshash
+     *
+     * @return string
+     */
+    public function getBuPasshash()
+    {
+        return $this->buPasshash;
+    }
+
+    /**
+     * Set buActive
+     *
+     * @param boolean $buActive
+     *
+     * @return BrandsUsers
+     */
+    public function setBuActive($buActive)
+    {
+        $this->buActive = $buActive;
+
+        return $this;
+    }
+
+    /**
+     * Get buActive
+     *
+     * @return boolean
+     */
+    public function getBuActive()
+    {
+        return $this->buActive;
+    }
+
+    /**
+     * Set buAddtime
+     *
+     * @param integer $buAddtime
+     *
+     * @return BrandsUsers
+     */
+    public function setBuAddtime($buAddtime)
+    {
+        $this->buAddtime = $buAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get buAddtime
+     *
+     * @return integer
+     */
+    public function getBuAddtime()
+    {
+        return $this->buAddtime;
+    }
+
+    /**
+     * Set buLastmodified
+     *
+     * @param integer $buLastmodified
+     *
+     * @return BrandsUsers
+     */
+    public function setBuLastmodified($buLastmodified)
+    {
+        $this->buLastmodified = $buLastmodified;
+
+        return $this;
+    }
+
+    /**
+     * Get buLastmodified
+     *
+     * @return integer
+     */
+    public function getBuLastmodified()
+    {
+        return $this->buLastmodified;
+    }
+
+    /**
+     * Get buId
+     *
+     * @return integer
+     */
+    public function getBuId()
+    {
+        return $this->buId;
+    }
+
+    /**
+     * Set buBrand
+     *
+     * @param \AppBundle\Entity\Brands $buBrand
+     *
+     * @return BrandsUsers
+     */
+    public function setBuBrand(\AppBundle\Entity\Brands $buBrand = null)
+    {
+        $this->buBrand = $buBrand;
+
+        return $this;
+    }
+
+    /**
+     * Get buBrand
+     *
+     * @return \AppBundle\Entity\Brands
+     */
+    public function getBuBrand()
+    {
+        return $this->buBrand;
+    }
+
+    /**
+     * Set buLevel
+     *
+     * @param \AppBundle\Entity\BrandsUsersRoles $buLevel
+     *
+     * @return BrandsUsers
+     */
+    public function setBuLevel(\AppBundle\Entity\BrandsUsersRoles $buLevel = null)
+    {
+        $this->buLevel = $buLevel;
+
+        return $this;
+    }
+
+    /**
+     * Get buLevel
+     *
+     * @return \AppBundle\Entity\BrandsUsersRoles
+     */
+    public function getBuLevel()
+    {
+        return $this->buLevel;
+    }
 }
 

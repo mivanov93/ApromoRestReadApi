@@ -2,102 +2,344 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Brands
- *
- * @ORM\Table(name="brands", uniqueConstraints={@ORM\UniqueConstraint(name="brand_id", columns={"brand_id", "brand_name"})}, indexes={@ORM\Index(name="brand_prcount", columns={"brand_prcount"}), @ORM\Index(name="brand_active", columns={"brand_active"})})
- * @ORM\Entity
  */
 class Brands
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="brand_name", type="string", length=64, nullable=false)
      */
     private $brandName;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="brand_partner", type="boolean", nullable=false)
      */
     private $brandPartner = '1';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="brand_addtime", type="integer", nullable=false)
      */
     private $brandAddtime = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="brand_lastmodified", type="integer", nullable=false)
      */
     private $brandLastmodified = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="brand_expiration", type="integer", nullable=false)
      */
     private $brandExpiration = '0';
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="brand_descr", type="text", length=65535, nullable=false)
      */
     private $brandDescr;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="brand_url", type="string", length=64, nullable=false)
      */
     private $brandUrl;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="brand_order", type="integer", nullable=false)
      */
     private $brandOrder = '0';
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="brand_active", type="boolean", nullable=false)
      */
     private $brandActive = '1';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="brand_prcount", type="integer", nullable=false)
      */
     private $brandPrcount = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="brand_shopcount", type="integer", nullable=false)
      */
     private $brandShopcount = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="brand_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $brandId;
 
 
+    /**
+     * Set brandName
+     *
+     * @param string $brandName
+     *
+     * @return Brands
+     */
+    public function setBrandName($brandName)
+    {
+        $this->brandName = $brandName;
+
+        return $this;
+    }
+
+    /**
+     * Get brandName
+     *
+     * @return string
+     */
+    public function getBrandName()
+    {
+        return $this->brandName;
+    }
+
+    /**
+     * Set brandPartner
+     *
+     * @param boolean $brandPartner
+     *
+     * @return Brands
+     */
+    public function setBrandPartner($brandPartner)
+    {
+        $this->brandPartner = $brandPartner;
+
+        return $this;
+    }
+
+    /**
+     * Get brandPartner
+     *
+     * @return boolean
+     */
+    public function getBrandPartner()
+    {
+        return $this->brandPartner;
+    }
+
+    /**
+     * Set brandAddtime
+     *
+     * @param integer $brandAddtime
+     *
+     * @return Brands
+     */
+    public function setBrandAddtime($brandAddtime)
+    {
+        $this->brandAddtime = $brandAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get brandAddtime
+     *
+     * @return integer
+     */
+    public function getBrandAddtime()
+    {
+        return $this->brandAddtime;
+    }
+
+    /**
+     * Set brandLastmodified
+     *
+     * @param integer $brandLastmodified
+     *
+     * @return Brands
+     */
+    public function setBrandLastmodified($brandLastmodified)
+    {
+        $this->brandLastmodified = $brandLastmodified;
+
+        return $this;
+    }
+
+    /**
+     * Get brandLastmodified
+     *
+     * @return integer
+     */
+    public function getBrandLastmodified()
+    {
+        return $this->brandLastmodified;
+    }
+
+    /**
+     * Set brandExpiration
+     *
+     * @param integer $brandExpiration
+     *
+     * @return Brands
+     */
+    public function setBrandExpiration($brandExpiration)
+    {
+        $this->brandExpiration = $brandExpiration;
+
+        return $this;
+    }
+
+    /**
+     * Get brandExpiration
+     *
+     * @return integer
+     */
+    public function getBrandExpiration()
+    {
+        return $this->brandExpiration;
+    }
+
+    /**
+     * Set brandDescr
+     *
+     * @param string $brandDescr
+     *
+     * @return Brands
+     */
+    public function setBrandDescr($brandDescr)
+    {
+        $this->brandDescr = $brandDescr;
+
+        return $this;
+    }
+
+    /**
+     * Get brandDescr
+     *
+     * @return string
+     */
+    public function getBrandDescr()
+    {
+        return $this->brandDescr;
+    }
+
+    /**
+     * Set brandUrl
+     *
+     * @param string $brandUrl
+     *
+     * @return Brands
+     */
+    public function setBrandUrl($brandUrl)
+    {
+        $this->brandUrl = $brandUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get brandUrl
+     *
+     * @return string
+     */
+    public function getBrandUrl()
+    {
+        return $this->brandUrl;
+    }
+
+    /**
+     * Set brandOrder
+     *
+     * @param integer $brandOrder
+     *
+     * @return Brands
+     */
+    public function setBrandOrder($brandOrder)
+    {
+        $this->brandOrder = $brandOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get brandOrder
+     *
+     * @return integer
+     */
+    public function getBrandOrder()
+    {
+        return $this->brandOrder;
+    }
+
+    /**
+     * Set brandActive
+     *
+     * @param boolean $brandActive
+     *
+     * @return Brands
+     */
+    public function setBrandActive($brandActive)
+    {
+        $this->brandActive = $brandActive;
+
+        return $this;
+    }
+
+    /**
+     * Get brandActive
+     *
+     * @return boolean
+     */
+    public function getBrandActive()
+    {
+        return $this->brandActive;
+    }
+
+    /**
+     * Set brandPrcount
+     *
+     * @param integer $brandPrcount
+     *
+     * @return Brands
+     */
+    public function setBrandPrcount($brandPrcount)
+    {
+        $this->brandPrcount = $brandPrcount;
+
+        return $this;
+    }
+
+    /**
+     * Get brandPrcount
+     *
+     * @return integer
+     */
+    public function getBrandPrcount()
+    {
+        return $this->brandPrcount;
+    }
+
+    /**
+     * Set brandShopcount
+     *
+     * @param integer $brandShopcount
+     *
+     * @return Brands
+     */
+    public function setBrandShopcount($brandShopcount)
+    {
+        $this->brandShopcount = $brandShopcount;
+
+        return $this;
+    }
+
+    /**
+     * Get brandShopcount
+     *
+     * @return integer
+     */
+    public function getBrandShopcount()
+    {
+        return $this->brandShopcount;
+    }
+
+    /**
+     * Get brandId
+     *
+     * @return integer
+     */
+    public function getBrandId()
+    {
+        return $this->brandId;
+    }
 }
 

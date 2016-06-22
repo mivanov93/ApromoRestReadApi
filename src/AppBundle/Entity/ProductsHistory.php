@@ -2,129 +2,431 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * ProductsHistory
- *
- * @ORM\Table(name="products_history", indexes={@ORM\Index(name="prodhist_brand_id", columns={"ph_prod_brand_id"}), @ORM\Index(name="prodhist_prod_id", columns={"ph_prod_id"}), @ORM\Index(name="prodhist_prod_prodcat_id", columns={"ph_prod_prodcat_id"})})
- * @ORM\Entity
  */
 class ProductsHistory
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ph_prod_id", type="integer", nullable=false)
      */
     private $phProdId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="ph_prod_name", type="string", length=64, nullable=true)
      */
     private $phProdName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="ph_prod_url", type="text", length=65535, nullable=true)
      */
     private $phProdUrl;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="ph_prod_descr", type="text", length=65535, nullable=true)
      */
     private $phProdDescr;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="ph_prod_top", type="boolean", nullable=false)
      */
     private $phProdTop;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="ph_prod_limited_avail", type="boolean", nullable=false)
      */
     private $phProdLimitedAvail;
 
     /**
      * @var float
-     *
-     * @ORM\Column(name="ph_prod_newprice", type="float", precision=10, scale=2, nullable=false)
      */
     private $phProdNewprice;
 
     /**
      * @var float
-     *
-     * @ORM\Column(name="ph_prod_oldprice", type="float", precision=10, scale=2, nullable=false)
      */
     private $phProdOldprice;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ph_prod_percentage", type="integer", nullable=false)
      */
     private $phProdPercentage;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ph_prod_validfrom", type="integer", nullable=false)
      */
     private $phProdValidfrom;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ph_prod_exptime", type="integer", nullable=false)
      */
     private $phProdExptime;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ph_addtime", type="integer", nullable=false)
      */
     private $phAddtime;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ph_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $phId;
 
     /**
      * @var \AppBundle\Entity\Prodcat
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Prodcat")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ph_prod_prodcat_id", referencedColumnName="prodcat_id")
-     * })
      */
     private $phProdProdcat;
 
     /**
      * @var \AppBundle\Entity\Brands
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Brands")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ph_prod_brand_id", referencedColumnName="brand_id")
-     * })
      */
     private $phProdBrand;
 
 
+    /**
+     * Set phProdId
+     *
+     * @param integer $phProdId
+     *
+     * @return ProductsHistory
+     */
+    public function setPhProdId($phProdId)
+    {
+        $this->phProdId = $phProdId;
+
+        return $this;
+    }
+
+    /**
+     * Get phProdId
+     *
+     * @return integer
+     */
+    public function getPhProdId()
+    {
+        return $this->phProdId;
+    }
+
+    /**
+     * Set phProdName
+     *
+     * @param string $phProdName
+     *
+     * @return ProductsHistory
+     */
+    public function setPhProdName($phProdName)
+    {
+        $this->phProdName = $phProdName;
+
+        return $this;
+    }
+
+    /**
+     * Get phProdName
+     *
+     * @return string
+     */
+    public function getPhProdName()
+    {
+        return $this->phProdName;
+    }
+
+    /**
+     * Set phProdUrl
+     *
+     * @param string $phProdUrl
+     *
+     * @return ProductsHistory
+     */
+    public function setPhProdUrl($phProdUrl)
+    {
+        $this->phProdUrl = $phProdUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get phProdUrl
+     *
+     * @return string
+     */
+    public function getPhProdUrl()
+    {
+        return $this->phProdUrl;
+    }
+
+    /**
+     * Set phProdDescr
+     *
+     * @param string $phProdDescr
+     *
+     * @return ProductsHistory
+     */
+    public function setPhProdDescr($phProdDescr)
+    {
+        $this->phProdDescr = $phProdDescr;
+
+        return $this;
+    }
+
+    /**
+     * Get phProdDescr
+     *
+     * @return string
+     */
+    public function getPhProdDescr()
+    {
+        return $this->phProdDescr;
+    }
+
+    /**
+     * Set phProdTop
+     *
+     * @param boolean $phProdTop
+     *
+     * @return ProductsHistory
+     */
+    public function setPhProdTop($phProdTop)
+    {
+        $this->phProdTop = $phProdTop;
+
+        return $this;
+    }
+
+    /**
+     * Get phProdTop
+     *
+     * @return boolean
+     */
+    public function getPhProdTop()
+    {
+        return $this->phProdTop;
+    }
+
+    /**
+     * Set phProdLimitedAvail
+     *
+     * @param boolean $phProdLimitedAvail
+     *
+     * @return ProductsHistory
+     */
+    public function setPhProdLimitedAvail($phProdLimitedAvail)
+    {
+        $this->phProdLimitedAvail = $phProdLimitedAvail;
+
+        return $this;
+    }
+
+    /**
+     * Get phProdLimitedAvail
+     *
+     * @return boolean
+     */
+    public function getPhProdLimitedAvail()
+    {
+        return $this->phProdLimitedAvail;
+    }
+
+    /**
+     * Set phProdNewprice
+     *
+     * @param float $phProdNewprice
+     *
+     * @return ProductsHistory
+     */
+    public function setPhProdNewprice($phProdNewprice)
+    {
+        $this->phProdNewprice = $phProdNewprice;
+
+        return $this;
+    }
+
+    /**
+     * Get phProdNewprice
+     *
+     * @return float
+     */
+    public function getPhProdNewprice()
+    {
+        return $this->phProdNewprice;
+    }
+
+    /**
+     * Set phProdOldprice
+     *
+     * @param float $phProdOldprice
+     *
+     * @return ProductsHistory
+     */
+    public function setPhProdOldprice($phProdOldprice)
+    {
+        $this->phProdOldprice = $phProdOldprice;
+
+        return $this;
+    }
+
+    /**
+     * Get phProdOldprice
+     *
+     * @return float
+     */
+    public function getPhProdOldprice()
+    {
+        return $this->phProdOldprice;
+    }
+
+    /**
+     * Set phProdPercentage
+     *
+     * @param integer $phProdPercentage
+     *
+     * @return ProductsHistory
+     */
+    public function setPhProdPercentage($phProdPercentage)
+    {
+        $this->phProdPercentage = $phProdPercentage;
+
+        return $this;
+    }
+
+    /**
+     * Get phProdPercentage
+     *
+     * @return integer
+     */
+    public function getPhProdPercentage()
+    {
+        return $this->phProdPercentage;
+    }
+
+    /**
+     * Set phProdValidfrom
+     *
+     * @param integer $phProdValidfrom
+     *
+     * @return ProductsHistory
+     */
+    public function setPhProdValidfrom($phProdValidfrom)
+    {
+        $this->phProdValidfrom = $phProdValidfrom;
+
+        return $this;
+    }
+
+    /**
+     * Get phProdValidfrom
+     *
+     * @return integer
+     */
+    public function getPhProdValidfrom()
+    {
+        return $this->phProdValidfrom;
+    }
+
+    /**
+     * Set phProdExptime
+     *
+     * @param integer $phProdExptime
+     *
+     * @return ProductsHistory
+     */
+    public function setPhProdExptime($phProdExptime)
+    {
+        $this->phProdExptime = $phProdExptime;
+
+        return $this;
+    }
+
+    /**
+     * Get phProdExptime
+     *
+     * @return integer
+     */
+    public function getPhProdExptime()
+    {
+        return $this->phProdExptime;
+    }
+
+    /**
+     * Set phAddtime
+     *
+     * @param integer $phAddtime
+     *
+     * @return ProductsHistory
+     */
+    public function setPhAddtime($phAddtime)
+    {
+        $this->phAddtime = $phAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get phAddtime
+     *
+     * @return integer
+     */
+    public function getPhAddtime()
+    {
+        return $this->phAddtime;
+    }
+
+    /**
+     * Get phId
+     *
+     * @return integer
+     */
+    public function getPhId()
+    {
+        return $this->phId;
+    }
+
+    /**
+     * Set phProdProdcat
+     *
+     * @param \AppBundle\Entity\Prodcat $phProdProdcat
+     *
+     * @return ProductsHistory
+     */
+    public function setPhProdProdcat(\AppBundle\Entity\Prodcat $phProdProdcat = null)
+    {
+        $this->phProdProdcat = $phProdProdcat;
+
+        return $this;
+    }
+
+    /**
+     * Get phProdProdcat
+     *
+     * @return \AppBundle\Entity\Prodcat
+     */
+    public function getPhProdProdcat()
+    {
+        return $this->phProdProdcat;
+    }
+
+    /**
+     * Set phProdBrand
+     *
+     * @param \AppBundle\Entity\Brands $phProdBrand
+     *
+     * @return ProductsHistory
+     */
+    public function setPhProdBrand(\AppBundle\Entity\Brands $phProdBrand = null)
+    {
+        $this->phProdBrand = $phProdBrand;
+
+        return $this;
+    }
+
+    /**
+     * Get phProdBrand
+     *
+     * @return \AppBundle\Entity\Brands
+     */
+    public function getPhProdBrand()
+    {
+        return $this->phProdBrand;
+    }
 }
 

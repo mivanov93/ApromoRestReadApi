@@ -12,12 +12,20 @@ products_by_id:
     requirements:
         prodId:  \d+
         methods: GET
+        
+products_suggest_by_id:
+    path:     /products/suggest/{limit}/{prodId}
+    defaults: { _controller: AppBundle:Products:suggest}
+    requirements:
+        limit: \d{1,2}
+        prodId:  \d+
+        methods: GET
 
 products_top:
     path:     /products/by-top/{prodcatId}/{page}/{perPage}
     defaults: { _controller: AppBundle:Products:byTop, prodcatId: 0, page: 1, perPage: 24 }
     requirements:
-        perPage:  12|16|24|32
+        perPage:  \d{1,2}
         page:       \d+
         prodcatId:  \d+
         methods: GET
@@ -26,7 +34,23 @@ products_random_top:
     path:     /products/random-top/{limit}/{prodcatId}
     defaults: { _controller: AppBundle:Products:randomTop, limit: 24, prodcatId: 0 }
     requirements:
-        limit:  12|16|24|32
+        limit:  \d{1,2}
+        prodcatId:  \d+
+        methods: GET
+        
+products_random_brand:
+    path:     /products/random-brand/{limit}/{brandId}
+    defaults: { _controller: AppBundle:Products:randomBrand, limit: 12}
+    requirements:
+        limit:  \d{1,2}
+        brandId:  \d+
+        methods: GET
+        
+products_random_prodcat:
+    path:     /products/random-prodcat/{limit}/{prodcatId}
+    defaults: { _controller: AppBundle:Products:randomProdcat, limit: 24, prodcatId: 0 }
+    requirements:
+        limit:  \d{1,2}
         prodcatId:  \d+
         methods: GET
         
@@ -41,9 +65,9 @@ products_search:
     path:     /products/search/{prodcatId}/{order}/{orderDir}/{page}/{perPage}
     defaults: { _controller: AppBundle:Products:search,prodcatId: 0, order: "modified", orderDir: "DESC", page: 1, perPage:12}
     requirements:
-        order: modified|added|newprice|discount
-        orderDir: ASC|DESC
-        perPage: 12|16|24|32
+        order: prodLastmodified|prodNewprice
+        orderDir: ASC|DESC|asc|desc
+        perPage: \d{1,2}
         page:  \d+
         prodcatId:  \d+
         methods: GET
@@ -54,7 +78,7 @@ products_by_brand_id:
     requirements:
         brandId:  \d+
         page:  \d+
-        perPage:  12|16|24|32
+        perPage: \d{1,2}
         methods: GET
         
 products_by_prodcat_id:
@@ -63,7 +87,7 @@ products_by_prodcat_id:
     requirements:
         prodcatId:  \d+
         page:  \d+
-        perPage:  12|16|24|32
+        perPage:  \d{1,2}
         methods: GET
 
 brands:

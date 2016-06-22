@@ -2,56 +2,141 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * ProductsImages
- *
- * @ORM\Table(name="products_images", indexes={@ORM\Index(name="pi_prod_id", columns={"pi_prod_id"}), @ORM\Index(name="pi_addtime", columns={"pi_addtime", "pi_lastmodified"})})
- * @ORM\Entity
  */
 class ProductsImages
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pi_order", type="integer", nullable=false)
      */
     private $piOrder = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pi_addtime", type="integer", nullable=false)
      */
     private $piAddtime;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pi_lastmodified", type="integer", nullable=false)
      */
     private $piLastmodified;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pi_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $piId;
 
     /**
      * @var \AppBundle\Entity\Products
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Products", inversedBy="prodPiCollection")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pi_prod_id", referencedColumnName="prod_id")
-     * })
      */
     private $piProd;
 
 
+    /**
+     * Set piOrder
+     *
+     * @param integer $piOrder
+     *
+     * @return ProductsImages
+     */
+    public function setPiOrder($piOrder)
+    {
+        $this->piOrder = $piOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get piOrder
+     *
+     * @return integer
+     */
+    public function getPiOrder()
+    {
+        return $this->piOrder;
+    }
+
+    /**
+     * Set piAddtime
+     *
+     * @param integer $piAddtime
+     *
+     * @return ProductsImages
+     */
+    public function setPiAddtime($piAddtime)
+    {
+        $this->piAddtime = $piAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get piAddtime
+     *
+     * @return integer
+     */
+    public function getPiAddtime()
+    {
+        return $this->piAddtime;
+    }
+
+    /**
+     * Set piLastmodified
+     *
+     * @param integer $piLastmodified
+     *
+     * @return ProductsImages
+     */
+    public function setPiLastmodified($piLastmodified)
+    {
+        $this->piLastmodified = $piLastmodified;
+
+        return $this;
+    }
+
+    /**
+     * Get piLastmodified
+     *
+     * @return integer
+     */
+    public function getPiLastmodified()
+    {
+        return $this->piLastmodified;
+    }
+
+    /**
+     * Get piId
+     *
+     * @return integer
+     */
+    public function getPiId()
+    {
+        return $this->piId;
+    }
+
+    /**
+     * Set piProd
+     *
+     * @param \AppBundle\Entity\Products $piProd
+     *
+     * @return ProductsImages
+     */
+    public function setPiProd(\AppBundle\Entity\Products $piProd = null)
+    {
+        $this->piProd = $piProd;
+
+        return $this;
+    }
+
+    /**
+     * Get piProd
+     *
+     * @return \AppBundle\Entity\Products
+     */
+    public function getPiProd()
+    {
+        return $this->piProd;
+    }
 }
 

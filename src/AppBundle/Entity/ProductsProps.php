@@ -2,46 +2,112 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * ProductsProps
- *
- * @ORM\Table(name="products_props", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQ_BB275478BF02FB94", columns={"pp_name"})})
- * @ORM\Entity
  */
 class ProductsProps
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="pp_name", type="string", length=64, nullable=false)
      */
     private $ppName;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pp_addtime", type="integer", nullable=false)
      */
     private $ppAddtime;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pp_lastmodified", type="integer", nullable=false)
      */
     private $ppLastmodified;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pp_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $ppId;
 
 
+    /**
+     * Set ppName
+     *
+     * @param string $ppName
+     *
+     * @return ProductsProps
+     */
+    public function setPpName($ppName)
+    {
+        $this->ppName = $ppName;
+
+        return $this;
+    }
+
+    /**
+     * Get ppName
+     *
+     * @return string
+     */
+    public function getPpName()
+    {
+        return $this->ppName;
+    }
+
+    /**
+     * Set ppAddtime
+     *
+     * @param integer $ppAddtime
+     *
+     * @return ProductsProps
+     */
+    public function setPpAddtime($ppAddtime)
+    {
+        $this->ppAddtime = $ppAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get ppAddtime
+     *
+     * @return integer
+     */
+    public function getPpAddtime()
+    {
+        return $this->ppAddtime;
+    }
+
+    /**
+     * Set ppLastmodified
+     *
+     * @param integer $ppLastmodified
+     *
+     * @return ProductsProps
+     */
+    public function setPpLastmodified($ppLastmodified)
+    {
+        $this->ppLastmodified = $ppLastmodified;
+
+        return $this;
+    }
+
+    /**
+     * Get ppLastmodified
+     *
+     * @return integer
+     */
+    public function getPpLastmodified()
+    {
+        return $this->ppLastmodified;
+    }
+
+    /**
+     * Get ppId
+     *
+     * @return integer
+     */
+    public function getPpId()
+    {
+        return $this->ppId;
+    }
 }
 

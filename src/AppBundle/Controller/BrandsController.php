@@ -36,7 +36,7 @@ class BrandsController extends Controller {
         $qry->setResultCacheLifetime(self::CACHE_TIME);
         $brandDetails = $qry->getOneOrNullResult(Query::HYDRATE_ARRAY);
         $jsonResponseFactory = $this->get('response_factory');
-        $r = $jsonResponseFactory->getJsonMysqlRowsResponse($brandDetails, $brandDetails ? 1 : 0, self::CACHE_TIME);
+        $r = $jsonResponseFactory->getJsonMysqlRowsResponse($brandDetails ? [$brandDetails] : [], $brandDetails ? 1 : 0, self::CACHE_TIME);
 
         return $r;
     }

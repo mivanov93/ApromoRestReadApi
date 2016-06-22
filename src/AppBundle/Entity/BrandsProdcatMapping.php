@@ -2,73 +2,199 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * BrandsProdcatMapping
- *
- * @ORM\Table(name="brands_prodcat_mapping", indexes={@ORM\Index(name="fk_brands_prodcat_mapping_1_idx", columns={"bpm_brand_id"}), @ORM\Index(name="fk_brands_prodcat_mapping_2_idx", columns={"bpm_mapped_prodcat_id"})})
- * @ORM\Entity
  */
 class BrandsProdcatMapping
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bpm_brand_prodcat_id", type="integer", nullable=false)
      */
     private $bpmBrandProdcatId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="bpm_brand_prodcat_name", type="string", length=45, nullable=false)
      */
     private $bpmBrandProdcatName;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bpm_addtime", type="integer", nullable=false)
      */
     private $bpmAddtime;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bpm_lastmodified", type="integer", nullable=false)
      */
     private $bpmLastmodified;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bpm_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $bpmId;
 
     /**
      * @var \AppBundle\Entity\Prodcat
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Prodcat")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="bpm_mapped_prodcat_id", referencedColumnName="prodcat_id")
-     * })
      */
     private $bpmMappedProdcat;
 
     /**
      * @var \AppBundle\Entity\Brands
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Brands")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="bpm_brand_id", referencedColumnName="brand_id")
-     * })
      */
     private $bpmBrand;
 
 
+    /**
+     * Set bpmBrandProdcatId
+     *
+     * @param integer $bpmBrandProdcatId
+     *
+     * @return BrandsProdcatMapping
+     */
+    public function setBpmBrandProdcatId($bpmBrandProdcatId)
+    {
+        $this->bpmBrandProdcatId = $bpmBrandProdcatId;
+
+        return $this;
+    }
+
+    /**
+     * Get bpmBrandProdcatId
+     *
+     * @return integer
+     */
+    public function getBpmBrandProdcatId()
+    {
+        return $this->bpmBrandProdcatId;
+    }
+
+    /**
+     * Set bpmBrandProdcatName
+     *
+     * @param string $bpmBrandProdcatName
+     *
+     * @return BrandsProdcatMapping
+     */
+    public function setBpmBrandProdcatName($bpmBrandProdcatName)
+    {
+        $this->bpmBrandProdcatName = $bpmBrandProdcatName;
+
+        return $this;
+    }
+
+    /**
+     * Get bpmBrandProdcatName
+     *
+     * @return string
+     */
+    public function getBpmBrandProdcatName()
+    {
+        return $this->bpmBrandProdcatName;
+    }
+
+    /**
+     * Set bpmAddtime
+     *
+     * @param integer $bpmAddtime
+     *
+     * @return BrandsProdcatMapping
+     */
+    public function setBpmAddtime($bpmAddtime)
+    {
+        $this->bpmAddtime = $bpmAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get bpmAddtime
+     *
+     * @return integer
+     */
+    public function getBpmAddtime()
+    {
+        return $this->bpmAddtime;
+    }
+
+    /**
+     * Set bpmLastmodified
+     *
+     * @param integer $bpmLastmodified
+     *
+     * @return BrandsProdcatMapping
+     */
+    public function setBpmLastmodified($bpmLastmodified)
+    {
+        $this->bpmLastmodified = $bpmLastmodified;
+
+        return $this;
+    }
+
+    /**
+     * Get bpmLastmodified
+     *
+     * @return integer
+     */
+    public function getBpmLastmodified()
+    {
+        return $this->bpmLastmodified;
+    }
+
+    /**
+     * Get bpmId
+     *
+     * @return integer
+     */
+    public function getBpmId()
+    {
+        return $this->bpmId;
+    }
+
+    /**
+     * Set bpmMappedProdcat
+     *
+     * @param \AppBundle\Entity\Prodcat $bpmMappedProdcat
+     *
+     * @return BrandsProdcatMapping
+     */
+    public function setBpmMappedProdcat(\AppBundle\Entity\Prodcat $bpmMappedProdcat = null)
+    {
+        $this->bpmMappedProdcat = $bpmMappedProdcat;
+
+        return $this;
+    }
+
+    /**
+     * Get bpmMappedProdcat
+     *
+     * @return \AppBundle\Entity\Prodcat
+     */
+    public function getBpmMappedProdcat()
+    {
+        return $this->bpmMappedProdcat;
+    }
+
+    /**
+     * Set bpmBrand
+     *
+     * @param \AppBundle\Entity\Brands $bpmBrand
+     *
+     * @return BrandsProdcatMapping
+     */
+    public function setBpmBrand(\AppBundle\Entity\Brands $bpmBrand = null)
+    {
+        $this->bpmBrand = $bpmBrand;
+
+        return $this;
+    }
+
+    /**
+     * Get bpmBrand
+     *
+     * @return \AppBundle\Entity\Brands
+     */
+    public function getBpmBrand()
+    {
+        return $this->bpmBrand;
+    }
 }
 

@@ -2,60 +2,170 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Subscribers
- *
- * @ORM\Table(name="subscribers", uniqueConstraints={@ORM\UniqueConstraint(name="subscr_email", columns={"subscr_email"})}, indexes={@ORM\Index(name="subscr_addtime", columns={"subscr_addtime"}), @ORM\Index(name="subscr_ip", columns={"subscr_ip"})})
- * @ORM\Entity
  */
 class Subscribers
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="subscr_email", type="string", length=128, nullable=false)
      */
     private $subscrEmail;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="subscr_ip", type="string", length=32, nullable=false)
      */
     private $subscrIp;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="subscr_remove_key", type="string", length=128, nullable=false)
      */
     private $subscrRemoveKey;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="subscr_sent_count", type="integer", nullable=false)
      */
     private $subscrSentCount = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="subscr_addtime", type="integer", nullable=false)
      */
     private $subscrAddtime = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="subscr_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $subscrId;
 
 
+    /**
+     * Set subscrEmail
+     *
+     * @param string $subscrEmail
+     *
+     * @return Subscribers
+     */
+    public function setSubscrEmail($subscrEmail)
+    {
+        $this->subscrEmail = $subscrEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get subscrEmail
+     *
+     * @return string
+     */
+    public function getSubscrEmail()
+    {
+        return $this->subscrEmail;
+    }
+
+    /**
+     * Set subscrIp
+     *
+     * @param string $subscrIp
+     *
+     * @return Subscribers
+     */
+    public function setSubscrIp($subscrIp)
+    {
+        $this->subscrIp = $subscrIp;
+
+        return $this;
+    }
+
+    /**
+     * Get subscrIp
+     *
+     * @return string
+     */
+    public function getSubscrIp()
+    {
+        return $this->subscrIp;
+    }
+
+    /**
+     * Set subscrRemoveKey
+     *
+     * @param string $subscrRemoveKey
+     *
+     * @return Subscribers
+     */
+    public function setSubscrRemoveKey($subscrRemoveKey)
+    {
+        $this->subscrRemoveKey = $subscrRemoveKey;
+
+        return $this;
+    }
+
+    /**
+     * Get subscrRemoveKey
+     *
+     * @return string
+     */
+    public function getSubscrRemoveKey()
+    {
+        return $this->subscrRemoveKey;
+    }
+
+    /**
+     * Set subscrSentCount
+     *
+     * @param integer $subscrSentCount
+     *
+     * @return Subscribers
+     */
+    public function setSubscrSentCount($subscrSentCount)
+    {
+        $this->subscrSentCount = $subscrSentCount;
+
+        return $this;
+    }
+
+    /**
+     * Get subscrSentCount
+     *
+     * @return integer
+     */
+    public function getSubscrSentCount()
+    {
+        return $this->subscrSentCount;
+    }
+
+    /**
+     * Set subscrAddtime
+     *
+     * @param integer $subscrAddtime
+     *
+     * @return Subscribers
+     */
+    public function setSubscrAddtime($subscrAddtime)
+    {
+        $this->subscrAddtime = $subscrAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get subscrAddtime
+     *
+     * @return integer
+     */
+    public function getSubscrAddtime()
+    {
+        return $this->subscrAddtime;
+    }
+
+    /**
+     * Get subscrId
+     *
+     * @return integer
+     */
+    public function getSubscrId()
+    {
+        return $this->subscrId;
+    }
 }
 

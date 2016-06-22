@@ -38,6 +38,41 @@ class ProductsController extends Controller {
 //        $this->lastModified = $stmt->fetchColumn();
 //    }
 
+
+    public function suggestAction($limit, $prodId) {
+
+        $foundProduct = $this->getProductDetailsById($prodId);
+        if ($foundProduct) {
+            /* @var $repo \Doctrine\ORM\Repository */
+            $repo = $this->getDoctrine()->getRepository(Products::class);
+            /* @var $qb QueryBuilder */
+            $qb = $repo->createQueryBuilder('p');
+            $qb->select(self::PROD_DETAILS_VIEW);
+            $qb->innerJoin('p.prodBrand', 'b');
+            $qb->join('p.prodPiCollection', 'pi');
+            $qb->innerJoin('p.prodProdcat', 'pc');
+            $qb->where('p.prodProdcat = :prodcatId and p.prodId != :prodId');
+            $qb->setMaxResults((int) $limit);
+            $qb->setParameter('prodcatId', (int) $foundProduct['prodProdcat']['prodcatId']);
+            $qb->setParameter('prodId', (int) $foundProduct['prodId']);
+            $qb->addSelect("MATCH_AGAINST "
+                    . "(p.prodName, p.prodDescr, :searchQuery 'IN BOOLEAN MODE') as hidden score");
+            $qb->andWhere("MATCH_AGAINST(p.prodName, p.prodDescr, :searchQuery 'IN BOOLEAN MODE') > 0");
+            $qb->setParameter('searchQuery', $foundProduct['prodName']);
+            $qb->orderBy('score', 'desc');
+            $qry = $qb->getQuery();
+
+            $qry->setResultCacheId('prod_suggest');
+            $qry->setResultCacheLifetime(self::GRID_CACHE_TIME);
+
+            $prodList = $qry->getArrayResult();
+        } else {
+            throw new Exception("product not found " . (int) $prodId);
+        }
+        $r = $this->get('response_factory')->getJsonMysqlRowsResponse($prodList, count($prodList), self::GRID_CACHE_TIME);
+        return $r;
+    }
+
     public function byIdsAction($prodIds) {
         /* @var $repo \Doctrine\ORM\Repository */
         $repo = $this->getDoctrine()->getRepository(Products::class);
@@ -64,7 +99,7 @@ class ProductsController extends Controller {
         return $r;
     }
 
-    public function detailsAction($prodId) {
+    private function getProductDetailsById($prodId, $cacheTime = self::DETAILS_QUERY_CACHE_TIME) {
         /* @var $repo \Doctrine\ORM\Repository */
         $repo = $this->getDoctrine()->getRepository(Products::class);
         /* @var $qb QueryBuilder */
@@ -78,10 +113,16 @@ class ProductsController extends Controller {
         $qry = $qb->getQuery();
 
         $qry->setResultCacheId('prod_details');
-        $qry->setResultCacheLifetime(self::DETAILS_QUERY_CACHE_TIME);
+        $qry->setResultCacheLifetime($cacheTime);
 
         $prod = $qry->getOneOrNullResult(Query::HYDRATE_ARRAY);
-        $r = $this->get('response_factory')->getJsonMysqlRowsResponse($prod, $prod ? 1 : 0, self::DETAILS_QUERY_CACHE_TIME);
+        return $prod;
+    }
+
+    public function detailsAction($prodId) {
+        $prod = $this->getProductDetailsById($prodId);
+        $r = $this->get('response_factory')->getJsonMysqlRowsResponse($prod ? [$prod] : [], $prod ? 1 : 0,
+                                                                      self::DETAILS_QUERY_CACHE_TIME);
         return $r;
     }
 
@@ -104,6 +145,56 @@ class ProductsController extends Controller {
         }
         $qry = $qb->getQuery();
         $qry->setResultCacheId('cached_random_top');
+        $qry->setResultCacheLifetime(self::TOP_QUERY_CACHE_TIME);
+
+        $topProducts = $qry->getArrayResult();
+        $r = $this->get('response_factory')->getJsonMysqlRowsResponse($topProducts, count($topProducts)
+                , self::TOP_QUERY_CACHE_TIME);
+        return $r;
+    }
+
+    public function randomProdcatAction($limit, $prodcatId = null) {
+        /* @var $repo \Doctrine\ORM\Repository */
+        $repo = $this->getDoctrine()->getRepository(Products::class);
+        /* @var $qb QueryBuilder */
+        $qb = $repo->createQueryBuilder('p');
+        $qb->select(self::PROD_GRID_VIEW);
+        $qb->addSelect(' rand() as HIDDEN r');
+        $qb->join('p.prodPiCollection', 'pi');
+        $qb->join('p.prodBrand', 'b');
+        $qb->innerJoin('p.prodProdcat', 'pc');
+        $qb->setMaxResults((int) $limit);
+        $qb->orderBy('r');
+        $qb->andWhere('p.prodProdcat = :pcatId');
+        $qb->setParameter('pcatId', (int) $prodcatId);
+
+        $qry = $qb->getQuery();
+        $qry->setResultCacheId('cached_random_prodcat');
+        $qry->setResultCacheLifetime(self::TOP_QUERY_CACHE_TIME);
+
+        $topProducts = $qry->getArrayResult();
+        $r = $this->get('response_factory')->getJsonMysqlRowsResponse($topProducts, count($topProducts)
+                , self::TOP_QUERY_CACHE_TIME);
+        return $r;
+    }
+
+    public function randomBrandAction($limit, $brandId) {
+        /* @var $repo \Doctrine\ORM\Repository */
+        $repo = $this->getDoctrine()->getRepository(Products::class);
+        /* @var $qb QueryBuilder */
+        $qb = $repo->createQueryBuilder('p');
+        $qb->select(self::PROD_GRID_VIEW);
+        $qb->addSelect(' rand() as HIDDEN r');
+        $qb->join('p.prodPiCollection', 'pi');
+        $qb->join('p.prodBrand', 'b');
+        $qb->innerJoin('p.prodProdcat', 'pc');
+        $qb->setMaxResults((int) $limit);
+        $qb->orderBy('r');
+        $qb->andWhere('p.prodBrand = :brandId');
+        $qb->setParameter('brandId', (int) $brandId);
+
+        $qry = $qb->getQuery();
+        $qry->setResultCacheId('cached_random_brand');
         $qry->setResultCacheLifetime(self::TOP_QUERY_CACHE_TIME);
 
         $topProducts = $qry->getArrayResult();
@@ -175,7 +266,7 @@ class ProductsController extends Controller {
         $totalQry->setResultCacheLifetime(self::GRID_CACHE_TIME);
 
         $totalRowCount = $totalQry->getSingleScalarResult();
-        $r = $this->get('response_factory')->getJsonMysqlRowsResponse($products,$totalRowCount, self::GRID_CACHE_TIME);
+        $r = $this->get('response_factory')->getJsonMysqlRowsResponse($products, $totalRowCount, self::GRID_CACHE_TIME);
         return $r;
     }
 
@@ -208,7 +299,7 @@ class ProductsController extends Controller {
         $totalRowCountQuery->setResultCacheLifetime(self::GRID_CACHE_TIME);
 
         $totalRowCount = $totalRowCountQuery->getSingleScalarResult();
-        $r = $this->get('response_factory')->getJsonMysqlRowsResponse($products,$totalRowCount, self::GRID_CACHE_TIME);
+        $r = $this->get('response_factory')->getJsonMysqlRowsResponse($products, $totalRowCount, self::GRID_CACHE_TIME);
         return $r;
     }
 
@@ -216,16 +307,13 @@ class ProductsController extends Controller {
         $cached = true;
         $brandsIds = $request->get('brandsIds');
         $searchQuery = $request->get('searchQuery');
-        $maxPrice = (double) $request->get('maxPrice');
-        $orderDir = ($orderDir === 'ASC' ? 'ASC' : 'DESC');
+        $maxNewPrice = (double) $request->get('maxNewPrice');
+        $orderDir = (strtoupper($orderDir) === 'DESC' ? 'DESC' : 'ASC');
         switch ($order) {
-            case "newprice":
+            case "prodNewprice":
                 $order = "p.prodNewprice";
                 break;
-            case "added":
-                $order = "p.prodNewprice";
-                break;
-            case "discount":
+            case "prodPercentage":
                 $order = "p.prodPercentage";
                 break;
             default:
@@ -255,8 +343,12 @@ class ProductsController extends Controller {
                 $cached&=false;
             }
         }
+        if ($maxNewPrice > 0) {
+            $qb->andWhere('p.prodNewprice <= :maxNewPrice');
+            $qb->setParameter('maxNewPrice', (double) $maxNewPrice);
+        }
 
-        if (floor($maxPrice) !== ceil($maxPrice)) {
+        if (floor($maxNewPrice) !== ceil($maxNewPrice)) {
             $cached&=false;
         }
         if (\mb_strlen($searchQuery) > 2) {
@@ -299,8 +391,8 @@ class ProductsController extends Controller {
             $totalRowsQuery->setResultCacheLifetime(self::GRID_CACHE_TIME);
         }
         $totalRowCount = $totalRowsQuery->getSingleScalarResult();
-        $r = $this->get('response_factory')->getJsonMysqlRowsResponse($products,$totalRowCount, self::GRID_CACHE_TIME,
-                                                             $cached ? ResponseFactory::publicCache : ResponseFactory::privateCache);
+        $r = $this->get('response_factory')->getJsonMysqlRowsResponse($products, $totalRowCount, self::GRID_CACHE_TIME,
+                                                                      $cached ? ResponseFactory::publicCache : ResponseFactory::privateCache);
         return $r;
     }
 

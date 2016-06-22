@@ -2,182 +2,123 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Products
- *
- * @ORM\Table(name="products", uniqueConstraints={@ORM\UniqueConstraint(name="prod_unique_id_extra_index", columns={"prod_unique_id", "prod_brand_id"}), @ORM\UniqueConstraint(name="prod_comp_index", columns={"prod_id", "prod_brand_id"})}, indexes={@ORM\Index(name="prod_brand_id", columns={"prod_brand_id"}), @ORM\Index(name="prod_prodcat_id", columns={"prod_prodcat_id"}), @ORM\Index(name="prod_exptime", columns={"prod_exptime"}), @ORM\Index(name="prod_top", columns={"prod_top"}), @ORM\Index(name="prod_newprice", columns={"prod_newprice"}), @ORM\Index(name="prod_percentage", columns={"prod_percentage"}), @ORM\Index(name="prod_unique_id", columns={"prod_unique_id"}), @ORM\Index(name="prod_active", columns={"prod_active"}), @ORM\Index(name="prod_limited_avail", columns={"prod_limited_avail"}), @ORM\Index(name="prod_addtime_lastmod", columns={"prod_addtime", "prod_lastmodified"}), @ORM\Index(name="prod_name", columns={"prod_name"}), @ORM\Index(name="prod_descr_comp", columns={"prod_name", "prod_descr"})})
- * @ORM\Entity
  */
 class Products
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="prod_name", type="string", length=255, nullable=false)
      */
     private $prodName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="prod_descr", type="text", length=65535, nullable=false)
      */
     private $prodDescr;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="prod_url", type="text", length=65535, nullable=false)
      */
     private $prodUrl;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="prod_limited_avail", type="boolean", nullable=false)
      */
     private $prodLimitedAvail = '0';
 
     /**
      * @var float
-     *
-     * @ORM\Column(name="prod_oldprice", type="float", precision=10, scale=2, nullable=false)
      */
     private $prodOldprice;
 
     /**
      * @var float
-     *
-     * @ORM\Column(name="prod_newprice", type="float", precision=10, scale=2, nullable=false)
      */
     private $prodNewprice;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="prod_percentage", type="integer", nullable=false)
      */
     private $prodPercentage;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="prod_delivery_time", type="integer", nullable=false)
      */
     private $prodDeliveryTime = '0';
 
     /**
      * @var float
-     *
-     * @ORM\Column(name="prod_delivery_cost", type="float", precision=10, scale=2, nullable=false)
      */
     private $prodDeliveryCost = '0.00';
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="prod_manufacturer", type="string", length=128, nullable=false)
      */
     private $prodManufacturer = '';
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="prod_mpn", type="string", length=128, nullable=false)
      */
     private $prodMpn = '';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="prod_barcode", type="bigint", nullable=false)
      */
     private $prodBarcode = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="prod_addtime", type="integer", nullable=false)
      */
     private $prodAddtime = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="prod_lastmodified", type="integer", nullable=false)
      */
     private $prodLastmodified = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="prod_validfrom", type="integer", nullable=false)
      */
     private $prodValidfrom = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="prod_exptime", type="integer", nullable=false)
      */
     private $prodExptime = '0';
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="prod_active", type="boolean", nullable=false)
      */
     private $prodActive = '1';
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="prod_top", type="boolean", nullable=false)
      */
     private $prodTop = '0';
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="prod_unique_id", type="string", length=64, nullable=false)
      */
     private $prodUniqueId;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="prod_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $prodId;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProductsImages", mappedBy="piProd")
      */
     private $prodPiCollection;
 
     /**
      * @var \AppBundle\Entity\Prodcat
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Prodcat")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="prod_prodcat_id", referencedColumnName="prodcat_id")
-     * })
      */
     private $prodProdcat;
 
     /**
      * @var \AppBundle\Entity\Brands
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Brands")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="prod_brand_id", referencedColumnName="brand_id")
-     * })
      */
     private $prodBrand;
 
@@ -189,5 +130,552 @@ class Products
         $this->prodPiCollection = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    /**
+     * Set prodName
+     *
+     * @param string $prodName
+     *
+     * @return Products
+     */
+    public function setProdName($prodName)
+    {
+        $this->prodName = $prodName;
+
+        return $this;
+    }
+
+    /**
+     * Get prodName
+     *
+     * @return string
+     */
+    public function getProdName()
+    {
+        return $this->prodName;
+    }
+
+    /**
+     * Set prodDescr
+     *
+     * @param string $prodDescr
+     *
+     * @return Products
+     */
+    public function setProdDescr($prodDescr)
+    {
+        $this->prodDescr = $prodDescr;
+
+        return $this;
+    }
+
+    /**
+     * Get prodDescr
+     *
+     * @return string
+     */
+    public function getProdDescr()
+    {
+        return $this->prodDescr;
+    }
+
+    /**
+     * Set prodUrl
+     *
+     * @param string $prodUrl
+     *
+     * @return Products
+     */
+    public function setProdUrl($prodUrl)
+    {
+        $this->prodUrl = $prodUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get prodUrl
+     *
+     * @return string
+     */
+    public function getProdUrl()
+    {
+        return $this->prodUrl;
+    }
+
+    /**
+     * Set prodLimitedAvail
+     *
+     * @param boolean $prodLimitedAvail
+     *
+     * @return Products
+     */
+    public function setProdLimitedAvail($prodLimitedAvail)
+    {
+        $this->prodLimitedAvail = $prodLimitedAvail;
+
+        return $this;
+    }
+
+    /**
+     * Get prodLimitedAvail
+     *
+     * @return boolean
+     */
+    public function getProdLimitedAvail()
+    {
+        return $this->prodLimitedAvail;
+    }
+
+    /**
+     * Set prodOldprice
+     *
+     * @param float $prodOldprice
+     *
+     * @return Products
+     */
+    public function setProdOldprice($prodOldprice)
+    {
+        $this->prodOldprice = $prodOldprice;
+
+        return $this;
+    }
+
+    /**
+     * Get prodOldprice
+     *
+     * @return float
+     */
+    public function getProdOldprice()
+    {
+        return $this->prodOldprice;
+    }
+
+    /**
+     * Set prodNewprice
+     *
+     * @param float $prodNewprice
+     *
+     * @return Products
+     */
+    public function setProdNewprice($prodNewprice)
+    {
+        $this->prodNewprice = $prodNewprice;
+
+        return $this;
+    }
+
+    /**
+     * Get prodNewprice
+     *
+     * @return float
+     */
+    public function getProdNewprice()
+    {
+        return $this->prodNewprice;
+    }
+
+    /**
+     * Set prodPercentage
+     *
+     * @param integer $prodPercentage
+     *
+     * @return Products
+     */
+    public function setProdPercentage($prodPercentage)
+    {
+        $this->prodPercentage = $prodPercentage;
+
+        return $this;
+    }
+
+    /**
+     * Get prodPercentage
+     *
+     * @return integer
+     */
+    public function getProdPercentage()
+    {
+        return $this->prodPercentage;
+    }
+
+    /**
+     * Set prodDeliveryTime
+     *
+     * @param integer $prodDeliveryTime
+     *
+     * @return Products
+     */
+    public function setProdDeliveryTime($prodDeliveryTime)
+    {
+        $this->prodDeliveryTime = $prodDeliveryTime;
+
+        return $this;
+    }
+
+    /**
+     * Get prodDeliveryTime
+     *
+     * @return integer
+     */
+    public function getProdDeliveryTime()
+    {
+        return $this->prodDeliveryTime;
+    }
+
+    /**
+     * Set prodDeliveryCost
+     *
+     * @param float $prodDeliveryCost
+     *
+     * @return Products
+     */
+    public function setProdDeliveryCost($prodDeliveryCost)
+    {
+        $this->prodDeliveryCost = $prodDeliveryCost;
+
+        return $this;
+    }
+
+    /**
+     * Get prodDeliveryCost
+     *
+     * @return float
+     */
+    public function getProdDeliveryCost()
+    {
+        return $this->prodDeliveryCost;
+    }
+
+    /**
+     * Set prodManufacturer
+     *
+     * @param string $prodManufacturer
+     *
+     * @return Products
+     */
+    public function setProdManufacturer($prodManufacturer)
+    {
+        $this->prodManufacturer = $prodManufacturer;
+
+        return $this;
+    }
+
+    /**
+     * Get prodManufacturer
+     *
+     * @return string
+     */
+    public function getProdManufacturer()
+    {
+        return $this->prodManufacturer;
+    }
+
+    /**
+     * Set prodMpn
+     *
+     * @param string $prodMpn
+     *
+     * @return Products
+     */
+    public function setProdMpn($prodMpn)
+    {
+        $this->prodMpn = $prodMpn;
+
+        return $this;
+    }
+
+    /**
+     * Get prodMpn
+     *
+     * @return string
+     */
+    public function getProdMpn()
+    {
+        return $this->prodMpn;
+    }
+
+    /**
+     * Set prodBarcode
+     *
+     * @param integer $prodBarcode
+     *
+     * @return Products
+     */
+    public function setProdBarcode($prodBarcode)
+    {
+        $this->prodBarcode = $prodBarcode;
+
+        return $this;
+    }
+
+    /**
+     * Get prodBarcode
+     *
+     * @return integer
+     */
+    public function getProdBarcode()
+    {
+        return $this->prodBarcode;
+    }
+
+    /**
+     * Set prodAddtime
+     *
+     * @param integer $prodAddtime
+     *
+     * @return Products
+     */
+    public function setProdAddtime($prodAddtime)
+    {
+        $this->prodAddtime = $prodAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get prodAddtime
+     *
+     * @return integer
+     */
+    public function getProdAddtime()
+    {
+        return $this->prodAddtime;
+    }
+
+    /**
+     * Set prodLastmodified
+     *
+     * @param integer $prodLastmodified
+     *
+     * @return Products
+     */
+    public function setProdLastmodified($prodLastmodified)
+    {
+        $this->prodLastmodified = $prodLastmodified;
+
+        return $this;
+    }
+
+    /**
+     * Get prodLastmodified
+     *
+     * @return integer
+     */
+    public function getProdLastmodified()
+    {
+        return $this->prodLastmodified;
+    }
+
+    /**
+     * Set prodValidfrom
+     *
+     * @param integer $prodValidfrom
+     *
+     * @return Products
+     */
+    public function setProdValidfrom($prodValidfrom)
+    {
+        $this->prodValidfrom = $prodValidfrom;
+
+        return $this;
+    }
+
+    /**
+     * Get prodValidfrom
+     *
+     * @return integer
+     */
+    public function getProdValidfrom()
+    {
+        return $this->prodValidfrom;
+    }
+
+    /**
+     * Set prodExptime
+     *
+     * @param integer $prodExptime
+     *
+     * @return Products
+     */
+    public function setProdExptime($prodExptime)
+    {
+        $this->prodExptime = $prodExptime;
+
+        return $this;
+    }
+
+    /**
+     * Get prodExptime
+     *
+     * @return integer
+     */
+    public function getProdExptime()
+    {
+        return $this->prodExptime;
+    }
+
+    /**
+     * Set prodActive
+     *
+     * @param boolean $prodActive
+     *
+     * @return Products
+     */
+    public function setProdActive($prodActive)
+    {
+        $this->prodActive = $prodActive;
+
+        return $this;
+    }
+
+    /**
+     * Get prodActive
+     *
+     * @return boolean
+     */
+    public function getProdActive()
+    {
+        return $this->prodActive;
+    }
+
+    /**
+     * Set prodTop
+     *
+     * @param boolean $prodTop
+     *
+     * @return Products
+     */
+    public function setProdTop($prodTop)
+    {
+        $this->prodTop = $prodTop;
+
+        return $this;
+    }
+
+    /**
+     * Get prodTop
+     *
+     * @return boolean
+     */
+    public function getProdTop()
+    {
+        return $this->prodTop;
+    }
+
+    /**
+     * Set prodUniqueId
+     *
+     * @param string $prodUniqueId
+     *
+     * @return Products
+     */
+    public function setProdUniqueId($prodUniqueId)
+    {
+        $this->prodUniqueId = $prodUniqueId;
+
+        return $this;
+    }
+
+    /**
+     * Get prodUniqueId
+     *
+     * @return string
+     */
+    public function getProdUniqueId()
+    {
+        return $this->prodUniqueId;
+    }
+
+    /**
+     * Get prodId
+     *
+     * @return integer
+     */
+    public function getProdId()
+    {
+        return $this->prodId;
+    }
+
+    /**
+     * Add prodPiCollection
+     *
+     * @param \AppBundle\Entity\ProductsImages $prodPiCollection
+     *
+     * @return Products
+     */
+    public function addProdPiCollection(\AppBundle\Entity\ProductsImages $prodPiCollection)
+    {
+        $this->prodPiCollection[] = $prodPiCollection;
+
+        return $this;
+    }
+
+    /**
+     * Remove prodPiCollection
+     *
+     * @param \AppBundle\Entity\ProductsImages $prodPiCollection
+     */
+    public function removeProdPiCollection(\AppBundle\Entity\ProductsImages $prodPiCollection)
+    {
+        $this->prodPiCollection->removeElement($prodPiCollection);
+    }
+
+    /**
+     * Get prodPiCollection
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProdPiCollection()
+    {
+        return $this->prodPiCollection;
+    }
+
+    /**
+     * Set prodProdcat
+     *
+     * @param \AppBundle\Entity\Prodcat $prodProdcat
+     *
+     * @return Products
+     */
+    public function setProdProdcat(\AppBundle\Entity\Prodcat $prodProdcat = null)
+    {
+        $this->prodProdcat = $prodProdcat;
+
+        return $this;
+    }
+
+    /**
+     * Get prodProdcat
+     *
+     * @return \AppBundle\Entity\Prodcat
+     */
+    public function getProdProdcat()
+    {
+        return $this->prodProdcat;
+    }
+
+    /**
+     * Set prodBrand
+     *
+     * @param \AppBundle\Entity\Brands $prodBrand
+     *
+     * @return Products
+     */
+    public function setProdBrand(\AppBundle\Entity\Brands $prodBrand = null)
+    {
+        $this->prodBrand = $prodBrand;
+
+        return $this;
+    }
+
+    /**
+     * Get prodBrand
+     *
+     * @return \AppBundle\Entity\Brands
+     */
+    public function getProdBrand()
+    {
+        return $this->prodBrand;
+    }
 }
 

@@ -2,108 +2,344 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * BrandsImportDlLog
- *
- * @ORM\Table(name="brands_import_dl_log", indexes={@ORM\Index(name="bidl_brand_id", columns={"bidl_brand_id"}), @ORM\Index(name="bidl_import_format_id", columns={"bidl_import_format_id"}), @ORM\Index(name="bidl_status_code", columns={"bidl_status_code"}), @ORM\Index(name="bidl_start", columns={"bidl_start"})})
- * @ORM\Entity
  */
 class BrandsImportDlLog
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bidl_start", type="integer", nullable=false)
      */
     private $bidlStart = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bidl_end", type="integer", nullable=false)
      */
     private $bidlEnd = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bidl_status_code", type="integer", nullable=false)
      */
     private $bidlStatusCode = '0';
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="bidl_status_msg", type="string", length=512, nullable=false)
      */
     private $bidlStatusMsg = '';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bidl_file_size", type="integer", nullable=false)
      */
     private $bidlFileSize = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bidl_file_hash", type="integer", nullable=false)
      */
     private $bidlFileHash = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bidl_file_url_hash", type="integer", nullable=false)
      */
     private $bidlFileUrlHash = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bidl_addtime", type="integer", nullable=false)
      */
     private $bidlAddtime = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bidl_lastmodified", type="integer", nullable=false)
      */
     private $bidlLastmodified = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bidl_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $bidlId;
 
     /**
      * @var \AppBundle\Entity\ImportFormats
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ImportFormats")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="bidl_import_format_id", referencedColumnName="if_id")
-     * })
      */
     private $bidlImportFormat;
 
     /**
      * @var \AppBundle\Entity\Brands
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Brands")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="bidl_brand_id", referencedColumnName="brand_id")
-     * })
      */
     private $bidlBrand;
 
 
+    /**
+     * Set bidlStart
+     *
+     * @param integer $bidlStart
+     *
+     * @return BrandsImportDlLog
+     */
+    public function setBidlStart($bidlStart)
+    {
+        $this->bidlStart = $bidlStart;
+
+        return $this;
+    }
+
+    /**
+     * Get bidlStart
+     *
+     * @return integer
+     */
+    public function getBidlStart()
+    {
+        return $this->bidlStart;
+    }
+
+    /**
+     * Set bidlEnd
+     *
+     * @param integer $bidlEnd
+     *
+     * @return BrandsImportDlLog
+     */
+    public function setBidlEnd($bidlEnd)
+    {
+        $this->bidlEnd = $bidlEnd;
+
+        return $this;
+    }
+
+    /**
+     * Get bidlEnd
+     *
+     * @return integer
+     */
+    public function getBidlEnd()
+    {
+        return $this->bidlEnd;
+    }
+
+    /**
+     * Set bidlStatusCode
+     *
+     * @param integer $bidlStatusCode
+     *
+     * @return BrandsImportDlLog
+     */
+    public function setBidlStatusCode($bidlStatusCode)
+    {
+        $this->bidlStatusCode = $bidlStatusCode;
+
+        return $this;
+    }
+
+    /**
+     * Get bidlStatusCode
+     *
+     * @return integer
+     */
+    public function getBidlStatusCode()
+    {
+        return $this->bidlStatusCode;
+    }
+
+    /**
+     * Set bidlStatusMsg
+     *
+     * @param string $bidlStatusMsg
+     *
+     * @return BrandsImportDlLog
+     */
+    public function setBidlStatusMsg($bidlStatusMsg)
+    {
+        $this->bidlStatusMsg = $bidlStatusMsg;
+
+        return $this;
+    }
+
+    /**
+     * Get bidlStatusMsg
+     *
+     * @return string
+     */
+    public function getBidlStatusMsg()
+    {
+        return $this->bidlStatusMsg;
+    }
+
+    /**
+     * Set bidlFileSize
+     *
+     * @param integer $bidlFileSize
+     *
+     * @return BrandsImportDlLog
+     */
+    public function setBidlFileSize($bidlFileSize)
+    {
+        $this->bidlFileSize = $bidlFileSize;
+
+        return $this;
+    }
+
+    /**
+     * Get bidlFileSize
+     *
+     * @return integer
+     */
+    public function getBidlFileSize()
+    {
+        return $this->bidlFileSize;
+    }
+
+    /**
+     * Set bidlFileHash
+     *
+     * @param integer $bidlFileHash
+     *
+     * @return BrandsImportDlLog
+     */
+    public function setBidlFileHash($bidlFileHash)
+    {
+        $this->bidlFileHash = $bidlFileHash;
+
+        return $this;
+    }
+
+    /**
+     * Get bidlFileHash
+     *
+     * @return integer
+     */
+    public function getBidlFileHash()
+    {
+        return $this->bidlFileHash;
+    }
+
+    /**
+     * Set bidlFileUrlHash
+     *
+     * @param integer $bidlFileUrlHash
+     *
+     * @return BrandsImportDlLog
+     */
+    public function setBidlFileUrlHash($bidlFileUrlHash)
+    {
+        $this->bidlFileUrlHash = $bidlFileUrlHash;
+
+        return $this;
+    }
+
+    /**
+     * Get bidlFileUrlHash
+     *
+     * @return integer
+     */
+    public function getBidlFileUrlHash()
+    {
+        return $this->bidlFileUrlHash;
+    }
+
+    /**
+     * Set bidlAddtime
+     *
+     * @param integer $bidlAddtime
+     *
+     * @return BrandsImportDlLog
+     */
+    public function setBidlAddtime($bidlAddtime)
+    {
+        $this->bidlAddtime = $bidlAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get bidlAddtime
+     *
+     * @return integer
+     */
+    public function getBidlAddtime()
+    {
+        return $this->bidlAddtime;
+    }
+
+    /**
+     * Set bidlLastmodified
+     *
+     * @param integer $bidlLastmodified
+     *
+     * @return BrandsImportDlLog
+     */
+    public function setBidlLastmodified($bidlLastmodified)
+    {
+        $this->bidlLastmodified = $bidlLastmodified;
+
+        return $this;
+    }
+
+    /**
+     * Get bidlLastmodified
+     *
+     * @return integer
+     */
+    public function getBidlLastmodified()
+    {
+        return $this->bidlLastmodified;
+    }
+
+    /**
+     * Get bidlId
+     *
+     * @return integer
+     */
+    public function getBidlId()
+    {
+        return $this->bidlId;
+    }
+
+    /**
+     * Set bidlImportFormat
+     *
+     * @param \AppBundle\Entity\ImportFormats $bidlImportFormat
+     *
+     * @return BrandsImportDlLog
+     */
+    public function setBidlImportFormat(\AppBundle\Entity\ImportFormats $bidlImportFormat = null)
+    {
+        $this->bidlImportFormat = $bidlImportFormat;
+
+        return $this;
+    }
+
+    /**
+     * Get bidlImportFormat
+     *
+     * @return \AppBundle\Entity\ImportFormats
+     */
+    public function getBidlImportFormat()
+    {
+        return $this->bidlImportFormat;
+    }
+
+    /**
+     * Set bidlBrand
+     *
+     * @param \AppBundle\Entity\Brands $bidlBrand
+     *
+     * @return BrandsImportDlLog
+     */
+    public function setBidlBrand(\AppBundle\Entity\Brands $bidlBrand = null)
+    {
+        $this->bidlBrand = $bidlBrand;
+
+        return $this;
+    }
+
+    /**
+     * Get bidlBrand
+     *
+     * @return \AppBundle\Entity\Brands
+     */
+    public function getBidlBrand()
+    {
+        return $this->bidlBrand;
+    }
 }
 

@@ -44,7 +44,7 @@ class ResponseFactory {
     }
     
     public function getJsonMysqlRowsResponse($rawData,$totalRowCount, $cacheTime = null, $cacheMode = self::publicCache, $jsonEncodeOpts = null) {
-        $data=["rows"=>$rawData,"totalRowCount"=>$totalRowCount];
+        $data=["data"=>["rows"=> $rawData,"totalRowCount"=>$totalRowCount],"statusCode"=>1,"statusMsg"=>"OK","reqId"=>15,"execTime"=>0.01];
         $r=$this->getJsonResponse($data, $cacheTime, $cacheMode, $jsonEncodeOpts);
         return $r;
     }

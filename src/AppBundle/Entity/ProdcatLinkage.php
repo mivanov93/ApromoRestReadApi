@@ -2,70 +2,213 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * ProdcatLinkage
- *
- * @ORM\Table(name="prodcat_linkage")
- * @ORM\Entity
  */
 class ProdcatLinkage
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="pl_indir_pars_ids", type="string", length=4096, nullable=false)
      */
     private $plIndirParsIds = '[]';
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="test_pars_ids", type="string", length=4096, nullable=false)
      */
     private $testParsIds = '[]';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pl_prcount", type="integer", nullable=false)
      */
     private $plPrcount = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pl_indir_prcount", type="integer", nullable=false)
      */
     private $plIndirPrcount = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pl_addtime", type="integer", nullable=false)
      */
     private $plAddtime = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="pl_lastmodified", type="integer", nullable=false)
      */
     private $plLastmodified;
 
     /**
      * @var \AppBundle\Entity\Prodcat
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Prodcat")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pl_prodcat_id", referencedColumnName="prodcat_id")
-     * })
      */
     private $plProdcat;
 
 
+    /**
+     * Set plIndirParsIds
+     *
+     * @param string $plIndirParsIds
+     *
+     * @return ProdcatLinkage
+     */
+    public function setPlIndirParsIds($plIndirParsIds)
+    {
+        $this->plIndirParsIds = $plIndirParsIds;
+
+        return $this;
+    }
+
+    /**
+     * Get plIndirParsIds
+     *
+     * @return string
+     */
+    public function getPlIndirParsIds()
+    {
+        return $this->plIndirParsIds;
+    }
+
+    /**
+     * Set testParsIds
+     *
+     * @param string $testParsIds
+     *
+     * @return ProdcatLinkage
+     */
+    public function setTestParsIds($testParsIds)
+    {
+        $this->testParsIds = $testParsIds;
+
+        return $this;
+    }
+
+    /**
+     * Get testParsIds
+     *
+     * @return string
+     */
+    public function getTestParsIds()
+    {
+        return $this->testParsIds;
+    }
+
+    /**
+     * Set plPrcount
+     *
+     * @param integer $plPrcount
+     *
+     * @return ProdcatLinkage
+     */
+    public function setPlPrcount($plPrcount)
+    {
+        $this->plPrcount = $plPrcount;
+
+        return $this;
+    }
+
+    /**
+     * Get plPrcount
+     *
+     * @return integer
+     */
+    public function getPlPrcount()
+    {
+        return $this->plPrcount;
+    }
+
+    /**
+     * Set plIndirPrcount
+     *
+     * @param integer $plIndirPrcount
+     *
+     * @return ProdcatLinkage
+     */
+    public function setPlIndirPrcount($plIndirPrcount)
+    {
+        $this->plIndirPrcount = $plIndirPrcount;
+
+        return $this;
+    }
+
+    /**
+     * Get plIndirPrcount
+     *
+     * @return integer
+     */
+    public function getPlIndirPrcount()
+    {
+        return $this->plIndirPrcount;
+    }
+
+    /**
+     * Set plAddtime
+     *
+     * @param integer $plAddtime
+     *
+     * @return ProdcatLinkage
+     */
+    public function setPlAddtime($plAddtime)
+    {
+        $this->plAddtime = $plAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get plAddtime
+     *
+     * @return integer
+     */
+    public function getPlAddtime()
+    {
+        return $this->plAddtime;
+    }
+
+    /**
+     * Set plLastmodified
+     *
+     * @param integer $plLastmodified
+     *
+     * @return ProdcatLinkage
+     */
+    public function setPlLastmodified($plLastmodified)
+    {
+        $this->plLastmodified = $plLastmodified;
+
+        return $this;
+    }
+
+    /**
+     * Get plLastmodified
+     *
+     * @return integer
+     */
+    public function getPlLastmodified()
+    {
+        return $this->plLastmodified;
+    }
+
+    /**
+     * Set plProdcat
+     *
+     * @param \AppBundle\Entity\Prodcat $plProdcat
+     *
+     * @return ProdcatLinkage
+     */
+    public function setPlProdcat(\AppBundle\Entity\Prodcat $plProdcat)
+    {
+        $this->plProdcat = $plProdcat;
+
+        return $this;
+    }
+
+    /**
+     * Get plProdcat
+     *
+     * @return \AppBundle\Entity\Prodcat
+     */
+    public function getPlProdcat()
+    {
+        return $this->plProdcat;
+    }
 }
 

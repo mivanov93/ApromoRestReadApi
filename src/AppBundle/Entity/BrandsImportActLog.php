@@ -2,108 +2,344 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * BrandsImportActLog
- *
- * @ORM\Table(name="brands_import_act_log", indexes={@ORM\Index(name="IDX_BE1BCC8F29D53CE", columns={"bial_brand_id"}), @ORM\Index(name="IDX_BE1BCC8FB54E1D61", columns={"bial_brand_import_dl_log_id"})})
- * @ORM\Entity
  */
 class BrandsImportActLog
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bial_start", type="integer", nullable=false)
      */
     private $bialStart = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bial_end", type="integer", nullable=false)
      */
     private $bialEnd = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bial_status_code", type="integer", nullable=false)
      */
     private $bialStatusCode = '0';
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="bial_status_msg", type="string", length=512, nullable=false)
      */
     private $bialStatusMsg = '';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bial_count_products_new", type="integer", nullable=false)
      */
     private $bialCountProductsNew = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bial_count_products_updated", type="integer", nullable=false)
      */
     private $bialCountProductsUpdated = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bial_count_products_deleted", type="integer", nullable=false)
      */
     private $bialCountProductsDeleted = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bial_addtime", type="integer", nullable=false)
      */
     private $bialAddtime = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bial_lastmodified", type="integer", nullable=false)
      */
     private $bialLastmodified = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bial_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $bialId;
 
     /**
      * @var \AppBundle\Entity\BrandsImportDlLog
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BrandsImportDlLog")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="bial_brand_import_dl_log_id", referencedColumnName="bidl_id")
-     * })
      */
     private $bialBrandImportDlLog;
 
     /**
      * @var \AppBundle\Entity\Brands
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Brands")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="bial_brand_id", referencedColumnName="brand_id")
-     * })
      */
     private $bialBrand;
 
 
+    /**
+     * Set bialStart
+     *
+     * @param integer $bialStart
+     *
+     * @return BrandsImportActLog
+     */
+    public function setBialStart($bialStart)
+    {
+        $this->bialStart = $bialStart;
+
+        return $this;
+    }
+
+    /**
+     * Get bialStart
+     *
+     * @return integer
+     */
+    public function getBialStart()
+    {
+        return $this->bialStart;
+    }
+
+    /**
+     * Set bialEnd
+     *
+     * @param integer $bialEnd
+     *
+     * @return BrandsImportActLog
+     */
+    public function setBialEnd($bialEnd)
+    {
+        $this->bialEnd = $bialEnd;
+
+        return $this;
+    }
+
+    /**
+     * Get bialEnd
+     *
+     * @return integer
+     */
+    public function getBialEnd()
+    {
+        return $this->bialEnd;
+    }
+
+    /**
+     * Set bialStatusCode
+     *
+     * @param integer $bialStatusCode
+     *
+     * @return BrandsImportActLog
+     */
+    public function setBialStatusCode($bialStatusCode)
+    {
+        $this->bialStatusCode = $bialStatusCode;
+
+        return $this;
+    }
+
+    /**
+     * Get bialStatusCode
+     *
+     * @return integer
+     */
+    public function getBialStatusCode()
+    {
+        return $this->bialStatusCode;
+    }
+
+    /**
+     * Set bialStatusMsg
+     *
+     * @param string $bialStatusMsg
+     *
+     * @return BrandsImportActLog
+     */
+    public function setBialStatusMsg($bialStatusMsg)
+    {
+        $this->bialStatusMsg = $bialStatusMsg;
+
+        return $this;
+    }
+
+    /**
+     * Get bialStatusMsg
+     *
+     * @return string
+     */
+    public function getBialStatusMsg()
+    {
+        return $this->bialStatusMsg;
+    }
+
+    /**
+     * Set bialCountProductsNew
+     *
+     * @param integer $bialCountProductsNew
+     *
+     * @return BrandsImportActLog
+     */
+    public function setBialCountProductsNew($bialCountProductsNew)
+    {
+        $this->bialCountProductsNew = $bialCountProductsNew;
+
+        return $this;
+    }
+
+    /**
+     * Get bialCountProductsNew
+     *
+     * @return integer
+     */
+    public function getBialCountProductsNew()
+    {
+        return $this->bialCountProductsNew;
+    }
+
+    /**
+     * Set bialCountProductsUpdated
+     *
+     * @param integer $bialCountProductsUpdated
+     *
+     * @return BrandsImportActLog
+     */
+    public function setBialCountProductsUpdated($bialCountProductsUpdated)
+    {
+        $this->bialCountProductsUpdated = $bialCountProductsUpdated;
+
+        return $this;
+    }
+
+    /**
+     * Get bialCountProductsUpdated
+     *
+     * @return integer
+     */
+    public function getBialCountProductsUpdated()
+    {
+        return $this->bialCountProductsUpdated;
+    }
+
+    /**
+     * Set bialCountProductsDeleted
+     *
+     * @param integer $bialCountProductsDeleted
+     *
+     * @return BrandsImportActLog
+     */
+    public function setBialCountProductsDeleted($bialCountProductsDeleted)
+    {
+        $this->bialCountProductsDeleted = $bialCountProductsDeleted;
+
+        return $this;
+    }
+
+    /**
+     * Get bialCountProductsDeleted
+     *
+     * @return integer
+     */
+    public function getBialCountProductsDeleted()
+    {
+        return $this->bialCountProductsDeleted;
+    }
+
+    /**
+     * Set bialAddtime
+     *
+     * @param integer $bialAddtime
+     *
+     * @return BrandsImportActLog
+     */
+    public function setBialAddtime($bialAddtime)
+    {
+        $this->bialAddtime = $bialAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get bialAddtime
+     *
+     * @return integer
+     */
+    public function getBialAddtime()
+    {
+        return $this->bialAddtime;
+    }
+
+    /**
+     * Set bialLastmodified
+     *
+     * @param integer $bialLastmodified
+     *
+     * @return BrandsImportActLog
+     */
+    public function setBialLastmodified($bialLastmodified)
+    {
+        $this->bialLastmodified = $bialLastmodified;
+
+        return $this;
+    }
+
+    /**
+     * Get bialLastmodified
+     *
+     * @return integer
+     */
+    public function getBialLastmodified()
+    {
+        return $this->bialLastmodified;
+    }
+
+    /**
+     * Get bialId
+     *
+     * @return integer
+     */
+    public function getBialId()
+    {
+        return $this->bialId;
+    }
+
+    /**
+     * Set bialBrandImportDlLog
+     *
+     * @param \AppBundle\Entity\BrandsImportDlLog $bialBrandImportDlLog
+     *
+     * @return BrandsImportActLog
+     */
+    public function setBialBrandImportDlLog(\AppBundle\Entity\BrandsImportDlLog $bialBrandImportDlLog = null)
+    {
+        $this->bialBrandImportDlLog = $bialBrandImportDlLog;
+
+        return $this;
+    }
+
+    /**
+     * Get bialBrandImportDlLog
+     *
+     * @return \AppBundle\Entity\BrandsImportDlLog
+     */
+    public function getBialBrandImportDlLog()
+    {
+        return $this->bialBrandImportDlLog;
+    }
+
+    /**
+     * Set bialBrand
+     *
+     * @param \AppBundle\Entity\Brands $bialBrand
+     *
+     * @return BrandsImportActLog
+     */
+    public function setBialBrand(\AppBundle\Entity\Brands $bialBrand = null)
+    {
+        $this->bialBrand = $bialBrand;
+
+        return $this;
+    }
+
+    /**
+     * Get bialBrand
+     *
+     * @return \AppBundle\Entity\Brands
+     */
+    public function getBialBrand()
+    {
+        return $this->bialBrand;
+    }
 }
 

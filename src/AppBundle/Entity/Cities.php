@@ -2,60 +2,170 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Cities
- *
- * @ORM\Table(name="cities")
- * @ORM\Entity
  */
 class Cities
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="city_name", type="string", length=64, nullable=false)
      */
     private $cityName;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="city_addtime", type="integer", nullable=false)
      */
     private $cityAddtime = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="city_lastmodified", type="integer", nullable=false)
      */
     private $cityLastmodified = '0';
 
     /**
      * @var float
-     *
-     * @ORM\Column(name="city_latitude", type="float", precision=10, scale=0, nullable=false)
      */
     private $cityLatitude = '0';
 
     /**
      * @var float
-     *
-     * @ORM\Column(name="city_longitude", type="float", precision=10, scale=0, nullable=false)
      */
     private $cityLongitude = '0';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="city_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $cityId;
 
 
+    /**
+     * Set cityName
+     *
+     * @param string $cityName
+     *
+     * @return Cities
+     */
+    public function setCityName($cityName)
+    {
+        $this->cityName = $cityName;
+
+        return $this;
+    }
+
+    /**
+     * Get cityName
+     *
+     * @return string
+     */
+    public function getCityName()
+    {
+        return $this->cityName;
+    }
+
+    /**
+     * Set cityAddtime
+     *
+     * @param integer $cityAddtime
+     *
+     * @return Cities
+     */
+    public function setCityAddtime($cityAddtime)
+    {
+        $this->cityAddtime = $cityAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get cityAddtime
+     *
+     * @return integer
+     */
+    public function getCityAddtime()
+    {
+        return $this->cityAddtime;
+    }
+
+    /**
+     * Set cityLastmodified
+     *
+     * @param integer $cityLastmodified
+     *
+     * @return Cities
+     */
+    public function setCityLastmodified($cityLastmodified)
+    {
+        $this->cityLastmodified = $cityLastmodified;
+
+        return $this;
+    }
+
+    /**
+     * Get cityLastmodified
+     *
+     * @return integer
+     */
+    public function getCityLastmodified()
+    {
+        return $this->cityLastmodified;
+    }
+
+    /**
+     * Set cityLatitude
+     *
+     * @param float $cityLatitude
+     *
+     * @return Cities
+     */
+    public function setCityLatitude($cityLatitude)
+    {
+        $this->cityLatitude = $cityLatitude;
+
+        return $this;
+    }
+
+    /**
+     * Get cityLatitude
+     *
+     * @return float
+     */
+    public function getCityLatitude()
+    {
+        return $this->cityLatitude;
+    }
+
+    /**
+     * Set cityLongitude
+     *
+     * @param float $cityLongitude
+     *
+     * @return Cities
+     */
+    public function setCityLongitude($cityLongitude)
+    {
+        $this->cityLongitude = $cityLongitude;
+
+        return $this;
+    }
+
+    /**
+     * Get cityLongitude
+     *
+     * @return float
+     */
+    public function getCityLongitude()
+    {
+        return $this->cityLongitude;
+    }
+
+    /**
+     * Get cityId
+     *
+     * @return integer
+     */
+    public function getCityId()
+    {
+        return $this->cityId;
+    }
 }
 

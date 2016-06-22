@@ -2,95 +2,315 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Applications
- *
- * @ORM\Table(name="applications")
- * @ORM\Entity
  */
 class Applications
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="appl_email", type="string", length=128, nullable=false)
      */
     private $applEmail;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="appl_url", type="string", length=128, nullable=false)
      */
     private $applUrl = '';
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="appl_person", type="string", length=128, nullable=false)
      */
     private $applPerson;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="appl_company", type="string", length=128, nullable=false)
      */
     private $applCompany;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="appl_eik", type="string", length=16, nullable=false)
      */
     private $applEik;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="appl_region", type="string", length=32, nullable=false)
      */
     private $applRegion = '';
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="appl_city", type="string", length=32, nullable=false)
      */
     private $applCity = '';
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="appl_address", type="string", length=128, nullable=false)
      */
     private $applAddress = '';
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="appl_ip", type="string", length=16, nullable=false)
      */
     private $applIp;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="appl_addtime", type="integer", nullable=false)
      */
     private $applAddtime;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="appl_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $applId;
 
 
+    /**
+     * Set applEmail
+     *
+     * @param string $applEmail
+     *
+     * @return Applications
+     */
+    public function setApplEmail($applEmail)
+    {
+        $this->applEmail = $applEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get applEmail
+     *
+     * @return string
+     */
+    public function getApplEmail()
+    {
+        return $this->applEmail;
+    }
+
+    /**
+     * Set applUrl
+     *
+     * @param string $applUrl
+     *
+     * @return Applications
+     */
+    public function setApplUrl($applUrl)
+    {
+        $this->applUrl = $applUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get applUrl
+     *
+     * @return string
+     */
+    public function getApplUrl()
+    {
+        return $this->applUrl;
+    }
+
+    /**
+     * Set applPerson
+     *
+     * @param string $applPerson
+     *
+     * @return Applications
+     */
+    public function setApplPerson($applPerson)
+    {
+        $this->applPerson = $applPerson;
+
+        return $this;
+    }
+
+    /**
+     * Get applPerson
+     *
+     * @return string
+     */
+    public function getApplPerson()
+    {
+        return $this->applPerson;
+    }
+
+    /**
+     * Set applCompany
+     *
+     * @param string $applCompany
+     *
+     * @return Applications
+     */
+    public function setApplCompany($applCompany)
+    {
+        $this->applCompany = $applCompany;
+
+        return $this;
+    }
+
+    /**
+     * Get applCompany
+     *
+     * @return string
+     */
+    public function getApplCompany()
+    {
+        return $this->applCompany;
+    }
+
+    /**
+     * Set applEik
+     *
+     * @param string $applEik
+     *
+     * @return Applications
+     */
+    public function setApplEik($applEik)
+    {
+        $this->applEik = $applEik;
+
+        return $this;
+    }
+
+    /**
+     * Get applEik
+     *
+     * @return string
+     */
+    public function getApplEik()
+    {
+        return $this->applEik;
+    }
+
+    /**
+     * Set applRegion
+     *
+     * @param string $applRegion
+     *
+     * @return Applications
+     */
+    public function setApplRegion($applRegion)
+    {
+        $this->applRegion = $applRegion;
+
+        return $this;
+    }
+
+    /**
+     * Get applRegion
+     *
+     * @return string
+     */
+    public function getApplRegion()
+    {
+        return $this->applRegion;
+    }
+
+    /**
+     * Set applCity
+     *
+     * @param string $applCity
+     *
+     * @return Applications
+     */
+    public function setApplCity($applCity)
+    {
+        $this->applCity = $applCity;
+
+        return $this;
+    }
+
+    /**
+     * Get applCity
+     *
+     * @return string
+     */
+    public function getApplCity()
+    {
+        return $this->applCity;
+    }
+
+    /**
+     * Set applAddress
+     *
+     * @param string $applAddress
+     *
+     * @return Applications
+     */
+    public function setApplAddress($applAddress)
+    {
+        $this->applAddress = $applAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get applAddress
+     *
+     * @return string
+     */
+    public function getApplAddress()
+    {
+        return $this->applAddress;
+    }
+
+    /**
+     * Set applIp
+     *
+     * @param string $applIp
+     *
+     * @return Applications
+     */
+    public function setApplIp($applIp)
+    {
+        $this->applIp = $applIp;
+
+        return $this;
+    }
+
+    /**
+     * Get applIp
+     *
+     * @return string
+     */
+    public function getApplIp()
+    {
+        return $this->applIp;
+    }
+
+    /**
+     * Set applAddtime
+     *
+     * @param integer $applAddtime
+     *
+     * @return Applications
+     */
+    public function setApplAddtime($applAddtime)
+    {
+        $this->applAddtime = $applAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get applAddtime
+     *
+     * @return integer
+     */
+    public function getApplAddtime()
+    {
+        return $this->applAddtime;
+    }
+
+    /**
+     * Get applId
+     *
+     * @return integer
+     */
+    public function getApplId()
+    {
+        return $this->applId;
+    }
 }
 

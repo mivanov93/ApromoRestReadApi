@@ -2,46 +2,112 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * ImportFormats
- *
- * @ORM\Table(name="import_formats", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQ_1EAC13D098CBC30F", columns={"if_name"})})
- * @ORM\Entity
  */
 class ImportFormats
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="if_name", type="string", length=32, nullable=false)
      */
     private $ifName;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="if_addtime", type="integer", nullable=false)
      */
     private $ifAddtime;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="if_lastmodified", type="integer", nullable=false)
      */
     private $ifLastmodified;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="if_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $ifId;
 
 
+    /**
+     * Set ifName
+     *
+     * @param string $ifName
+     *
+     * @return ImportFormats
+     */
+    public function setIfName($ifName)
+    {
+        $this->ifName = $ifName;
+
+        return $this;
+    }
+
+    /**
+     * Get ifName
+     *
+     * @return string
+     */
+    public function getIfName()
+    {
+        return $this->ifName;
+    }
+
+    /**
+     * Set ifAddtime
+     *
+     * @param integer $ifAddtime
+     *
+     * @return ImportFormats
+     */
+    public function setIfAddtime($ifAddtime)
+    {
+        $this->ifAddtime = $ifAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get ifAddtime
+     *
+     * @return integer
+     */
+    public function getIfAddtime()
+    {
+        return $this->ifAddtime;
+    }
+
+    /**
+     * Set ifLastmodified
+     *
+     * @param integer $ifLastmodified
+     *
+     * @return ImportFormats
+     */
+    public function setIfLastmodified($ifLastmodified)
+    {
+        $this->ifLastmodified = $ifLastmodified;
+
+        return $this;
+    }
+
+    /**
+     * Get ifLastmodified
+     *
+     * @return integer
+     */
+    public function getIfLastmodified()
+    {
+        return $this->ifLastmodified;
+    }
+
+    /**
+     * Get ifId
+     *
+     * @return integer
+     */
+    public function getIfId()
+    {
+        return $this->ifId;
+    }
 }
 

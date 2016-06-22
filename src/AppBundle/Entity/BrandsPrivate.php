@@ -2,56 +2,155 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * BrandsPrivate
- *
- * @ORM\Table(name="brands_private")
- * @ORM\Entity
  */
 class BrandsPrivate
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bp_max_pr_count", type="integer", nullable=false)
      */
     private $bpMaxPrCount = '200';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bp_max_top_pr_count", type="integer", nullable=false)
      */
     private $bpMaxTopPrCount = '5';
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bp_addtime", type="integer", nullable=false)
      */
     private $bpAddtime;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bp_lastmodified", type="integer", nullable=false)
      */
     private $bpLastmodified;
 
     /**
      * @var \AppBundle\Entity\Brands
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Brands")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="bp_brand_id", referencedColumnName="brand_id")
-     * })
      */
     private $bpBrand;
 
 
+    /**
+     * Set bpMaxPrCount
+     *
+     * @param integer $bpMaxPrCount
+     *
+     * @return BrandsPrivate
+     */
+    public function setBpMaxPrCount($bpMaxPrCount)
+    {
+        $this->bpMaxPrCount = $bpMaxPrCount;
+
+        return $this;
+    }
+
+    /**
+     * Get bpMaxPrCount
+     *
+     * @return integer
+     */
+    public function getBpMaxPrCount()
+    {
+        return $this->bpMaxPrCount;
+    }
+
+    /**
+     * Set bpMaxTopPrCount
+     *
+     * @param integer $bpMaxTopPrCount
+     *
+     * @return BrandsPrivate
+     */
+    public function setBpMaxTopPrCount($bpMaxTopPrCount)
+    {
+        $this->bpMaxTopPrCount = $bpMaxTopPrCount;
+
+        return $this;
+    }
+
+    /**
+     * Get bpMaxTopPrCount
+     *
+     * @return integer
+     */
+    public function getBpMaxTopPrCount()
+    {
+        return $this->bpMaxTopPrCount;
+    }
+
+    /**
+     * Set bpAddtime
+     *
+     * @param integer $bpAddtime
+     *
+     * @return BrandsPrivate
+     */
+    public function setBpAddtime($bpAddtime)
+    {
+        $this->bpAddtime = $bpAddtime;
+
+        return $this;
+    }
+
+    /**
+     * Get bpAddtime
+     *
+     * @return integer
+     */
+    public function getBpAddtime()
+    {
+        return $this->bpAddtime;
+    }
+
+    /**
+     * Set bpLastmodified
+     *
+     * @param integer $bpLastmodified
+     *
+     * @return BrandsPrivate
+     */
+    public function setBpLastmodified($bpLastmodified)
+    {
+        $this->bpLastmodified = $bpLastmodified;
+
+        return $this;
+    }
+
+    /**
+     * Get bpLastmodified
+     *
+     * @return integer
+     */
+    public function getBpLastmodified()
+    {
+        return $this->bpLastmodified;
+    }
+
+    /**
+     * Set bpBrand
+     *
+     * @param \AppBundle\Entity\Brands $bpBrand
+     *
+     * @return BrandsPrivate
+     */
+    public function setBpBrand(\AppBundle\Entity\Brands $bpBrand)
+    {
+        $this->bpBrand = $bpBrand;
+
+        return $this;
+    }
+
+    /**
+     * Get bpBrand
+     *
+     * @return \AppBundle\Entity\Brands
+     */
+    public function getBpBrand()
+    {
+        return $this->bpBrand;
+    }
 }
 
