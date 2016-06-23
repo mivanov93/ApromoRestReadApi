@@ -139,4 +139,3 @@ class ProdcatMapping
         return $this->pmMappedProdcat;
     }
 }
-

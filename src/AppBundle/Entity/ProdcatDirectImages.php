@@ -443,4 +443,3 @@ class ProdcatDirectImages
         return $this->pdiProdcat;
     }
 }
-

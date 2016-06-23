@@ -255,4 +255,3 @@ class BrandsUsers
         return $this->buLevel;
     }
 }
-

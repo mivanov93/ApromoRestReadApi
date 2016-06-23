@@ -313,4 +313,3 @@ class Applications
         return $this->applId;
     }
 }
-

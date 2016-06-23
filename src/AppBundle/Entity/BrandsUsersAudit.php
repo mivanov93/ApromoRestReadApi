@@ -168,4 +168,3 @@ class BrandsUsersAudit
         return $this->buAuditUser;
     }
 }
-

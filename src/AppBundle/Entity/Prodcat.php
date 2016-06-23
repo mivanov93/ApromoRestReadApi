@@ -197,4 +197,3 @@ class Prodcat
         return $this->prodcatPar;
     }
 }
-

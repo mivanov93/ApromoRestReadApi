@@ -226,4 +226,3 @@ class ProductsImagesResizeLog
         return $this->pirlProductsImageDlLog;
     }
 }
-

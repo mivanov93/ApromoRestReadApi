@@ -168,4 +168,3 @@ class Cities
         return $this->cityId;
     }
 }
-

@@ -313,4 +313,3 @@ class ProductsImagesDlLog
         return $this->pidlProductsImage;
     }
 }
-

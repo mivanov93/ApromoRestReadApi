@@ -677,5 +677,33 @@ class Products
     {
         return $this->prodBrand;
     }
-}
+    /**
+     * @var string
+     */
+    private $prodKeywords;
 
+
+    /**
+     * Set prodKeywords
+     *
+     * @param string $prodKeywords
+     *
+     * @return Products
+     */
+    public function setProdKeywords($prodKeywords)
+    {
+        $this->prodKeywords = $prodKeywords;
+
+        return $this;
+    }
+
+    /**
+     * Get prodKeywords
+     *
+     * @return string
+     */
+    public function getProdKeywords()
+    {
+        return $this->prodKeywords;
+    }
+}

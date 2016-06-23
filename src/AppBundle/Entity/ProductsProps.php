@@ -110,4 +110,3 @@ class ProductsProps
         return $this->ppId;
     }
 }
-

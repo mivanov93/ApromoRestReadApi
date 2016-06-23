@@ -52,4 +52,3 @@ class BrandsUsersRoles
         return $this->buRoleLevel;
     }
 }
-

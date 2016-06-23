@@ -23,7 +23,7 @@ class ProductsController extends Controller {
     const PROD_DETAILS_VIEW = 'partial b.{brandId,brandName,brandLastmodified,brandUrl},'
             . 'partial p.{prodId,prodName,prodDescr,prodUrl,'
             . 'prodDeliveryTime,prodDeliveryCost,prodManufacturer,'
-            . 'prodNewprice,prodOldprice,prodExptime,prodLastmodified},'
+            . 'prodNewprice,prodOldprice,prodPercentage,prodExptime,prodLastmodified},'
             . 'partial pc.{prodcatId,prodcatName},'
             . 'partial pi.{piId}';
     const TOP_QUERY_CACHE_TIME = 60;
@@ -59,7 +59,7 @@ class ProductsController extends Controller {
             $qb->setParameter('prodcatId', (int) $foundProduct['prodProdcat']['prodcatId']);
             $qb->setParameter('prodId', (int) $foundProduct['prodId']);
             $qb->addSelect("MATCH_AGAINST "
-                    . "(p.prodName, p.prodDescr, :searchQuery 'IN BOOLEAN MODE') as hidden score");
+                    . "(p.prodName, p.prodDescr, p.prodKeywords, :searchQuery 'IN BOOLEAN MODE') as hidden score");
             $qb->setParameter('searchQuery', $foundProduct['prodName']);
             $qb->orderBy('score', 'desc');
             $qry = $qb->getQuery();
@@ -371,8 +371,8 @@ class ProductsController extends Controller {
             
             $searchQuery = implode(' ', $newSearchQuery);
             $qb->addSelect("MATCH_AGAINST "
-                    . "(p.prodName, p.prodDescr, :searchQuery 'IN BOOLEAN MODE') as hidden score");
-            $qb->andWhere("MATCH_AGAINST(p.prodName, p.prodDescr, :searchQuery 'IN BOOLEAN MODE') > 0");
+                    . "(p.prodName, p.prodDescr,p.prodKeywords, :searchQuery 'IN BOOLEAN MODE') as hidden score");
+            $qb->andWhere("MATCH_AGAINST(p.prodName, p.prodDescr,p.prodKeywords, :searchQuery 'IN BOOLEAN MODE') > 0");
             $qb->setParameter('searchQuery', $searchQuery);
             $qb->orderBy('score', 'desc');
         }

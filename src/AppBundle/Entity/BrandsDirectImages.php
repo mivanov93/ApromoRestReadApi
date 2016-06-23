@@ -443,4 +443,3 @@ class BrandsDirectImages
         return $this->bdiBrand;
     }
 }
-

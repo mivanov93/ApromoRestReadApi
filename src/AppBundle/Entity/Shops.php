@@ -516,4 +516,3 @@ class Shops
         return $this->shopBrand;
     }
 }
-

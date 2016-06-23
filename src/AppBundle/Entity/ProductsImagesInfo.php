@@ -124,4 +124,3 @@ class ProductsImagesInfo
         return $this->piiPi;
     }
 }
-

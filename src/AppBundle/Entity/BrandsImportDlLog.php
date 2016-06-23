@@ -342,4 +342,3 @@ class BrandsImportDlLog
         return $this->bidlBrand;
     }
 }
-

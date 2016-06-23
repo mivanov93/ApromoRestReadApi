@@ -342,4 +342,3 @@ class BrandsImportActLog
         return $this->bialBrand;
     }
 }
-

@@ -342,4 +342,3 @@ class Brands
         return $this->brandId;
     }
 }
-

@@ -153,4 +153,3 @@ class BrandsPrivate
         return $this->bpBrand;
     }
 }
-

@@ -545,4 +545,3 @@ class ProductsArchive
         return $this->paProdBrand;
     }
 }
-

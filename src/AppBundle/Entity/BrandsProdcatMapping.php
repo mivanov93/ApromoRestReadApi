@@ -197,4 +197,3 @@ class BrandsProdcatMapping
         return $this->bpmBrand;
     }
 }
-

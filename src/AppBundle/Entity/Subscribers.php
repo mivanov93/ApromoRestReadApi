@@ -168,4 +168,3 @@ class Subscribers
         return $this->subscrId;
     }
 }
-

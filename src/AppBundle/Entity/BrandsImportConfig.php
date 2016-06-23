@@ -182,4 +182,3 @@ class BrandsImportConfig
         return $this->bicProdcat;
     }
 }
-

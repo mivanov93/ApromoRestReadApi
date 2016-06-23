@@ -110,4 +110,3 @@ class ImportFormats
         return $this->ifId;
     }
 }
-

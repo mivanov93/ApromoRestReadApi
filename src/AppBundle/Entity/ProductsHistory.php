@@ -429,4 +429,3 @@ class ProductsHistory
         return $this->phProdBrand;
     }
 }
-

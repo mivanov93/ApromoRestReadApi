@@ -32,6 +32,11 @@
                 <option name="fixed"/>
             </options>
         </field>
+        <field name="prodKeywords" type="text" column="prod_keywords" length="65535" nullable="false">
+            <options>
+                <option name="fixed"/>
+            </options>
+        </field>
         <field name="prodUrl" type="text" column="prod_url" length="65535" nullable="false">
             <options>
                 <option name="fixed"/>
@@ -128,7 +133,7 @@
             </join-columns>
         </many-to-one>
         <one-to-many field="prodPiCollection" mapped-by="piProd"
-                  target-entity="ProductsImages">
+                     target-entity="ProductsImages">
         </one-to-many>
     </entity>
 </doctrine-mapping>

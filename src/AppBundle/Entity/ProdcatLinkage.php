@@ -211,4 +211,3 @@ class ProdcatLinkage
         return $this->plProdcat;
     }
 }
-
