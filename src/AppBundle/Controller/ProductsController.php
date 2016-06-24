@@ -138,7 +138,7 @@ class ProductsController extends Controller {
         $qb->join('p.prodPiCollection', 'pi');
         $qb->join('p.prodBrand', 'b');
         $qb->innerJoin('p.prodProdcat', 'pc');
-        $qb->groupBy('p.prodBrand');
+        //$qb->groupBy('p.prodBrand');
         $qb->setMaxResults((int) $limit);
         $qb->orderBy('r');
         if ($prodcatId > 0) {
@@ -245,29 +245,34 @@ class ProductsController extends Controller {
         /* @var $qb QueryBuilder */
         $qb = $repo->createQueryBuilder('p');
         $qb->select(self::PROD_GRID_VIEW);
-        $qb->join('p.prodPiCollection', 'pi');
-        $qb->join('p.prodBrand', 'b');
+        $qb->innerJoin('p.prodPiCollection', 'pi');
+        $qb->innerJoin('p.prodBrand', 'b');
+        $qb->leftJoin('p.prodPo', 'po');
         $qb->innerJoin('p.prodProdcat', 'pc');
         $qb->setFirstResult(((int) $page - 1) * (int) $perPage);
         $qb->setMaxResults((int) $perPage);
         $qb->andWhere('p.prodBrand = :brandId');
         $qb->setParameter('brandId', (int) $brandId);
-
+        $qb->orderBy('po.poRand', 'ASC');
         $qry = $qb->getQuery();
         $qry->setResultCacheId('products_by_brand');
         $qry->setResultCacheLifetime(self::GRID_CACHE_TIME);
         $qry->setHydrationMode(Query::HYDRATE_ARRAY);
         $paginator = new Paginator($qry);
         $products = $paginator->getIterator()->getArrayCopy();
-        $qb->select('count(distinct p.prodId) as x');
-        $qb->orderBy('x');
-        $qb->setFirstResult(0);
-        $qb->setMaxResults(1);
-        $totalQry = $qb->getQuery();
-        $totalQry->setResultCacheId('products_by_brand_total');
-        $totalQry->setResultCacheLifetime(self::GRID_CACHE_TIME);
+        if (count($products) > 0 || $page > 1) {
+            $qb->select('count(distinct p.prodId) as x');
+            $qb->orderBy('x');
+            $qb->setFirstResult(0);
+            $qb->setMaxResults(1);
+            $totalQry = $qb->getQuery();
+            $totalQry->setResultCacheId('products_by_brand_total');
+            $totalQry->setResultCacheLifetime(self::GRID_CACHE_TIME);
 
-        $totalRowCount = $totalQry->getSingleScalarResult();
+            $totalRowCount = $totalQry->getSingleScalarResult();
+        } else {
+            $totalRowCount = 0;
+        }
         $r = $this->get('response_factory')->getJsonMysqlRowsResponse($products, $totalRowCount, self::GRID_CACHE_TIME);
         return $r;
     }
@@ -278,13 +283,15 @@ class ProductsController extends Controller {
         /* @var $qb QueryBuilder */
         $qb = $repo->createQueryBuilder('p');
         $qb->select(self::PROD_GRID_VIEW);
-        $qb->join('p.prodPiCollection', 'pi');
-        $qb->join('p.prodBrand', 'b');
+        $qb->innerJoin('p.prodPiCollection', 'pi');
+        $qb->innerJoin('p.prodBrand', 'b');
+        $qb->leftJoin('p.prodPo', 'po');
         $qb->innerJoin('p.prodProdcat', 'pc');
         $qb->setFirstResult(((int) $page - 1) * (int) $perPage);
         $qb->setMaxResults((int) $perPage);
         $qb->andWhere('p.prodProdcat = :prodcatId');
         $qb->setParameter('prodcatId', (int) $prodcatId);
+        $qb->orderBy('po.poRand', 'ASC');
 
         $qry = $qb->getQuery();
         $qry->setResultCacheId('products_by_category');
@@ -292,15 +299,19 @@ class ProductsController extends Controller {
         $qry->setHydrationMode(Query::HYDRATE_ARRAY);
         $paginator = new Paginator($qry);
         $products = $paginator->getIterator()->getArrayCopy();
-        $qb->select('count(distinct p.prodId) as x');
-        $qb->orderBy('x');
-        $qb->setFirstResult(0);
-        $qb->setMaxResults(1);
-        $totalRowCountQuery = $qb->getQuery();
-        $totalRowCountQuery->setResultCacheId('products_by_category_total');
-        $totalRowCountQuery->setResultCacheLifetime(self::GRID_CACHE_TIME);
+        if (count($products) > 0 || $page > 1) {
+            $qb->select('count(distinct p.prodId) as x');
+            $qb->orderBy('x');
+            $qb->setFirstResult(0);
+            $qb->setMaxResults(1);
+            $totalRowCountQuery = $qb->getQuery();
+            $totalRowCountQuery->setResultCacheId('products_by_category_total');
+            $totalRowCountQuery->setResultCacheLifetime(self::GRID_CACHE_TIME);
 
-        $totalRowCount = $totalRowCountQuery->getSingleScalarResult();
+            $totalRowCount = $totalRowCountQuery->getSingleScalarResult();
+        } else {
+            $totalRowCount = 0;
+        }
         $r = $this->get('response_factory')->getJsonMysqlRowsResponse($products, $totalRowCount, self::GRID_CACHE_TIME);
         return $r;
     }
@@ -312,8 +323,17 @@ class ProductsController extends Controller {
         $maxNewPrice = (double) $request->get('maxNewPrice');
         $orderDir = (strtoupper($orderDir) === 'DESC' ? 'DESC' : 'ASC');
         switch ($order) {
+            case "prodAddtime":
+                $order = "p.prodAddtime";
+                break;
+            case "poRand":
+                $order = "po.poRand";
+                break;
             case "prodNewprice":
                 $order = "p.prodNewprice";
+                break;
+            case "prodName":
+                $order = "p.prodName";
                 break;
             case "prodPercentage":
                 $order = "p.prodPercentage";
@@ -325,8 +345,9 @@ class ProductsController extends Controller {
         /* @var $qb QueryBuilder */
         $qb = $repo->createQueryBuilder('p');
         $qb->select(self::PROD_GRID_VIEW);
-        $qb->join('p.prodPiCollection', 'pi');
-        $qb->join('p.prodBrand', 'b');
+        $qb->innerJoin('p.prodPiCollection', 'pi');
+        $qb->innerJoin('p.prodBrand', 'b');
+        $qb->leftJoin('p.prodPo', 'po');
         $qb->innerJoin('p.prodProdcat', 'pc');
         $qb->setFirstResult(((int) $page - 1) * (int) $perPage);
         $qb->setMaxResults((int) $perPage);
@@ -368,7 +389,7 @@ class ProductsController extends Controller {
                     $newSearchQuery[] = $toCyr;
                 }
             }
-            
+
             $searchQuery = implode(' ', $newSearchQuery);
             $qb->addSelect("MATCH_AGAINST "
                     . "(p.prodName, p.prodDescr,p.prodKeywords, :searchQuery 'IN BOOLEAN MODE') as hidden score");
@@ -385,16 +406,20 @@ class ProductsController extends Controller {
         $qry->setHydrationMode(Query::HYDRATE_ARRAY);
         $paginator = new Paginator($qry);
         $products = $paginator->getIterator()->getArrayCopy();
-        $qb->select('count(distinct p.prodId) as x');
-        $qb->orderBy('x');
-        $qb->setFirstResult(0);
-        $qb->setMaxResults(1);
-        $totalRowsQuery = $qb->getQuery();
-        if ($cached) {
-            $totalRowsQuery->setResultCacheId('products_search_total_rows');
-            $totalRowsQuery->setResultCacheLifetime(self::GRID_CACHE_TIME);
+        if (count($products) > 0 || $page > 1) {
+            $qb->select('count(distinct p.prodId) as x');
+            $qb->orderBy('x');
+            $qb->setFirstResult(0);
+            $qb->setMaxResults(1);
+            $totalRowsQuery = $qb->getQuery();
+            if ($cached) {
+                $totalRowsQuery->setResultCacheId('products_search_total_rows');
+                $totalRowsQuery->setResultCacheLifetime(self::GRID_CACHE_TIME);
+            }
+            $totalRowCount = $totalRowsQuery->getSingleScalarResult();
+        } else {
+            $totalRowCount = 0;
         }
-        $totalRowCount = $totalRowsQuery->getSingleScalarResult();
         $r = $this->get('response_factory')->getJsonMysqlRowsResponse($products, $totalRowCount, self::GRID_CACHE_TIME,
                                                                       $cached ? ResponseFactory::publicCache : ResponseFactory::privateCache);
         return $r;

@@ -13,7 +13,7 @@
             <index name="prod_limited_avail" columns="prod_limited_avail"/>
             <index name="prod_addtime_lastmod" columns="prod_addtime,prod_lastmodified"/>
             <index name="prod_name" columns="prod_name"/>
-            <index name="prod_descr_comp" columns="prod_name,prod_descr"/>
+            <index name="prod_descr_comp" columns="prod_name,prod_descr,prod_keywords"/>
         </indexes>
         <unique-constraints>
             <unique-constraint name="prod_unique_id_extra_index" columns="prod_unique_id,prod_brand_id"/>
@@ -28,11 +28,6 @@
             </options>
         </field>
         <field name="prodDescr" type="text" column="prod_descr" length="65535" nullable="false">
-            <options>
-                <option name="fixed"/>
-            </options>
-        </field>
-        <field name="prodKeywords" type="text" column="prod_keywords" length="65535" nullable="false">
             <options>
                 <option name="fixed"/>
             </options>
@@ -122,6 +117,11 @@
                 <option name="fixed"/>
             </options>
         </field>
+        <field name="prodKeywords" type="text" column="prod_keywords" length="65535" nullable="false">
+            <options>
+                <option name="fixed"/>
+            </options>
+        </field>
         <many-to-one field="prodProdcat" target-entity="Prodcat" fetch="LAZY">
             <join-columns>
                 <join-column name="prod_prodcat_id" referenced-column-name="prodcat_id"/>
@@ -132,7 +132,10 @@
                 <join-column name="prod_brand_id" referenced-column-name="brand_id"/>
             </join-columns>
         </many-to-one>
-        <one-to-many field="prodPiCollection" mapped-by="piProd"
+        <one-to-one field="prodPo" mapped-by="poProd" fetch="LAZY"
+                  target-entity="ProductsOrder">
+        </one-to-one>
+        <one-to-many field="prodPiCollection" mapped-by="piProd" fetch="LAZY"
                      target-entity="ProductsImages">
         </one-to-many>
     </entity>

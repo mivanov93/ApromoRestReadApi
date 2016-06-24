@@ -103,9 +103,19 @@ class Products
     private $prodUniqueId;
 
     /**
+     * @var string
+     */
+    private $prodKeywords;
+
+    /**
      * @var integer
      */
     private $prodId;
+
+    /**
+     * @var \AppBundle\Entity\ProductsOrder
+     */
+    private $prodPo;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -587,6 +597,30 @@ class Products
     }
 
     /**
+     * Set prodKeywords
+     *
+     * @param string $prodKeywords
+     *
+     * @return Products
+     */
+    public function setProdKeywords($prodKeywords)
+    {
+        $this->prodKeywords = $prodKeywords;
+
+        return $this;
+    }
+
+    /**
+     * Get prodKeywords
+     *
+     * @return string
+     */
+    public function getProdKeywords()
+    {
+        return $this->prodKeywords;
+    }
+
+    /**
      * Get prodId
      *
      * @return integer
@@ -594,6 +628,30 @@ class Products
     public function getProdId()
     {
         return $this->prodId;
+    }
+
+    /**
+     * Set prodPo
+     *
+     * @param \AppBundle\Entity\ProductsOrder $prodPo
+     *
+     * @return Products
+     */
+    public function setProdPo(\AppBundle\Entity\ProductsOrder $prodPo = null)
+    {
+        $this->prodPo = $prodPo;
+
+        return $this;
+    }
+
+    /**
+     * Get prodPo
+     *
+     * @return \AppBundle\Entity\ProductsOrder
+     */
+    public function getProdPo()
+    {
+        return $this->prodPo;
     }
 
     /**
@@ -677,33 +735,5 @@ class Products
     {
         return $this->prodBrand;
     }
-    /**
-     * @var string
-     */
-    private $prodKeywords;
-
-
-    /**
-     * Set prodKeywords
-     *
-     * @param string $prodKeywords
-     *
-     * @return Products
-     */
-    public function setProdKeywords($prodKeywords)
-    {
-        $this->prodKeywords = $prodKeywords;
-
-        return $this;
-    }
-
-    /**
-     * Get prodKeywords
-     *
-     * @return string
-     */
-    public function getProdKeywords()
-    {
-        return $this->prodKeywords;
-    }
 }
+
