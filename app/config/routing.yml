@@ -9,6 +9,40 @@ index:
 fb_index:
     path:     /fb
     defaults: { _controller: AppBundle:Facebook:index }
+    
+fb_index2:
+    path:     /fb/
+    defaults: { _controller: AppBundle:Facebook:index }
+    
+fb_partners:
+    path:     /fb/partners
+    defaults: { _controller: AppBundle:Facebook:partners }
+    
+fb_by_brand:
+    path:     /fb/magazini/{brandId}/{brandName}/{page}
+    defaults: { _controller: AppBundle:Facebook:brandByBrandId, page: 1, brandName: "placeholder" }
+    requirements:
+        brandName: "[a-zA-Z0-9-_]+"
+        brandId:  \d+
+        methods: GET
+    
+fb_by_prodcat:
+    path:     /fb/{prodcatName}-{prodcatId}
+    defaults: { _controller: AppBundle:Facebook:productsByProdcat}
+    requirements:
+        prodcatName: "[a-zA-Z0-9-_]+"
+        prodcatId:  \d+
+        methods: GET
+    
+fb_prod_details:
+    path:     /fb/{prodcatName}-{prodcatId}/{prodName}-{prodId}
+    defaults: { _controller: AppBundle:Facebook:productDetailsById}
+    requirements:
+        prodcatName: "[a-zA-Z0-9-_]+"
+        prodName: "[a-zA-Z0-9-_]+"
+        prodId:  \d+
+        prodcatId:  \d+
+        #methods: GET
 
 products_by_id:
     path:     /products/{prodId}

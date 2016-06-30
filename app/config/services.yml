@@ -16,6 +16,12 @@ services:
     common_data:
         class: AppBundle\Utils\CommonData
         arguments: ["@doctrine"]
+    brands_data_srv:
+        class: AppBundle\Services\BrandsDataSrv
+        arguments: ["@doctrine"]
+    products_data_srv:
+        class: AppBundle\Services\ProductsDataSrv
+        arguments: ["@doctrine"]
     app.exception_listener:
         class: AppBundle\EventListener\ExceptionListener
         arguments: ["@logger",%kernel.debug%]

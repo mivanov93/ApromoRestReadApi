@@ -42,10 +42,27 @@ class ResponseFactory {
         }
         return $r;
     }
-    
-    public function getJsonMysqlRowsResponse($rawData,$totalRowCount, $cacheTime = null, $cacheMode = self::publicCache, $jsonEncodeOpts = null) {
-        $data=["data"=>["rows"=> $rawData,"totalRowCount"=>$totalRowCount],"statusCode"=>1,"statusMsg"=>"OK","reqId"=>15,"execTime"=>0.01];
-        $r=$this->getJsonResponse($data, $cacheTime, $cacheMode, $jsonEncodeOpts);
+
+    public function getHtmlResponse($data, $cacheTime = null, $cacheMode = self::publicCache,$statusCode=200) {
+        if ($cacheTime === null) {
+            $cacheTime = $this->cacheTime;
+        }
+        $r = new Response($data, $statusCode);
+        $r->setMaxAge($cacheTime);
+        $r->setSharedMaxAge($cacheTime);
+        $r->setEtag(md5($data));
+        if ($cacheMode === self::publicCache) {
+            $r->setPublic();
+        } else {
+            $r->setPrivate();
+        }
+        return $r;
+    }
+
+    public function getJsonMysqlRowsResponse($rawData, $totalRowCount, $cacheTime = null, $cacheMode = self::publicCache,
+                                             $jsonEncodeOpts = null) {
+        $data = ["data" => ["rows" => $rawData, "totalRowCount" => $totalRowCount], "statusCode" => 1, "statusMsg" => "OK", "reqId" => 15, "execTime" => 0.01];
+        $r = $this->getJsonResponse($data, $cacheTime, $cacheMode, $jsonEncodeOpts);
         return $r;
     }
 
