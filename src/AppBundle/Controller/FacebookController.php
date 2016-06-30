@@ -17,6 +17,7 @@ class FacebookController extends Controller {
     const SITE_NAME = 'Apromo.bg';
     const CACHE_TIME = 1000;
     const TEMPLATE = 'fb/generic.html.twig';
+    const LENGTH_OF_FB_STR = 3;
 
     public function indexAction() {
 
@@ -51,12 +52,12 @@ class FacebookController extends Controller {
     }
 
     public function productsByProdcatAction($prodcatId) {
-        $res = new Response("prodcat".$prodcatId);
+        $res = new Response("prodcat" . $prodcatId);
         return $res;
     }
 
     public function productDetailsByIdAction(Request $request, $prodId) {
-        $currentUri = $request->getUri();
+        $currentUri = "http://www.apromo.bg" . mb_substr($request->getPathInfo(), self::LENGTH_OF_FB_STR);
 
         $prodDetails = $this->get('products_data_srv')->getProductDetailsById((int) $prodId);
         if ($prodDetails === null) {
@@ -71,16 +72,31 @@ class FacebookController extends Controller {
             ];
             $statusCode = 404;
         } else {
+            $imageUrl = 'http://images.apromo.bg/products/site/' .
+                    (int) $prodDetails['prodPiCollection'][0]['piId'] . '.jpg';
+            $imageSize = getimagesize($imageUrl);
+            if ($imageSize !== false) {
+                $imageWidth = $imageSize[0];
+                $imageHeight = $imageSize[1];
+            } else {
+                $imageWidth = 768;
+                $imageHeight = 432;
+            }
             $params = [
-                'title' => $prodDetails['prodName'] . ' от ' . $prodDetails['prodBrand']['brandName'],
+                'title' => $prodDetails['prodName'],
                 'url' => $currentUri,
                 'type' => 'product',
                 'site_name' => self::SITE_NAME,
                 'app_id' => self::APP_ID,
-                'image' => 'http://images.apromo.bg/products/high/' .
+                'image' => 'http://images.apromo.bg/products/site/' .
                 (int) $prodDetails['prodPiCollection'][0]['piId'] . '.jpg',
-                'description' => 'Цена: ' . $prodDetails['prodNewprice'] . ' лв\nОписание: ' . $prodDetails['prodDescr']
+                'image_width' => $imageWidth,
+                'image_height' => $imageHeight,
+                'description' => 'Цена: ' . $prodDetails['prodNewprice']
             ];
+
+            //. ' лв\nОписание: ' . $prodDetails['prodDescr']
+            //. ' от ' . $prodDetails['prodBrand']['brandName']
             $statusCode = 200;
         }
         $gen = $this->render(self::TEMPLATE, $params
@@ -90,7 +106,7 @@ class FacebookController extends Controller {
     }
 
     public function brandByBrandIdAction(Request $request, $brandId, $page) {
-        $currentUri = $request->getUri();
+        $currentUri = "http://www.apromo.bg" . mb_substr($request->getPathInfo(), self::LENGTH_OF_FB_STR);
 
         $brandDetails = $this->get('brands_data_srv')->getBrandDetailsById((int) $brandId);
         if ($brandDetails === null) {
@@ -105,13 +121,24 @@ class FacebookController extends Controller {
             ];
             $statusCode = 404;
         } else {
+            $imageUrl = 'http://images.apromo.bg/brands/site/' . (int) $brandId . '.png';
+            $imageSize = getimagesize($imageUrl);
+            if ($imageSize !== false) {
+                $imageWidth = $imageSize[0];
+                $imageHeight = $imageSize[1];
+            } else {
+                $imageWidth = 300;
+                $imageHeight = 300;
+            }
             $params = [
                 'title' => $brandDetails['brandName'],
                 'url' => $currentUri,
                 'type' => 'article',
                 'site_name' => self::SITE_NAME,
                 'app_id' => self::APP_ID,
-                'image' => 'http://images.apromo.bg/brands/high/' . (int) $brandId . '.png',
+                'image' => $imageUrl,
+                'image_width' => $imageWidth,
+                'image_height' => $imageHeight,
                 'description' => $brandDetails['brandDescr']
             ];
             $statusCode = 200;

@@ -22,7 +22,7 @@ fb_by_brand:
     path:     /fb/magazini/{brandId}/{brandName}/{page}
     defaults: { _controller: AppBundle:Facebook:brandByBrandId, page: 1, brandName: "placeholder" }
     requirements:
-        brandName: "[a-zA-Z0-9-_]+"
+        brandName: "[a-zA-Z0-9-_.]+"
         brandId:  \d+
         methods: GET
     
@@ -42,7 +42,7 @@ fb_prod_details:
         prodName: "[a-zA-Z0-9-_]+"
         prodId:  \d+
         prodcatId:  \d+
-        #methods: GET
+        methods: GET
 
 products_by_id:
     path:     /products/{prodId}
