@@ -25,6 +25,7 @@ class GreetCommand extends ContainerAwareCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        ini_set('memory_limit','128M');
         $regen = $input->getOption('regen');
         /* @var $doc Registry */
         $doc = $this->getContainer()->get('doctrine');
@@ -33,46 +34,46 @@ class GreetCommand extends ContainerAwareCommand {
         //$em->getConnection()->getWrappedConnection()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
         /* @var $prodRepo EntityRepository */
         $prodRepo = $em->getRepository(Products::class);
-//        $nq = $em->createQuery();
-//        $nq->setDQL("UPDATE AppBundle:ProductsOrder po SET po.poRand = rand()*1000000,po.poLastmodified = :now");
-//        $nq->setParameter("now", time());
-//        $nq->execute();
+        $nq = $em->createQuery();
+        $nq->setDQL("UPDATE AppBundle:ProductsOrder po SET po.poRand = rand()*1000000,po.poLastmodified = :now");
+        $nq->setParameter("now", time());
+        $nq->execute();
 
+        $maxp = $em->createQuery();
+        $maxp->setDQL("SELECT count(p) as x FROM AppBundle:Products p "
+                . "LEFT JOIN AppBundle:ProductsOrder po WITH(p.prodId = po.poProd) "
+                . "WHERE po.poRand is null");
+        $maxpCount = ceil($maxp->getSingleScalarResult() / 200);
         $i = 0;
         $j = 0;
         $em->beginTransaction();
-        $found = true;
-        while ($found) {
+        while ($j <= $maxpCount) {
             /* @var $qb QueryBuilder */
             $qb = $prodRepo->createQueryBuilder('p');
-            $qb->select('p,po');
+            $qb->select('partial p.{prodId}');
             $qb->leftJoin('p.prodPo', 'po');
-            // $qb->where('po.poProd is null');
+            $qb->where('po.poProd is null');
 
             $qry = $qb->getQuery();
-            $qry->setMaxResults(500);
-            $qry->setFirstResult($j * 500);
-            $found = false;
-            $resultSet = $qry->execute();
-            foreach ($resultSet as $row) {
-                $found = true;
-                $prod = $row;
+            $qry->setMaxResults(200);
+            $qry->setFirstResult($j * 200-$i);
+            $resultSet = $qry->getArrayResult();
+            foreach ($resultSet as $prod) {
                 $prodPo = new ProductsOrder();
-                $prodPo->setPoProd($prod);
+                $prodPo->setPoProd($em->getReference(Products::class, $prod['prodId']));
                 $prodPo->setPoRand(mt_rand(0, 2 << 32 - 1));
                 $prodPo->setPoAddtime(time());
                 $prodPo->setPoLastmodified(time());
                 $em->persist($prodPo);
-                //  if ($i % 101 === 100) {
-                $output->writeln("Clearing ");
-                $em->flush();
-                $em->clear();
-                // }
                 $i++;
             }
+            $em->flush();
+            $em->clear();
             $qry->free();
             $j++;
         }
+        $em->flush();
+        $em->clear();
         $em->commit();
     }
 

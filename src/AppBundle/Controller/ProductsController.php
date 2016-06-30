@@ -60,7 +60,10 @@ class ProductsController extends Controller {
             $qb->setParameter('prodId', (int) $foundProduct['prodId']);
             $qb->addSelect("MATCH_AGAINST "
                     . "(p.prodName, p.prodDescr, p.prodKeywords, :searchQuery 'IN BOOLEAN MODE') as hidden score");
-            $qb->setParameter('searchQuery', $foundProduct['prodName']);
+            $searchQuery=$foundProduct['prodName'];
+              $searchQuery = preg_replace('/[^\p{L}\p{N}_]+/u', ' ', $searchQuery);
+            $searchQuery = preg_replace('/[+\-><\(\)~*\"@]+/u', ' ', $searchQuery);
+            $qb->setParameter('searchQuery', $searchQuery);
             $qb->orderBy('score', 'desc');
             $qry = $qb->getQuery();
 
@@ -373,6 +376,11 @@ class ProductsController extends Controller {
 
         if (floor($maxNewPrice) !== ceil($maxNewPrice)) {
             $cached&=false;
+        }
+        if (\mb_strlen($searchQuery) > 3) {
+            // $searchQuery=preg_replace("/[^[:alnum:][:space:]]/u", '', $searchQuery);
+            $searchQuery = preg_replace('/[^\p{L}\p{N}_]+/u', ' ', $searchQuery);
+            $searchQuery = preg_replace('/[+\-><\(\)~*\"@]+/u', ' ', $searchQuery);
         }
         if (\mb_strlen($searchQuery) > 3) {
             $expl = explode(' ', $searchQuery, 5);

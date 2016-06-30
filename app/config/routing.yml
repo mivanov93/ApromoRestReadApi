@@ -6,6 +6,10 @@ index:
     path: /
     defaults: { _controller: AppBundle:Default:restIndex }
 
+fb_index:
+    path:     /fb
+    defaults: { _controller: AppBundle:Facebook:index }
+
 products_by_id:
     path:     /products/{prodId}
     defaults: { _controller: AppBundle:Products:details}
