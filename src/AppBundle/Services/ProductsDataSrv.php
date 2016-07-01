@@ -2,10 +2,10 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Entity\Products;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Proxies\__CG__\AppBundle\Entity\Products;
 
 class ProductsDataSrv {
 

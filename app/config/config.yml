@@ -39,6 +39,12 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
 
+doctrine_cache:
+    providers:
+        apromo_redis_cache:
+            type: redis
+            namespace: general_redis_cache
+
 # Doctrine Configuration
 doctrine:
     dbal:

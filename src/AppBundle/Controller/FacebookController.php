@@ -2,9 +2,11 @@
 
 namespace AppBundle\Controller;
 
+use Doctrine\Common\Cache\RedisCache;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use function mb_substr;
 
 /**
  * Description of FacebookController
@@ -18,6 +20,7 @@ class FacebookController extends Controller {
     const CACHE_TIME = 1000;
     const TEMPLATE = 'fb/generic.html.twig';
     const LENGTH_OF_FB_STR = 3;
+    const IMAGE_SIZE_CACHE = 3600 * 10;
 
     public function indexAction() {
 
@@ -28,7 +31,9 @@ class FacebookController extends Controller {
             'type' => 'article',
             'site_name' => self::SITE_NAME,
             'app_id' => self::APP_ID,
-            'image' => 'http://www.apromo.bg/landing/images/logo.png',
+            'image' => 'http://www.apromo.bg/images/apromo-fb-thumb2.png',
+            'image_width' => 1200,
+            'image_height' => 630,
             'description' => 'Сайт за промоции'
         ]);
         $res = $this->get('response_factory')->getHtmlResponse($gen->getContent(), self::CACHE_TIME);
@@ -44,19 +49,37 @@ class FacebookController extends Controller {
             'type' => 'article',
             'site_name' => self::SITE_NAME,
             'app_id' => self::APP_ID,
-            'image' => 'http://www.apromo.bg/landing/images/pc-phone.png',
+            'image' => 'http://www.apromo.bg/images/apromo-fb-thumb.png',
+            'image_width' => 1200,
+            'image_height' => 630,
             'description' => 'Партньорска програма на Apromo.bg'
         ]);
         $res = $this->get('response_factory')->getHtmlResponse($gen->getContent(), self::CACHE_TIME);
         return $res;
     }
 
-    public function productsByProdcatAction($prodcatId) {
-        $res = new Response("prodcat" . $prodcatId);
+    public function productsByProdcatAction(Request $request, $prodcatId) {
+        $prodcatDetails = $this->get('prodcat_data_srv')->getProdcatDetailsById((int) $prodcatId);
+        $currentUri = "http://www.apromo.bg" . mb_substr($request->getPathInfo(), self::LENGTH_OF_FB_STR);
+        $gen = $this->render(self::TEMPLATE,
+                             [
+            'title' => 'Промоции от категория ' . $prodcatDetails['prodcatName'],
+            'url' => $currentUri,
+            'type' => 'article',
+            'site_name' => self::SITE_NAME,
+            'app_id' => self::APP_ID,
+            'image' => 'http://www.apromo.bg/images/ic_apromo_923x922.png',
+            'image_width' => 923,
+            'image_height' => 922,
+            'description' => 'Най-новите промоции от категория ' . $prodcatDetails['prodcatName']
+        ]);
+        $res = $this->get('response_factory')->getHtmlResponse($gen->getContent(), self::CACHE_TIME);
         return $res;
     }
 
     public function productDetailsByIdAction(Request $request, $prodId) {
+        /* @var $redisCache RedisCache */
+        $redisCache = $this->get('doctrine_cache.providers.apromo_redis_cache')->getRedis();
         $currentUri = "http://www.apromo.bg" . mb_substr($request->getPathInfo(), self::LENGTH_OF_FB_STR);
 
         $prodDetails = $this->get('products_data_srv')->getProductDetailsById((int) $prodId);
@@ -74,7 +97,14 @@ class FacebookController extends Controller {
         } else {
             $imageUrl = 'http://images.apromo.bg/products/site/' .
                     (int) $prodDetails['prodPiCollection'][0]['piId'] . '.jpg';
-            $imageSize = getimagesize($imageUrl);
+            $imageKey = crc32('imgsize' . $imageUrl);
+            if (!$redisCache->exists($imageKey) || !($imageSize = unserialize($redisCache->get($imageKey)))) {
+                $imageSize = getimagesize($imageUrl);
+                if ($imageSize !== false) {
+                    $redisCache->set($imageKey, serialize($imageSize));
+                    $redisCache->expire($imageKey, self::IMAGE_SIZE_CACHE);
+                }
+            }
             if ($imageSize !== false) {
                 $imageWidth = $imageSize[0];
                 $imageHeight = $imageSize[1];
@@ -92,7 +122,7 @@ class FacebookController extends Controller {
                 (int) $prodDetails['prodPiCollection'][0]['piId'] . '.jpg',
                 'image_width' => $imageWidth,
                 'image_height' => $imageHeight,
-                'description' => 'Цена: ' . $prodDetails['prodNewprice']
+                'description' => 'Цена: ' . number_format((float) $prodDetails['prodNewprice'], 2, '.', '') . " лв"
             ];
 
             //. ' лв\nОписание: ' . $prodDetails['prodDescr']
@@ -106,6 +136,8 @@ class FacebookController extends Controller {
     }
 
     public function brandByBrandIdAction(Request $request, $brandId, $page) {
+        /* @var $redisCache RedisCache */
+        $redisCache = $this->get('doctrine_cache.providers.apromo_redis_cache')->getRedis();
         $currentUri = "http://www.apromo.bg" . mb_substr($request->getPathInfo(), self::LENGTH_OF_FB_STR);
 
         $brandDetails = $this->get('brands_data_srv')->getBrandDetailsById((int) $brandId);
@@ -122,7 +154,14 @@ class FacebookController extends Controller {
             $statusCode = 404;
         } else {
             $imageUrl = 'http://images.apromo.bg/brands/site/' . (int) $brandId . '.png';
-            $imageSize = getimagesize($imageUrl);
+            $imageKey = crc32('imgsize' . $imageUrl);
+            if (!$redisCache->exists($imageKey) || !($imageSize = unserialize($redisCache->get($imageKey)))) {
+                $imageSize = getimagesize($imageUrl);
+                if ($imageSize !== false) {
+                    $redisCache->set($imageKey, serialize($imageSize));
+                    $redisCache->expire($imageKey, self::IMAGE_SIZE_CACHE);
+                }
+            }
             if ($imageSize !== false) {
                 $imageWidth = $imageSize[0];
                 $imageHeight = $imageSize[1];

@@ -22,6 +22,9 @@ services:
     products_data_srv:
         class: AppBundle\Services\ProductsDataSrv
         arguments: ["@doctrine"]
+    prodcat_data_srv:
+        class: AppBundle\Services\ProdcatDataSrv
+        arguments: ["@doctrine"]    
     app.exception_listener:
         class: AppBundle\EventListener\ExceptionListener
         arguments: ["@logger",%kernel.debug%]
