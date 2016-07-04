@@ -42,15 +42,17 @@ class ProdcatController extends Controller {
         $brandsIds = $request->get('brandsIds');
         $searchQuery = $request->get('searchQuery');
         $maxNewPrice = (double) $request->get('maxNewPrice');
+        $totalFound = 0;
+        $searching = false;
         if ($brandsIds !== null || $searchQuery !== null || $maxNewPrice > 0) {
-
+            $searching = true;
 
             $repo = $this->getDoctrine()->getRepository(Prodcat::class);
             /* @var $qb QueryBuilder */
             $qb = $repo->createQueryBuilder('pc');
             $qb->select(self::PRODCAT_FIELDS . ',count(p.prodId) as pCount');
             $qb->innerJoin(Products::class, 'p', Query\Expr\Join::WITH, 'p.prodProdcat = pc.prodcatId');
-            $qb->leftJoin('p.prodPiCollection', 'pi');
+            $qb->innerJoin('p.prodPiCollection', 'pi');
             $qb->innerJoin('pc.prodcatLinkage', 'pl');
             $qb->groupBy('pc.prodcatId');
 
@@ -109,20 +111,27 @@ class ProdcatController extends Controller {
             $in = [];
             foreach ($prodcats as &$prodcat) {
                 $pCount = $prodcat['pCount'];
+                $totalFound +=$pCount;
                 $prodcat = $prodcat[0];
                 $in[$prodcat['prodcatId']] = true;
                 $prodcat['virtual'] = ['prodCount' => (int) $pCount];
             }
             unset($prodcat);
         } else {
-            $in=[];
+            $in = [];
             $prodcats = [];
         }
         $allProdcats = $this->getAllProdcats();
         foreach ($allProdcats as $prodcat) {
-            $prodcat['virtual'] = ['prodCount' => 0];
-            if (!isset($in[$prodcat['prodcatId']])) {
+            if (!$searching) {
+                $prodcat['virtual'] = ['prodCount' => $prodcat['prodcatLinkage']['plPrcount'] +
+                    $prodcat['prodcatLinkage']['plIndirPrcount']];
                 $prodcats[] = $prodcat;
+            } else {
+                $prodcat['virtual'] = ['prodCount' => $prodcat['prodcatId'] == 0 ? $totalFound : 0];
+                if (!isset($in[$prodcat['prodcatId']])) {
+                    $prodcats[] = $prodcat;
+                }
             }
         }
         $r = $this->get('response_factory')->getJsonMysqlRowsResponse($prodcats, count($prodcats), self::CACHE_TIME,
