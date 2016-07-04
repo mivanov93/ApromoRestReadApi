@@ -22,3 +22,34 @@
 
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+
+#security:
+#    access_denied_url:    /foo/error403
+#
+#    # strategy can be: none, migrate, invalidate
+#    session_fixation_strategy:  none
+#    hide_user_not_found:  true
+#    always_authenticate_before_granting:  false
+#    erase_credentials:    true
+#    access_decision_manager:
+#        strategy:             consensus
+#        allow_if_all_abstain:  false
+#        allow_if_equal_granted_denied:  true
+#        
+#    providers:
+#        my_in_memory_provider:
+#            memory:
+#                users:
+#                    foo:
+#                        password:           foo
+#                        roles:              ROLE_USER
+#                    bar:
+#                        password:           bar
+#                        roles:              [ROLE_USER, ROLE_ADMIN]
+#
+#            
+#    firewalls:
+#        # disables authentication for assets and the profiler, adapt it according to your needs
+#        dev:
+#            pattern: ^/(_(profiler|wdt)|css|images|js)/
+#            security: false

@@ -45,11 +45,15 @@ class ProdcatController extends Controller {
         $qb->leftJoin('p.prodPiCollection', 'pi');
         $qb->innerJoin('pc.prodcatLinkage', 'pl');
         $qb->groupBy('pc.prodcatId');
-        
+
+
+        $andWhere = 'p.prodId is null or (pi.piId is not null';
+        $params = [];
+
         if ($brandsIds !== null) {
-            $qb->andWhere('p.prodBrand IN (:brandsIds)');
+            $andWhere.=' and p.prodBrand IN (:brandsIds) ';
             $brandsIds = explode(',', $brandsIds, ProductsController::MAX_BRANDS);
-            $qb->setParameter('brandsIds', $brandsIds);
+            $params['brandsIds'] = $brandsIds;
             $brCount = count($brandsIds);
             $maxBrCount = $this->get('common_data')->getBrandsCount();
             if ($brCount > 3 && $brCount < $maxBrCount - 3) {
@@ -57,8 +61,8 @@ class ProdcatController extends Controller {
             }
         }
         if ($maxNewPrice > 0) {
-            $qb->andWhere('p.prodNewprice <= :maxNewPrice');
-            $qb->setParameter('maxNewPrice', (double) $maxNewPrice);
+            $andWhere.=' and p.prodNewprice <= :maxNewPrice ';
+            $params['maxNewPrice'] = (double) $maxNewPrice;
         }
 
         if (floor($maxNewPrice) !== ceil($maxNewPrice)) {
@@ -86,20 +90,30 @@ class ProdcatController extends Controller {
             }
 
             $searchQuery = implode(' ', $newSearchQuery);
-            $qb->andWhere("p.prodId is null or (pi.piId is not null and MATCH_AGAINST(p.prodName, p.prodDescr,p.prodKeywords, :searchQuery 'IN BOOLEAN MODE') > 0)");
-            $qb->setParameter('searchQuery', $searchQuery);
-        } else {
-            $qb->andWhere('p.prodId is null or pi.piId is not null');
+            $andWhere.=" and MATCH_AGAINST(p.prodName, p.prodDescr,p.prodKeywords, :searchQuery 'IN BOOLEAN MODE') > 0 ";
+            $params['searchQuery'] = $searchQuery;
         }
+        foreach($params as $key=>$param) {
+            $qb->setParameter($key, $param);
+        }
+        $andWhere.=')';
+        $qb->andWhere($andWhere);
+//        else {
+//            $qb->andWhere('p.prodId is null or pi.piId is not null');
+//        }
 
         $qry = $qb->getQuery();
-       // echo $qry->getDQL();
         if ($cached) {
             $qry->setResultCacheId('products_search');
             $qry->setResultCacheLifetime(self::CACHE_TIME);
         }
-        $products = $qry->getArrayResult();
-        $r = $this->get('response_factory')->getJsonMysqlRowsResponse($products, count($products), self::CACHE_TIME,
+        $prodcats = $qry->getArrayResult();
+        foreach($prodcats as &$prodcat) {
+            $pCount=$prodcat['pCount'];
+            $prodcat=$prodcat[0];
+            $prodcat['virtual']=['prodCount'=>$pCount];
+        }
+        $r = $this->get('response_factory')->getJsonMysqlRowsResponse($prodcats, count($prodcats), self::CACHE_TIME,
                                                                                        $cached ? ResponseFactory::publicCache : ResponseFactory::privateCache);
         return $r;
     }

@@ -25,6 +25,6 @@ $CLIENTDIR/$V/bin/console doctrine:cache:clear-result
 $CLIENTDIR/$V/bin/console doctrine:cache:clear-query
 
 ln -sfn $CLIENTDIR/$V $CLIENTDIR/main
-curl -k http://127.0.0.1:8080/localutils/clear_op_cache.php
+curl -k "http://127.0.0.1:8080/localutils/clear_op_cache.php"
 
 ENDSSH
