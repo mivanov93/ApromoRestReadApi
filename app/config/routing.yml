@@ -153,6 +153,12 @@ prodcat:
     requirements:
         methods: GET
         
+prodcat_search:
+    path:     /prodcat/index-by-prod-search
+    defaults: { _controller: AppBundle:Prodcat:indexByProdSearch}
+    requirements:
+        methods: GET
+        
 shops:
     path:     /shops
     defaults: { _controller: AppBundle:Shops:index}
