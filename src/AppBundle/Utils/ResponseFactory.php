@@ -35,6 +35,7 @@ class ResponseFactory {
         $r->setMaxAge($cacheTime);
         $r->setSharedMaxAge($cacheTime);
         $r->setEtag(md5($jsonData));
+        $r->setVary('Origin');
         if ($cacheMode === self::publicCache) {
             $r->setPublic();
         } else {
@@ -43,7 +44,7 @@ class ResponseFactory {
         return $r;
     }
 
-    public function getHtmlResponse($data, $cacheTime = null, $cacheMode = self::publicCache,$statusCode=200) {
+    public function getHtmlResponse($data, $cacheTime = null, $cacheMode = self::publicCache, $statusCode = 200) {
         if ($cacheTime === null) {
             $cacheTime = $this->cacheTime;
         }
@@ -51,6 +52,7 @@ class ResponseFactory {
         $r->setMaxAge($cacheTime);
         $r->setSharedMaxAge($cacheTime);
         $r->setEtag(md5($data));
+        $r->setVary('Origin');
         if ($cacheMode === self::publicCache) {
             $r->setPublic();
         } else {
@@ -78,6 +80,7 @@ class ResponseFactory {
         $r->setMaxAge($cacheTime);
         $r->setSharedMaxAge($cacheTime);
         $r->setEtag(md5($jsonData));
+        $r->setVary('Origin');
         if ($cacheMode === self::publicCache) {
             $r->setPublic();
         } else {

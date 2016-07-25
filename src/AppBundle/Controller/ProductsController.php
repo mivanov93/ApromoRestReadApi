@@ -377,12 +377,12 @@ class ProductsController extends Controller {
         if (floor($maxNewPrice) !== ceil($maxNewPrice)) {
             $cached&=false;
         }
-        if (\mb_strlen($searchQuery) > 3) {
+        if (\mb_strlen($searchQuery) > 2) {
             // $searchQuery=preg_replace("/[^[:alnum:][:space:]]/u", '', $searchQuery);
             $searchQuery = preg_replace('/[^\p{L}\p{N}_]+/u', ' ', $searchQuery);
             $searchQuery = preg_replace('/[+\-><\(\)~*\"@]+/u', ' ', $searchQuery);
         }
-        if (\mb_strlen($searchQuery) > 3) {
+        if (\mb_strlen($searchQuery) > 2) {
             $expl = explode(' ', $searchQuery, 5);
             $transliterator = new Transliterator(Settings::LANG_BG);
             $newSearchQuery = [];

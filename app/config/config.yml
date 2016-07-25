@@ -104,6 +104,8 @@ nelmio_cors:
         '^/':
             origin_regex: true
             allow_origin: ['^http(s)?://(.+\.)?(www\.apromo\.bg|127\.0\.0\.1:27453|127\.0\.0\.1|apromo\.bg|admin\.apromo\.bg)$']
+            #allow_headers: ['X-Custom-Auth']
+            #allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
             allow_headers: ['X-Custom-Auth','x-requested-with', 'Content-Type', 'origin', 'authorization', 'accept', 'client-security-token']
             allow_methods: ['HEAD','OPTIONS','POST', 'PUT', 'GET', 'DELETE']
             max_age: 3600
