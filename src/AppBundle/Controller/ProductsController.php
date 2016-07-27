@@ -324,6 +324,7 @@ class ProductsController extends Controller {
 
     public function searchAction(Request $request, $prodcatId, $order, $orderDir, $page, $perPage, $topOnly) {
         $cached = true;
+        $additionalData = [];
         $brandsIds = $request->get('brandsIds');
         $searchQuery = $request->get('searchQuery');
         $maxNewPrice = (double) $request->get('maxNewPrice');
@@ -433,11 +434,26 @@ class ProductsController extends Controller {
                 $totalRowsQuery->setResultCacheLifetime(self::GRID_CACHE_TIME);
             }
             $totalRowCount = $totalRowsQuery->getSingleScalarResult();
+
+            $qb->select('MAX(p.prodNewprice) as maxNewprice,MIN(p.prodNewprice) as minNewprice');
+            $qb->resetDQLPart('orderBy');
+            if ($maxNewPrice > 0) {
+                $qb->setParameter('maxNewPrice', (double) 1000000);
+            }
+            $qb->setFirstResult(0);
+            $qb->setMaxResults(1);
+            $priceRangeQuery = $qb->getQuery();
+            if ($cached) {
+                $priceRangeQuery->setResultCacheId('products_price_range_total_rows');
+                $priceRangeQuery->setResultCacheLifetime(self::GRID_CACHE_TIME);
+            }
+            $additionalData['priceRange'] = $priceRangeQuery->getArrayResult()[0];
         } else {
             $totalRowCount = 0;
         }
         $r = $this->get('response_factory')->getJsonMysqlRowsResponse($products, $totalRowCount, self::GRID_CACHE_TIME,
-                                                                      $cached ? ResponseFactory::publicCache : ResponseFactory::privateCache);
+                                                                      $cached ? ResponseFactory::publicCache : ResponseFactory::privateCache,
+                                                                      null, $additionalData);
         return $r;
     }
 
