@@ -60,9 +60,10 @@ products_suggest_by_id:
         methods: GET
 
 products_top:
-    path:     /products/by-top/{prodcatId}/{page}/{perPage}
-    defaults: { _controller: AppBundle:Products:byTop, prodcatId: 0, page: 1, perPage: 24 }
+    path:     /products/by-top/{prodcatId}/{page}/{perPage}/{topOnly}
+    defaults: { _controller: AppBundle:Products:byTop, prodcatId: 0, page: 1, perPage: 24, topOnly: 0 }
     requirements:
+        topOnly:  0|1
         perPage:  \d{1,2}
         page:       \d+
         prodcatId:  \d+
@@ -100,10 +101,11 @@ products_by_ids:
         methods: GET
         
 products_search:
-    path:     /products/search/{prodcatId}/{order}/{orderDir}/{page}/{perPage}
-    defaults: { _controller: AppBundle:Products:search,prodcatId: 0, order: "modified", orderDir: "DESC", page: 1, perPage:12}
+    path:     /products/search/{prodcatId}/{order}/{orderDir}/{page}/{perPage}/{topOnly}
+    defaults: { _controller: AppBundle:Products:search,prodcatId: 0, order: "modified", orderDir: "DESC", page: 1, perPage: 12, topOnly:0}
     requirements:
         order: prodLastmodified|prodNewprice|prodAddtime|poRand|prodName
+        topOnly: 0|1
         orderDir: ASC|DESC|asc|desc
         perPage: \d{1,2}
         page:  \d+
@@ -154,9 +156,10 @@ prodcat:
         methods: GET
         
 prodcat_search:
-    path:     /prodcat/index-by-prod-search
-    defaults: { _controller: AppBundle:Prodcat:indexByProdSearch}
+    path:     /prodcat/index-by-prod-search/{topOnly}
+    defaults: { _controller: AppBundle:Prodcat:indexByProdSearch, topOnly: 0}
     requirements:
+        topOnly: 0|1
         methods: GET
         
 shops:

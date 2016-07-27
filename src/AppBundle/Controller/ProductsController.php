@@ -60,8 +60,8 @@ class ProductsController extends Controller {
             $qb->setParameter('prodId', (int) $foundProduct['prodId']);
             $qb->addSelect("MATCH_AGAINST "
                     . "(p.prodName, p.prodDescr, p.prodKeywords, :searchQuery 'IN BOOLEAN MODE') as hidden score");
-            $searchQuery=$foundProduct['prodName'];
-              $searchQuery = preg_replace('/[^\p{L}\p{N}_]+/u', ' ', $searchQuery);
+            $searchQuery = $foundProduct['prodName'];
+            $searchQuery = preg_replace('/[^\p{L}\p{N}_]+/u', ' ', $searchQuery);
             $searchQuery = preg_replace('/[+\-><\(\)~*\"@]+/u', ' ', $searchQuery);
             $qb->setParameter('searchQuery', $searchQuery);
             $qb->orderBy('score', 'desc');
@@ -208,7 +208,7 @@ class ProductsController extends Controller {
         return $r;
     }
 
-    public function byTopAction($prodcatId, $page, $perPage) {
+    public function byTopAction($prodcatId, $page, $perPage, $topOnly) {
         /* @var $repo \Doctrine\ORM\Repository */
         $repo = $this->getDoctrine()->getRepository(Products::class);
         /* @var $qb QueryBuilder */
@@ -222,6 +222,9 @@ class ProductsController extends Controller {
         if ($prodcatId > 0) {
             $qb->andWhere('p.prodProdcat = :pcatId');
             $qb->setParameter('pcatId', (int) $prodcatId);
+        }
+        if ($topOnly) {
+            $qb->andWhere('p.prodPercentage > 0');
         }
         $qry = $qb->getQuery();
         $qry->setResultCacheId('cached_top');
@@ -319,7 +322,7 @@ class ProductsController extends Controller {
         return $r;
     }
 
-    public function searchAction(Request $request, $prodcatId, $order, $orderDir, $page, $perPage) {
+    public function searchAction(Request $request, $prodcatId, $order, $orderDir, $page, $perPage, $topOnly) {
         $cached = true;
         $brandsIds = $request->get('brandsIds');
         $searchQuery = $request->get('searchQuery');
@@ -369,6 +372,11 @@ class ProductsController extends Controller {
                 $cached&=false;
             }
         }
+
+        if ($topOnly) {
+            $qb->andWhere('p.prodPercentage > 0');
+        }
+
         if ($maxNewPrice > 0) {
             $qb->andWhere('p.prodNewprice <= :maxNewPrice');
             $qb->setParameter('maxNewPrice', (double) $maxNewPrice);

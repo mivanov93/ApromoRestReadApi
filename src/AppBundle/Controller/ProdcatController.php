@@ -37,14 +37,14 @@ class ProdcatController extends Controller {
         return $r;
     }
 
-    public function indexByProdSearchAction(Request $request) {
+    public function indexByProdSearchAction(Request $request, $topOnly) {
         $cached = true;
         $brandsIds = $request->get('brandsIds');
         $searchQuery = $request->get('searchQuery');
         $maxNewPrice = (double) $request->get('maxNewPrice');
         $totalFound = 0;
         $searching = false;
-        if ($brandsIds !== null || $searchQuery !== null || $maxNewPrice > 0) {
+        if ($brandsIds !== null || $searchQuery !== null || $maxNewPrice > 0 || $topOnly) {
             $searching = true;
 
             $repo = $this->getDoctrine()->getRepository(Prodcat::class);
@@ -66,6 +66,9 @@ class ProdcatController extends Controller {
                     $cached&=false;
                 }
             }
+            if ($topOnly) {
+                $qb->andWhere('p.prodPercentage > 0');
+            }
             if ($maxNewPrice > 0) {
                 $qb->andWhere('p.prodNewprice <= :maxNewPrice');
                 $qb->setParameter('maxNewPrice', (double) $maxNewPrice);
@@ -74,12 +77,12 @@ class ProdcatController extends Controller {
             if (floor($maxNewPrice) !== ceil($maxNewPrice)) {
                 $cached&=false;
             }
-            if (mb_strlen($searchQuery) > 3) {
+            if (mb_strlen($searchQuery) > 2) {
                 // $searchQuery=preg_replace("/[^[:alnum:][:space:]]/u", '', $searchQuery);
                 $searchQuery = preg_replace('/[^\p{L}\p{N}_]+/u', ' ', $searchQuery);
                 $searchQuery = preg_replace('/[+\-><\(\)~*\"@]+/u', ' ', $searchQuery);
             }
-            if (mb_strlen($searchQuery) > 3) {
+            if (mb_strlen($searchQuery) > 2) {
                 $expl = explode(' ', $searchQuery, 5);
                 $transliterator = new Transliterator(Settings::LANG_BG);
                 $newSearchQuery = [];
