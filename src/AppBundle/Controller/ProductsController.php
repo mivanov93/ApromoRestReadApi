@@ -141,7 +141,7 @@ class ProductsController extends Controller {
         $qb->join('p.prodPiCollection', 'pi');
         $qb->join('p.prodBrand', 'b');
         $qb->innerJoin('p.prodProdcat', 'pc');
-        $qb->where('p.prodTop = 1');
+        $qb->where('p.prodTop = 1 and p.prodPercentage > 0');
         //$qb->groupBy('p.prodBrand');
         $qb->setMaxResults((int) $limit);
         $qb->orderBy('r');
