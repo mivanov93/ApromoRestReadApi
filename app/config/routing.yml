@@ -175,3 +175,7 @@ shops_by_city_brand:
         cityId:  \d+
         brandId: \d+
         methods: GET
+#        
+#two_perf:
+#     path: /twoperf
+#     defaults: { _controller: AppBundle:TwoPerformant:test} 

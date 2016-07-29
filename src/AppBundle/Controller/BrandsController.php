@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class BrandsController extends Controller {
 
-    const BRAND_FIELDS = 'partial b.{brandName,brandId,brandPrcount,brandShopcount}';
+    const BRAND_FIELDS = 'partial b.{brandName,brandUrl,brandId,brandPrcount,brandShopcount}';
     const BRAND_DETAILS_FIELDS = 'partial b.{brandName,brandId,brandPrcount,brandShopcount,brandUrl,brandDescr}';
     const CACHE_TIME = 1000;
 
