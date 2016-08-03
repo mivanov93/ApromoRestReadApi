@@ -19,7 +19,7 @@ class ProductsController extends Controller {
             . 'partial p.{prodId,prodName,prodUrl,prodManufacturer,prodNewprice,prodOldprice,prodPercentage,'
             . 'prodLastmodified,prodExptime},'
             . 'partial pc.{prodcatId,prodcatName},'
-            . 'partial pi.{piId}';
+            . 'partial pi.{piId},CASE WHEN p.prodPercentage > 0 THEN 1 ELSE 0 END AS HIDDEN isPromo';
     const PROD_DETAILS_VIEW = 'partial b.{brandId,brandName,brandLastmodified,brandUrl},'
             . 'partial p.{prodId,prodName,prodDescr,prodUrl,'
             . 'prodDeliveryTime,prodDeliveryCost,prodManufacturer,'
@@ -353,6 +353,7 @@ class ProductsController extends Controller {
         /* @var $qb QueryBuilder */
         $qb = $repo->createQueryBuilder('p');
         $qb->select(self::PROD_GRID_VIEW);
+        $qb->addOrderBy('isPromo', 'DESC');
         $qb->innerJoin('p.prodPiCollection', 'pi');
         $qb->innerJoin('p.prodBrand', 'b');
         $qb->leftJoin('p.prodPo', 'po');
@@ -414,6 +415,7 @@ class ProductsController extends Controller {
             $qb->andWhere("MATCH_AGAINST(p.prodName, p.prodDescr,p.prodKeywords, :searchQuery 'IN BOOLEAN MODE') > 0");
             $qb->setParameter('searchQuery', $searchQuery);
             $qb->orderBy('score', 'desc');
+             $qb->addOrderBy('isPromo', 'DESC');
         }
         $qb->addOrderBy($order, $orderDir);
         $qry = $qb->getQuery();
