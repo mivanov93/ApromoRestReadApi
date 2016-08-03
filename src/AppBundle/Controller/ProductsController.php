@@ -16,7 +16,7 @@ use Transliterator\Transliterator;
 class ProductsController extends Controller {
 
     const PROD_GRID_VIEW = 'partial b.{brandId,brandName},'
-            . 'partial p.{prodId,prodName,prodNewprice,prodOldprice,prodPercentage,'
+            . 'partial p.{prodId,prodName,prodUrl,prodManufacturer,prodNewprice,prodOldprice,prodPercentage,'
             . 'prodLastmodified,prodExptime},'
             . 'partial pc.{prodcatId,prodcatName},'
             . 'partial pi.{piId}';
@@ -141,7 +141,7 @@ class ProductsController extends Controller {
         $qb->join('p.prodPiCollection', 'pi');
         $qb->join('p.prodBrand', 'b');
         $qb->innerJoin('p.prodProdcat', 'pc');
-        $qb->where('p.prodTop = 1 and p.prodPercentage > 0');
+        $qb->where('p.prodTop = 1');// and p.prodPercentage > 0
         //$qb->groupBy('p.prodBrand');
         $qb->setMaxResults((int) $limit);
         $qb->orderBy('r');
