@@ -141,7 +141,7 @@ class ProductsController extends Controller {
         $qb->join('p.prodPiCollection', 'pi');
         $qb->join('p.prodBrand', 'b');
         $qb->innerJoin('p.prodProdcat', 'pc');
-        $qb->where('p.prodTop = 1');// and p.prodPercentage > 0
+        $qb->where('p.prodTop = 1'); // and p.prodPercentage > 0
         //$qb->groupBy('p.prodBrand');
         $qb->setMaxResults((int) $limit);
         $qb->orderBy('r');
@@ -425,25 +425,38 @@ class ProductsController extends Controller {
         $paginator = new Paginator($qry);
         $products = $paginator->getIterator()->getArrayCopy();
         if (count($products) > 0 || $page > 1) {
-            $qb->select('count(distinct p.prodId) as x');
-            $qb->orderBy('x');
-            $qb->setFirstResult(0);
-            $qb->setMaxResults(1);
-            $totalRowsQuery = $qb->getQuery();
+            $countQb = clone $qb;
+            $countQb->resetDQLPart('orderBy');
+            $countQb->select('count(distinct p.prodId) as x');
+            $countQb->setFirstResult(0);
+            $countQb->setMaxResults(1);
+            $totalRowsQuery = $countQb->getQuery();
             if ($cached) {
                 $totalRowsQuery->setResultCacheId('products_search_total_rows');
                 $totalRowsQuery->setResultCacheLifetime(self::GRID_CACHE_TIME);
             }
             $totalRowCount = $totalRowsQuery->getSingleScalarResult();
 
-            $qb->select('MAX(p.prodNewprice) as maxNewprice,MIN(p.prodNewprice) as minNewprice');
-            $qb->resetDQLPart('orderBy');
-            if ($maxNewPrice > 0) {
-                $qb->setParameter('maxNewPrice', (double) 1000000);
+            $countQb->andWhere('p.prodPercentage > 0');
+            $totalPromoRowsQuery = $countQb->getQuery();
+            if ($cached) {
+                $totalPromoRowsQuery->setResultCacheId('products_search_promo_total_rows');
+                $totalPromoRowsQuery->setResultCacheLifetime(self::GRID_CACHE_TIME);
             }
-            $qb->setFirstResult(0);
-            $qb->setMaxResults(1);
-            $priceRangeQuery = $qb->getQuery();
+            $totalPromoRowCount = $totalPromoRowsQuery->getSingleScalarResult();
+            $additionalData['totalPromoRowCount'] = $totalPromoRowCount;
+
+            $qb3 = clone $qb;
+            $qb3->resetDQLPart('orderBy');
+            $qb3->select('MAX(p.prodNewprice) as maxNewprice,MIN(p.prodNewprice) as minNewprice');
+            $qb3->setFirstResult(0);
+            $qb3->setMaxResults(1);
+            if ($maxNewPrice > 0) {
+                $qb3->setParameter('maxNewPrice', (double) 1000000);
+            }
+            $qb3->setFirstResult(0);
+            $qb3->setMaxResults(1);
+            $priceRangeQuery = $qb3->getQuery();
             if ($cached) {
                 $priceRangeQuery->setResultCacheId('products_price_range_total_rows');
                 $priceRangeQuery->setResultCacheLifetime(self::GRID_CACHE_TIME);
