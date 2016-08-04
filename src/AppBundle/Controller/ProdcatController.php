@@ -222,8 +222,8 @@ class ProdcatController extends Controller {
                     $promoProdCount = $prodcat['prodcatId'] == 0 ? $totalPromos : $promoProdCount;
                     $prodcat['virtual']['promoProdCount'] = $promoProdCount;
                 } else {
-                    $prodcat['virtual'] = ['prodCount' => 0,
-                        'promoProdCount' => 0];
+                    $prodcat['virtual'] = ['prodCount' => $prodcat['prodcatId'] == 0 ? $totalFound : 0,
+                        'promoProdCount' => $prodcat['prodcatId'] == 0 ? $totalPromos : 0];
                     $prodcats[] = $prodcat;
                 }
             }
