@@ -1,0 +1,5 @@
+[Unit]
+Description=Run foo weekly and on boot
+
+[Timer]
+OnCalendar=hourly

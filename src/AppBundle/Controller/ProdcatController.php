@@ -37,6 +37,85 @@ class ProdcatController extends Controller {
         return $r;
     }
 
+    public function getPromoCount($brandsIds, $topOnly, $maxNewPrice, $searchQuery) {
+        $totalFound = 0;
+        $repo = $this->getDoctrine()->getRepository(Prodcat::class);
+        /* @var $qb QueryBuilder */
+        $qb = $repo->createQueryBuilder('pc');
+        $qb->select(self::PRODCAT_FIELDS . ',count(p.prodId) as pCount');
+        $qb->innerJoin(Products::class, 'p', Query\Expr\Join::WITH, 'p.prodProdcat = pc.prodcatId');
+        $qb->innerJoin('p.prodPiCollection', 'pi');
+        $qb->innerJoin('pc.prodcatLinkage', 'pl');
+        $qb->groupBy('pc.prodcatId');
+
+        if ($brandsIds !== null) {
+            $qb->andWhere('p.prodBrand IN (:brandsIds)');
+            $brandsIds = explode(',', $brandsIds, ProductsController::MAX_BRANDS);
+            $qb->setParameter('brandsIds', $brandsIds);
+            $brCount = count($brandsIds);
+            $maxBrCount = $this->get('common_data')->getBrandsCount();
+            if ($brCount > 3 && $brCount < $maxBrCount - 3) {
+                $cached&=false;
+            }
+        }
+        $qb->andWhere('p.prodPercentage > 0');
+        if ($topOnly) {
+            $qb->andWhere('p.prodTop > 0');
+        }
+        if ($maxNewPrice > 0) {
+            $qb->andWhere('p.prodNewprice <= :maxNewPrice');
+            $qb->setParameter('maxNewPrice', (double) $maxNewPrice);
+        }
+
+        if (floor($maxNewPrice) !== ceil($maxNewPrice)) {
+            $cached&=false;
+        }
+        if (mb_strlen($searchQuery) > 2) {
+            // $searchQuery=preg_replace("/[^[:alnum:][:space:]]/u", '', $searchQuery);
+            $searchQuery = preg_replace('/[^\p{L}\p{N}_]+/u', ' ', $searchQuery);
+            $searchQuery = preg_replace('/[+\-><\(\)~*\"@]+/u', ' ', $searchQuery);
+        }
+        if (mb_strlen($searchQuery) > 2) {
+            $expl = explode(' ', $searchQuery, 5);
+            $transliterator = new Transliterator(Settings::LANG_BG);
+            $newSearchQuery = [];
+            foreach ($expl as $word) {
+                $newSearchQuery[] = $word;
+                $toLatin = $transliterator->cyr2Lat($word);
+                if ($toLatin !== $word) {
+                    $newSearchQuery[] = $toLatin;
+                }
+                $toCyr = $transliterator->lat2Cyr($word);
+                if ($toCyr !== $word) {
+                    $newSearchQuery[] = $toCyr;
+                }
+            }
+
+            $searchQuery = implode(' ', $newSearchQuery);
+            $qb->andWhere("MATCH_AGAINST(p.prodName, p.prodDescr,p.prodKeywords, :searchQuery 'IN BOOLEAN MODE') > 0");
+            $qb->setParameter('searchQuery', $searchQuery);
+        }
+
+        $qry = $qb->getQuery();
+        // echo $qry->getDQL();
+        if (true) {
+            $qry->setResultCacheId('prodcat_promo_products_search');
+            $qry->setResultCacheLifetime(self::CACHE_TIME);
+        }
+        $prodcats = $qry->getArrayResult();
+
+        $res = [];
+        foreach ($prodcats as &$prodcat) {
+            $pCount = $prodcat['pCount'];
+            $totalFound +=$pCount;
+            $prodcat = $prodcat[0];
+            $prodcat['virtual'] = ['prodCount' => (int) $pCount];
+            $res[$prodcat['prodcatId']] = $prodcat;
+        }
+        unset($prodcat);
+        return $res;
+    }
+
     public function indexByProdSearchAction(Request $request, $topOnly) {
         $cached = true;
         $brandsIds = $request->get('brandsIds');
@@ -67,7 +146,7 @@ class ProdcatController extends Controller {
                 }
             }
             if ($topOnly) {
-                $qb->andWhere('p.prodPercentage > 0');
+                $qb->andWhere('p.prodTop > 0');
             }
             if ($maxNewPrice > 0) {
                 $qb->andWhere('p.prodNewprice <= :maxNewPrice');
@@ -125,13 +204,24 @@ class ProdcatController extends Controller {
             $prodcats = [];
         }
         $allProdcats = $this->getAllProdcats();
+        $promoProdcats = $this->getPromoCount($brandsIds, $topOnly, $maxNewPrice, $searchQuery);
         foreach ($allProdcats as $prodcat) {
             if (!$searching) {
                 $prodcat['virtual'] = ['prodCount' => $prodcat['prodcatLinkage']['plPrcount'] +
                     $prodcat['prodcatLinkage']['plIndirPrcount']];
+                if (isset($promoProdcats[$prodcat['prodcatId']])) {
+                    $prodcat['virtual']['promoProdCount'] = (int) $promoProdcats[$prodcat['prodcatId']]['virtual']['prodCount'];
+                } else {
+                    $prodcat['virtual']['promoProdCount'] = 0;
+                }
                 $prodcats[] = $prodcat;
             } else {
                 $prodcat['virtual'] = ['prodCount' => $prodcat['prodcatId'] == 0 ? $totalFound : 0];
+                if (isset($promoProdcats[$prodcat['prodcatId']])) {
+                    $prodcat['virtual']['promoProdCount'] = (int) $promoProdcats[$prodcat['prodcatId']]['virtual']['prodCount'];
+                } else {
+                    $prodcat['virtual']['promoProdCount'] = 0;
+                }
                 if (!isset($in[$prodcat['prodcatId']])) {
                     $prodcats[] = $prodcat;
                 }

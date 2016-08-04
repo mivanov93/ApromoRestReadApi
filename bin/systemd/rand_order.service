@@ -1,0 +1,16 @@
+[Unit]
+Description=Rand order for products
+
+[Service]
+Type=oneshot
+ExecStart=/opt/api/read_api_dir/main/bin/console  apromo:prod_rand_order -e live_prod --no-debug
+# 43200 = 12 hours 
+
+#RestartSec=10
+#Restart=always
+User=bgpromo
+Group=apache
+
+# Used to define the behavior of a unit if it is enabled or disabled
+#[Install]
+#WantedBy=multi-user.target
