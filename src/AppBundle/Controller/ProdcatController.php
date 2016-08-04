@@ -102,18 +102,15 @@ class ProdcatController extends Controller {
             $qry->setResultCacheId('prodcat_promo_products_search');
             $qry->setResultCacheLifetime(self::CACHE_TIME);
         }
-        $prodcats = $qry->getArrayResult();
+        $foundProdcats = $qry->getArrayResult();
 
-        $res = [];
-        foreach ($prodcats as &$prodcat) {
+        $prodcats = [];
+        foreach ($foundProdcats as &$prodcat) {
             $pCount = $prodcat['pCount'];
             $totalFound +=$pCount;
-            $prodcat = $prodcat[0];
-            $prodcat['virtual'] = ['prodCount' => (int) $pCount];
-            $res[$prodcat['prodcatId']] = $prodcat;
+            $prodcats[$prodcat[0]['prodcatId']] = $pCount;
         }
-        unset($prodcat);
-        return $res;
+        return ['prodcats' => $prodcats, 'totalFound' => $totalFound];
     }
 
     public function indexByProdSearchAction(Request $request, $topOnly) {
@@ -195,7 +192,7 @@ class ProdcatController extends Controller {
                 $pCount = $prodcat['pCount'];
                 $totalFound +=$pCount;
                 $prodcat = $prodcat[0];
-                $in[$prodcat['prodcatId']] = true;
+                $in[$prodcat['prodcatId']] = &$prodcat;
                 $prodcat['virtual'] = ['prodCount' => (int) $pCount];
             }
             unset($prodcat);
@@ -204,28 +201,33 @@ class ProdcatController extends Controller {
             $prodcats = [];
         }
         $allProdcats = $this->getAllProdcats();
-        $promoProdcats = $this->getPromoCount($brandsIds, $topOnly, $maxNewPrice, $searchQuery);
+        $promoProdcatData = $this->getPromoCount($brandsIds, $topOnly, $maxNewPrice, $searchQuery);
+        $promoProdcats = $promoProdcatData['prodcats'];
+        $totalPromos = $promoProdcatData['totalFound'];
+
         foreach ($allProdcats as $prodcat) {
             if (!$searching) {
-                $prodcat['virtual'] = ['prodCount' => $prodcat['prodcatLinkage']['plPrcount'] +
-                    $prodcat['prodcatLinkage']['plIndirPrcount']];
-                if (isset($promoProdcats[$prodcat['prodcatId']])) {
-                    $prodcat['virtual']['promoProdCount'] = (int) $promoProdcats[$prodcat['prodcatId']]['virtual']['prodCount'];
-                } else {
-                    $prodcat['virtual']['promoProdCount'] = 0;
-                }
+                $prodCount = $prodcat['prodcatLinkage']['plPrcount'] +
+                        $prodcat['prodcatLinkage']['plIndirPrcount'];
+                $promoProdCount = isset($promoProdcats[$prodcat['prodcatId']]) ? (int) $promoProdcats[$prodcat['prodcatId']] : 0;
+                $promoProdCount = $prodcat['prodcatId'] == 0 ? $totalPromos : $promoProdCount;
+                $prodcat['virtual'] = ['prodCount' => $prodCount,
+                    'promoProdCount' => $promoProdCount];
+
                 $prodcats[] = $prodcat;
             } else {
-                $prodcat['virtual'] = ['prodCount' => $prodcat['prodcatId'] == 0 ? $totalFound : 0];
-                if (isset($promoProdcats[$prodcat['prodcatId']])) {
-                    $prodcat['virtual']['promoProdCount'] = (int) $promoProdcats[$prodcat['prodcatId']]['virtual']['prodCount'];
+                if (isset($in[$prodcat['prodcatId']])) {
+                    $prodcat = &$in[$prodcat['prodcatId']];
+                    $promoProdCount = isset($promoProdcats[$prodcat['prodcatId']]) ? (int) $promoProdcats[$prodcat['prodcatId']] : 0;
+                    $promoProdCount = $prodcat['prodcatId'] == 0 ? $totalPromos : $promoProdCount;
+                    $prodcat['virtual']['promoProdCount'] = $promoProdCount;
                 } else {
-                    $prodcat['virtual']['promoProdCount'] = 0;
-                }
-                if (!isset($in[$prodcat['prodcatId']])) {
+                    $prodcat['virtual'] = ['prodCount' => 0,
+                        'promoProdCount' => 0];
                     $prodcats[] = $prodcat;
                 }
             }
+            unset($prodcat);
         }
         $r = $this->get('response_factory')->getJsonMysqlRowsResponse($prodcats, count($prodcats), self::CACHE_TIME,
                                                                                        $cached ? ResponseFactory::publicCache : ResponseFactory::privateCache);
