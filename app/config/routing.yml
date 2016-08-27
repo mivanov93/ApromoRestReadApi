@@ -101,10 +101,10 @@ products_by_ids:
         methods: GET
         
 products_search:
-    path:     /products/search/{prodcatId}/{order}/{orderDir}/{page}/{perPage}/{topOnly}
-    defaults: { _controller: AppBundle:Products:search,prodcatId: 0, order: "modified", orderDir: "DESC", page: 1, perPage: 12, topOnly:0}
+    path:     /products/search/{prodcatId}/{order}/{orderDir}/{page}/{perPage}/{topOnly}/{promoOnly}/{nameOnly}
+    defaults: { _controller: AppBundle:Products:search,prodcatId: 0, order: "modified", orderDir: "DESC", page: 1, perPage: 12, topOnly: 0, promoOnly: 0, nameOnly: 0}
     requirements:
-        order: prodLastmodified|prodNewprice|prodAddtime|poRand|prodName
+        order: prodLastmodified|prodNewprice|prodAddtime|poRand|prodName|prodPercentage
         topOnly: 0|1
         orderDir: ASC|DESC|asc|desc
         perPage: \d{1,2}

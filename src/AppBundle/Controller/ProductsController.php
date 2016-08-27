@@ -323,12 +323,13 @@ class ProductsController extends Controller {
         return $r;
     }
 
-    public function searchAction(Request $request, $prodcatId, $order, $orderDir, $page, $perPage, $topOnly) {
+    public function searchAction(Request $request, $prodcatId, $order, $orderDir, $page, $perPage, $topOnly, $promoOnly, $nameOnly) {
         $cached = true;
         $additionalData = [];
         $brandsIds = $request->get('brandsIds');
         $searchQuery = $request->get('searchQuery');
         $maxNewPrice = (double) $request->get('maxNewPrice');
+        $minNewPrice = (double) $request->get('minNewPrice');
         $orderDir = (strtoupper($orderDir) === 'DESC' ? 'DESC' : 'ASC');
         switch ($order) {
             case "prodAddtime":
@@ -375,8 +376,10 @@ class ProductsController extends Controller {
                 $cached&=false;
             }
         }
-
         if ($topOnly) {
+            $qb->andWhere('p.prodTop = 1');
+        }
+        if ($promoOnly) {
             $qb->andWhere('p.prodPercentage > 0');
         }
 
@@ -386,6 +389,14 @@ class ProductsController extends Controller {
         }
 
         if (floor($maxNewPrice) !== ceil($maxNewPrice)) {
+            $cached&=false;
+        }
+        if ($minNewPrice > 0) {
+            $qb->andWhere('p.prodNewprice >= :minNewPrice');
+            $qb->setParameter('minNewPrice', (double) $minNewPrice);
+        }
+
+        if (floor($minNewPrice) !== ceil($minNewPrice)) {
             $cached&=false;
         }
         if (\mb_strlen($searchQuery) > 2) {
@@ -408,14 +419,18 @@ class ProductsController extends Controller {
                     $newSearchQuery[] = $toCyr;
                 }
             }
-
+            if ($nameOnly) {
+                $sFields = "p.prodName";
+            } else {
+                $sFields = "p.prodName, p.prodDescr,p.prodKeywords";
+            }
             $searchQuery = implode(' ', $newSearchQuery);
             $qb->addSelect("MATCH_AGAINST "
-                    . "(p.prodName, p.prodDescr,p.prodKeywords, :searchQuery 'IN BOOLEAN MODE') as hidden score");
-            $qb->andWhere("MATCH_AGAINST(p.prodName, p.prodDescr,p.prodKeywords, :searchQuery 'IN BOOLEAN MODE') > 0");
+                    . "({$sFields}, :searchQuery 'IN BOOLEAN MODE') as hidden score");
+            $qb->andWhere("MATCH_AGAINST({$sFields}, :searchQuery 'IN BOOLEAN MODE') > 0");
             $qb->setParameter('searchQuery', $searchQuery);
             $qb->orderBy('score', 'desc');
-             $qb->addOrderBy('isPromo', 'DESC');
+            $qb->addOrderBy('isPromo', 'DESC');
         }
         $qb->addOrderBy($order, $orderDir);
         $qry = $qb->getQuery();
@@ -455,6 +470,9 @@ class ProductsController extends Controller {
             $qb3->setMaxResults(1);
             if ($maxNewPrice > 0) {
                 $qb3->setParameter('maxNewPrice', (double) 1000000);
+            }
+            if ($minNewPrice > 0) {
+                $qb3->setParameter('minNewPrice', (double) 0);
             }
             $qb3->setFirstResult(0);
             $qb3->setMaxResults(1);
