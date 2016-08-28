@@ -736,4 +736,3 @@ class Products
         return $this->prodBrand;
     }
 }
-

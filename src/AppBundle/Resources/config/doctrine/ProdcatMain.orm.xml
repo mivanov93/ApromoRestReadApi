@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\ProdcatMain" table="prodcat_main">
+    <unique-constraints>
+      <unique-constraint name="pm_id_name" columns="pm_id,pm_name"/>
+    </unique-constraints>
+    <id name="pmId" type="integer" column="pm_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="pmName" type="string" column="pm_name" length="64" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="pmDescr" type="text" column="pm_descr" length="65535" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="pmAddtime" type="integer" column="pm_addtime" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="pmLastmodified" type="integer" column="pm_lastmodified" nullable="false">
+      <options>
+        <option name="unsigned">1</option>
+        <option name="default">0</option>
+      </options>
+    </field>
+     <one-to-many field="pmProdcatCollection" mapped-by="prodcatPm" fetch="LAZY"
+                     target-entity="Prodcat">
+        </one-to-many>
+  </entity>
+</doctrine-mapping>

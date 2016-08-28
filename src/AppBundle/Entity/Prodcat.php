@@ -33,14 +33,14 @@ class Prodcat
     private $prodcatId;
 
     /**
-     * @var \AppBundle\Entity\ProdcatLinkage
-     */
-    private $prodcatLinkage;
-
-    /**
      * @var \AppBundle\Entity\Prodcat
      */
     private $prodcatPar;
+
+    /**
+     * @var \AppBundle\Entity\ProdcatMain
+     */
+    private $prodcatPm;
 
 
     /**
@@ -150,30 +150,6 @@ class Prodcat
     }
 
     /**
-     * Set prodcatLinkage
-     *
-     * @param \AppBundle\Entity\ProdcatLinkage $prodcatLinkage
-     *
-     * @return Prodcat
-     */
-    public function setProdcatLinkage(\AppBundle\Entity\ProdcatLinkage $prodcatLinkage = null)
-    {
-        $this->prodcatLinkage = $prodcatLinkage;
-
-        return $this;
-    }
-
-    /**
-     * Get prodcatLinkage
-     *
-     * @return \AppBundle\Entity\ProdcatLinkage
-     */
-    public function getProdcatLinkage()
-    {
-        return $this->prodcatLinkage;
-    }
-
-    /**
      * Set prodcatPar
      *
      * @param \AppBundle\Entity\Prodcat $prodcatPar
@@ -195,5 +171,58 @@ class Prodcat
     public function getProdcatPar()
     {
         return $this->prodcatPar;
+    }
+
+    /**
+     * Set prodcatPm
+     *
+     * @param \AppBundle\Entity\ProdcatMain $prodcatPm
+     *
+     * @return Prodcat
+     */
+    public function setProdcatPm(\AppBundle\Entity\ProdcatMain $prodcatPm = null)
+    {
+        $this->prodcatPm = $prodcatPm;
+
+        return $this;
+    }
+
+    /**
+     * Get prodcatPm
+     *
+     * @return \AppBundle\Entity\ProdcatMain
+     */
+    public function getProdcatPm()
+    {
+        return $this->prodcatPm;
+    }
+    /**
+     * @var \AppBundle\Entity\ProdcatLinkage
+     */
+    private $prodcatLinkage;
+
+
+    /**
+     * Set prodcatLinkage
+     *
+     * @param \AppBundle\Entity\ProdcatLinkage $prodcatLinkage
+     *
+     * @return Prodcat
+     */
+    public function setProdcatLinkage(\AppBundle\Entity\ProdcatLinkage $prodcatLinkage = null)
+    {
+        $this->prodcatLinkage = $prodcatLinkage;
+
+        return $this;
+    }
+
+    /**
+     * Get prodcatLinkage
+     *
+     * @return \AppBundle\Entity\ProdcatLinkage
+     */
+    public function getProdcatLinkage()
+    {
+        return $this->prodcatLinkage;
     }
 }

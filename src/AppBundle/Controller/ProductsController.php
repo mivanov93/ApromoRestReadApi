@@ -323,7 +323,8 @@ class ProductsController extends Controller {
         return $r;
     }
 
-    public function searchAction(Request $request, $prodcatId, $order, $orderDir, $page, $perPage, $topOnly, $promoOnly, $nameOnly) {
+    public function searchAction(Request $request, $prodcatId, $order, $orderDir, $page, $perPage, $topOnly, $promoOnly,
+                                 $nameOnly, $prodcatMainId) {
         $cached = true;
         $additionalData = [];
         $brandsIds = $request->get('brandsIds');
@@ -359,11 +360,16 @@ class ProductsController extends Controller {
         $qb->innerJoin('p.prodBrand', 'b');
         $qb->leftJoin('p.prodPo', 'po');
         $qb->innerJoin('p.prodProdcat', 'pc');
+        $qb->innerJoin('pc.prodcatPm', 'pm');
         $qb->setFirstResult(((int) $page - 1) * (int) $perPage);
         $qb->setMaxResults((int) $perPage);
         if ($prodcatId > 0) {
             $qb->andWhere('p.prodProdcat = :prodcatId');
             $qb->setParameter('prodcatId', (int) $prodcatId);
+        }
+        else if($prodcatMainId > 0) {
+             $qb->andWhere('pm.pmId = :prodcatMainId');
+            $qb->setParameter('prodcatMainId', (int) $prodcatMainId);
         }
 
         if ($brandsIds !== null) {
