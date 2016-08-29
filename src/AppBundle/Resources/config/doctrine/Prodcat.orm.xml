@@ -2,7 +2,6 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
     <entity name="AppBundle\Entity\Prodcat" table="prodcat">
         <indexes>
-            <index name="pars_exist" columns="prodcat_par_id"/>
             <index name="fk_prodcat_1_idx" columns="prodcat_pm_id"/>
         </indexes>
         <unique-constraints>
@@ -34,11 +33,6 @@
             </options>
         </field>
         <one-to-one field="prodcatLinkage" target-entity="ProdcatLinkage" mapped-by="plProdcat" />
-        <many-to-one field="prodcatPar" target-entity="Prodcat" fetch="LAZY">
-            <join-columns>
-                <join-column name="prodcat_par_id" referenced-column-name="prodcat_id"/>
-            </join-columns>
-        </many-to-one>
         <many-to-one inversed-by="pmProdcatCollection" field="prodcatPm" target-entity="ProdcatMain" fetch="LAZY">
             <join-columns>
                 <join-column name="prodcat_pm_id" referenced-column-name="pm_id"/>

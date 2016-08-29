@@ -32,10 +32,6 @@ class Prodcat
      */
     private $prodcatId;
 
-    /**
-     * @var \AppBundle\Entity\Prodcat
-     */
-    private $prodcatPar;
 
     /**
      * @var \AppBundle\Entity\ProdcatMain
@@ -149,29 +145,6 @@ class Prodcat
         return $this->prodcatId;
     }
 
-    /**
-     * Set prodcatPar
-     *
-     * @param \AppBundle\Entity\Prodcat $prodcatPar
-     *
-     * @return Prodcat
-     */
-    public function setProdcatPar(\AppBundle\Entity\Prodcat $prodcatPar = null)
-    {
-        $this->prodcatPar = $prodcatPar;
-
-        return $this;
-    }
-
-    /**
-     * Get prodcatPar
-     *
-     * @return \AppBundle\Entity\Prodcat
-     */
-    public function getProdcatPar()
-    {
-        return $this->prodcatPar;
-    }
 
     /**
      * Set prodcatPm
