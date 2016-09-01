@@ -22,10 +22,11 @@ class ProdcatMainController extends Controller {
     const COUNT_F = 'partial mc.{pmId},count(p.prodId)';
     const CACHE_TIME = 1000;
 
-    public function prodcatMainSearchAction(Request $request,$topOnly,$promoOnly,$nameOnly) {
-
+    public function prodcatMainSearchAction(Request $request, $topOnly, $promoOnly, $nameOnly) {
+        $cached = true;
         $brandsIds = $request->get('brandsIds');
         $searchQuery = $request->get('searchQuery');
+        $minNewPrice = (double) $request->get('minNewPrice');
         $maxNewPrice = (double) $request->get('maxNewPrice');
 
         $prodcatMainRepo = $this->getDoctrine()->getRepository(ProdcatMain::class);
@@ -55,14 +56,26 @@ class ProdcatMainController extends Controller {
             }
         }
         if ($topOnly) {
-            $qb->andWhere('p.prodTop > 0');
+            $qb->andWhere('p.prodTop = 1');
         }
+        if ($promoOnly) {
+            $qb->andWhere('p.prodPercentage > 0');
+        }
+
         if ($maxNewPrice > 0) {
             $qb->andWhere('p.prodNewprice <= :maxNewPrice');
             $qb->setParameter('maxNewPrice', (double) $maxNewPrice);
         }
 
         if (floor($maxNewPrice) !== ceil($maxNewPrice)) {
+            $cached&=false;
+        }
+        if ($minNewPrice > 0) {
+            $qb->andWhere('p.prodNewprice >= :minNewPrice');
+            $qb->setParameter('minNewPrice', (double) $minNewPrice);
+        }
+
+        if (floor($minNewPrice) !== ceil($minNewPrice)) {
             $cached&=false;
         }
         if (mb_strlen($searchQuery) > 2) {
@@ -85,9 +98,13 @@ class ProdcatMainController extends Controller {
                     $newSearchQuery[] = $toCyr;
                 }
             }
-
+            if ($nameOnly) {
+                $sFields = "p.prodName";
+            } else {
+                $sFields = "p.prodName, p.prodDescr,p.prodKeywords";
+            }
             $searchQuery = implode(' ', $newSearchQuery);
-            $qb->andWhere("MATCH_AGAINST(p.prodName, p.prodDescr,p.prodKeywords, :searchQuery 'IN BOOLEAN MODE') > 0");
+            $qb->andWhere("MATCH_AGAINST({$sFields}, :searchQuery 'IN BOOLEAN MODE') > 0");
             $qb->setParameter('searchQuery', $searchQuery);
         }
 
