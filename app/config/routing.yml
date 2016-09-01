@@ -152,16 +152,13 @@ cities:
     requirements:
         methods: GET
         
-prodcat:
-    path:     /prodcat
-    defaults: { _controller: AppBundle:Prodcat:index}
+prodcat-main_search:
+    path:     /prodcat-main/{topOnly}/{promoOnly}/{nameOnly}
+    defaults: { _controller: AppBundle:ProdcatMain:prodcatMainSearch, topOnly: 0, promoOnly: 0, nameOnly: 0}
     requirements:
-        methods: GET
-        
-prodcatmain_index:
-    path:     /prodcat-main
-    defaults: { _controller: AppBundle:ProdcatMain:index}
-    requirements:
+        topOnly: 0|1
+        promoOnly: 0|1
+        nameOnly: 0|1
         methods: GET
         
 prodcat_search:
@@ -169,6 +166,12 @@ prodcat_search:
     defaults: { _controller: AppBundle:Prodcat:indexByProdSearch, topOnly: 0}
     requirements:
         topOnly: 0|1
+        methods: GET
+        
+prodcat:
+    path:     /prodcat
+    defaults: { _controller: AppBundle:Prodcat:index}
+    requirements:
         methods: GET
         
 shops:

@@ -15,7 +15,8 @@ use function mb_strlen;
 
 class ProdcatController extends Controller {
 
-    const PRODCAT_FIELDS = 'partial pc.{prodcatId,prodcatName,prodcatDescr,prodcatLastmodified},partial pl.{plProdcat,plLastmodified,plPrcount,plIndirPrcount}';
+    const PRODCAT_FIELDS = 'partial pc.{prodcatId,prodcatName,prodcatDescr,prodcatLastmodified},'
+            . 'partial pl.{plProdcat,plLastmodified,plPrcount,plIndirPrcount}';
     const CACHE_TIME = 1000;
 
     public function getAllProdcats() {

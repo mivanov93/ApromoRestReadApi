@@ -8,6 +8,10 @@ use AppBundle\Entity\Products;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Transliterator\Settings;
+use Transliterator\Transliterator;
+use function mb_strlen;
 
 class ProdcatMainController extends Controller {
 
@@ -18,19 +22,13 @@ class ProdcatMainController extends Controller {
     const COUNT_F = 'partial mc.{pmId},count(p.prodId)';
     const CACHE_TIME = 1000;
 
-    public function getAllProdcats() {
+    public function prodcatMainSearchAction(Request $request,$topOnly,$promoOnly,$nameOnly) {
+
+        $brandsIds = $request->get('brandsIds');
+        $searchQuery = $request->get('searchQuery');
+        $maxNewPrice = (double) $request->get('maxNewPrice');
+
         $prodcatMainRepo = $this->getDoctrine()->getRepository(ProdcatMain::class);
-//        $qb = $prodcatRepo->createQueryBuilder('mc');
-//        $qb->select(self::COUNT_F);
-//        $qb->innerJoin('mc.pmProdcatCollection', 'prcat');
-//        $qb->innerJoin(Products::class, "p", Join::WITH, "p.prodProdcat = prcat.prodcatId");
-//        $qb->innerJoin('p.prodPiCollection', 'pi');
-//        $qb->groupBy("mc.pmId");
-//        $qb->indexBy('mc', 'mc.pmId');
-//        $qry = $qb->getQuery();
-//        $qry->setResultCacheId('prodcat_index');
-//        $qry->setResultCacheLifetime(self::CACHE_TIME);
-//        $prodcatList = $qry->getArrayResult();
 
 
         $prodcatRepo = $this->getDoctrine()->getRepository(Prodcat::class);
@@ -45,6 +43,55 @@ class ProdcatMainController extends Controller {
         $qb->innerJoin('pc.prodcatPm', 'pm');
         $qb->groupBy('pc.prodcatId');
         $qb->indexBy('pc', 'pc.prodcatId');
+
+        if ($brandsIds !== null) {
+            $qb->andWhere('p.prodBrand IN (:brandsIds)');
+            $brandsIds = explode(',', $brandsIds, ProductsController::MAX_BRANDS);
+            $qb->setParameter('brandsIds', $brandsIds);
+            $brCount = count($brandsIds);
+            $maxBrCount = $this->get('common_data')->getBrandsCount();
+            if ($brCount > 3 && $brCount < $maxBrCount - 3) {
+                $cached&=false;
+            }
+        }
+        if ($topOnly) {
+            $qb->andWhere('p.prodTop > 0');
+        }
+        if ($maxNewPrice > 0) {
+            $qb->andWhere('p.prodNewprice <= :maxNewPrice');
+            $qb->setParameter('maxNewPrice', (double) $maxNewPrice);
+        }
+
+        if (floor($maxNewPrice) !== ceil($maxNewPrice)) {
+            $cached&=false;
+        }
+        if (mb_strlen($searchQuery) > 2) {
+            // $searchQuery=preg_replace("/[^[:alnum:][:space:]]/u", '', $searchQuery);
+            $searchQuery = preg_replace('/[^\p{L}\p{N}_]+/u', ' ', $searchQuery);
+            $searchQuery = preg_replace('/[+\-><\(\)~*\"@]+/u', ' ', $searchQuery);
+        }
+        if (mb_strlen($searchQuery) > 2) {
+            $expl = explode(' ', $searchQuery, 5);
+            $transliterator = new Transliterator(Settings::LANG_BG);
+            $newSearchQuery = [];
+            foreach ($expl as $word) {
+                $newSearchQuery[] = $word;
+                $toLatin = $transliterator->cyr2Lat($word);
+                if ($toLatin !== $word) {
+                    $newSearchQuery[] = $toLatin;
+                }
+                $toCyr = $transliterator->lat2Cyr($word);
+                if ($toCyr !== $word) {
+                    $newSearchQuery[] = $toCyr;
+                }
+            }
+
+            $searchQuery = implode(' ', $newSearchQuery);
+            $qb->andWhere("MATCH_AGAINST(p.prodName, p.prodDescr,p.prodKeywords, :searchQuery 'IN BOOLEAN MODE') > 0");
+            $qb->setParameter('searchQuery', $searchQuery);
+        }
+
+
         $qry = $qb->getQuery();
         $qry->setResultCacheId('prodcat_index');
         $qry->setResultCacheLifetime(self::CACHE_TIME);
@@ -90,13 +137,8 @@ class ProdcatMainController extends Controller {
             unset($prodcatMain);
         }
 
-        return $prodcatList2;
-    }
-
-    public function indexAction() {
-        $prodcatList = $this->getAllProdcats();
         $jsonResponseFactory = $this->get('response_factory');
-        $r = $jsonResponseFactory->getJsonMysqlRowsResponse($prodcatList, count($prodcatList), self::CACHE_TIME);
+        $r = $jsonResponseFactory->getJsonMysqlRowsResponse($prodcatList2, count($prodcatList2), self::CACHE_TIME);
         return $r;
     }
 
