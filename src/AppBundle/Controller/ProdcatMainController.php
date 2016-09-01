@@ -110,7 +110,7 @@ class ProdcatMainController extends Controller {
 
 
         $qry = $qb->getQuery();
-        $qry->setResultCacheId('prodcat_index');
+        $qry->setResultCacheId('prodcat_main_count_search');
         $qry->setResultCacheLifetime(self::CACHE_TIME);
         $prodcatList = $qry->getArrayResult();
 
@@ -118,7 +118,7 @@ class ProdcatMainController extends Controller {
         $qb2->select(self::PRODCAT_MAIN_FIELDS);
         $qb2->innerJoin('mc.pmProdcatCollection', 'prcat');
         $qry2 = $qb2->getQuery();
-        $qry2->setResultCacheId('prodcat_index');
+        $qry2->setResultCacheId('prodcat_main_search');
         $qry2->setResultCacheLifetime(self::CACHE_TIME);
         $prodcatList2 = $qry2->getArrayResult();
 
