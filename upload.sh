@@ -18,6 +18,8 @@ sudo find $CLIENTDIR/$V -type d -exec chmod 775 {} \;
 chmod +x $CLIENTDIR/$V/bin/*
 $CLIENTDIR/$V/bin/console cache:clear -e live_prod
 $CLIENTDIR/$V/bin/console cache:clear -e live_prod --no-debug
+$CLIENTDIR/$V/bin/console cache:clear -e live_demo
+$CLIENTDIR/$V/bin/console cache:clear -e live_demo --no-debug
 $CLIENTDIR/$V/bin/console cache:clear -e live_dev
 $CLIENTDIR/$V/bin/console cache:clear -e live_dev --no-debug
 $CLIENTDIR/$V/bin/console doctrine:cache:clear-metadata
