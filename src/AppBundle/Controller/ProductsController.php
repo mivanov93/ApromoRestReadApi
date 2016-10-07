@@ -78,28 +78,32 @@ class ProductsController extends Controller {
         return $r;
     }
 
-    public function byIdsAction($prodIds) {
-        /* @var $repo \Doctrine\ORM\Repository */
-        $repo = $this->getDoctrine()->getRepository(Products::class);
-        /* @var $qb QueryBuilder */
-        $qb = $repo->createQueryBuilder('p');
-        $qb->select(self::PROD_DETAILS_VIEW);
-        $qb->innerJoin('p.prodBrand', 'b');
-        $qb->join('p.prodPiCollection', 'pi');
-        $qb->innerJoin('p.prodProdcat', 'pc');
-        $qb->where('p.prodId IN (:prodIds)');
-        $idsArr = explode(',', $prodIds, 100);
-        foreach ($idsArr as &$id) {
-            $id = (int) $id;
+    public function byIdsAction($prodIds='') {
+        if ($prodIds === '') {
+            $prodList = [];
+        } else {
+            /* @var $repo \Doctrine\ORM\Repository */
+            $repo = $this->getDoctrine()->getRepository(Products::class);
+            /* @var $qb QueryBuilder */
+            $qb = $repo->createQueryBuilder('p');
+            $qb->select(self::PROD_DETAILS_VIEW);
+            $qb->innerJoin('p.prodBrand', 'b');
+            $qb->join('p.prodPiCollection', 'pi');
+            $qb->innerJoin('p.prodProdcat', 'pc');
+            $qb->where('p.prodId IN (:prodIds)');
+            $idsArr = explode(',', $prodIds, 100);
+            foreach ($idsArr as &$id) {
+                $id = (int) $id;
+            }
+            sort($idsArr);
+            $qb->setParameter('prodIds', $idsArr);
+            $qry = $qb->getQuery();
+
+            $qry->setResultCacheId('prod_by_ids');
+            $qry->setResultCacheLifetime(self::GRID_CACHE_TIME);
+
+            $prodList = $qry->getArrayResult();
         }
-        sort($idsArr);
-        $qb->setParameter('prodIds', $idsArr);
-        $qry = $qb->getQuery();
-
-        $qry->setResultCacheId('prod_by_ids');
-        $qry->setResultCacheLifetime(self::GRID_CACHE_TIME);
-
-        $prodList = $qry->getArrayResult();
         $r = $this->get('response_factory')->getJsonMysqlRowsResponse($prodList, count($prodList), self::GRID_CACHE_TIME);
         return $r;
     }
@@ -366,9 +370,8 @@ class ProductsController extends Controller {
         if ($prodcatId > 0) {
             $qb->andWhere('p.prodProdcat = :prodcatId');
             $qb->setParameter('prodcatId', (int) $prodcatId);
-        }
-        else if($prodcatMainId > 0) {
-             $qb->andWhere('pm.pmId = :prodcatMainId');
+        } else if ($prodcatMainId > 0) {
+            $qb->andWhere('pm.pmId = :prodcatMainId');
             $qb->setParameter('prodcatMainId', (int) $prodcatMainId);
         }
 

@@ -95,10 +95,17 @@ products_random_prodcat:
         
 products_by_ids:
     path:     /products/by-ids/{prodIds}
-    defaults: { _controller: AppBundle:Products:byIds}
+    defaults: { _controller: AppBundle:Products:byIds, prodIds: ""}
     requirements:
         #prodIds:  [\d,]+
         methods: GET
+        
+products_by_ids_fix:
+    path:     /products/by-ids{prodIds}
+    defaults: { _controller: AppBundle:Products:byIds, prodIds: ""}
+    requirements:
+        prodIds:  "[/]{0,1}"
+        methods: GET    
         
 products_search:
     path:     /products/search/{prodcatId}/{order}/{orderDir}/{page}/{perPage}/{topOnly}/{promoOnly}/{nameOnly}/{prodcatMainId}
